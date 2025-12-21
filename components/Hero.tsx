@@ -180,7 +180,7 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
     const TWO_PI = Math.PI * 2;
     const freq = 0.25;
     const smoothing = 2.5;
-    const flushStartSeconds = 2.5; // Start anticipation earlier (was 4.0)
+    const flushStartSeconds = 1.75; // Start anticipation earlier (was 2.5)
     const anticipationDuration = 1.0;
     const burstDuration = 0.8;
     const idleBlendSeconds = 1.5;
@@ -450,7 +450,7 @@ export default function Hero() {
   useEffect(() => {
     const contentTimer = setTimeout(() => {
       setContentVisible(true);
-    }, 4500); // 4.5s syncs with the shortened burst settling
+    }, 3750); // 3.75s syncs with the shortened burst settling
 
     return () => {
       clearTimeout(contentTimer);
