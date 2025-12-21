@@ -84,7 +84,7 @@ export default function Footer() {
                   <Mail size={24} />
                 </a>
                 <a
-                  href="https://github.com"
+                  href="https://github.com/montjeffrey"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-secondary/80 hover:text-primary transition-colors"
