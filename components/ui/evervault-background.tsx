@@ -265,23 +265,18 @@ const EvervaultPattern = React.memo(function EvervaultPattern({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // The scramble layer is only ever revealed on hover, which never happens on touch
-    // devices. Running a perpetual canvas redraw loop there is pure wasted CPU/memory
-    // (and there are several of these on the page), so skip it entirely on mobile.
-    if (isMobile) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     // Configuration
-    const fontSize = 15;
+    const fontSize = isMobile ? 12 : 15;
     const font = `${fontSize}px monospace`;
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
     // Throttling frames for scramble effect
     let lastTime = 0;
     const interval = 50;
-    let animationFrameId: number | null = null;
+    let animationFrameId: number;
 
     const draw = (time: number) => {
       // Logic for automatic resizing
@@ -332,35 +327,10 @@ const EvervaultPattern = React.memo(function EvervaultPattern({
       animationFrameId = requestAnimationFrame(draw);
     };
 
-    const start = () => {
-      if (animationFrameId === null) {
-        animationFrameId = requestAnimationFrame(draw);
-      }
-    };
-    const stop = () => {
-      if (animationFrameId !== null) {
-        cancelAnimationFrame(animationFrameId);
-        animationFrameId = null;
-      }
-    };
-
-    // Only animate while the section is actually on screen. Several of these backgrounds
-    // exist on the page; without this they would all redraw forever in the background.
-    const visibilityObserver = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          start();
-        } else {
-          stop();
-        }
-      },
-      { rootMargin: "100px" }
-    );
-    visibilityObserver.observe(canvas);
+    animationFrameId = requestAnimationFrame(draw);
 
     return () => {
-      visibilityObserver.disconnect();
-      stop();
+      cancelAnimationFrame(animationFrameId);
     };
   }, [isMobile]);
 

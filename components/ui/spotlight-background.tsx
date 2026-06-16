@@ -2,10 +2,8 @@
 
 import React, { useEffect } from "react";
 import { motion, useMotionValue, useSpring, animate } from "framer-motion";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 export const SpotlightBackground = () => {
-    const isMobile = useIsMobile();
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
@@ -14,39 +12,26 @@ export const SpotlightBackground = () => {
     const springY = useSpring(mouseY, { stiffness: 50, damping: 20 });
 
     useEffect(() => {
-        // No cursor on touch devices — skip the listeners (and the spotlight they drive).
-        if (isMobile) return;
-
         const handleMouseMove = ({ clientX, clientY }: MouseEvent) => {
             mouseX.set(clientX);
             mouseY.set(clientY);
         };
 
+        const handleTouchMove = (e: TouchEvent) => {
+            const touch = e.touches[0];
+            mouseX.set(touch.clientX);
+            mouseY.set(touch.clientY);
+        };
+
         if (typeof window !== "undefined") {
             window.addEventListener("mousemove", handleMouseMove);
+            window.addEventListener("touchmove", handleTouchMove, { passive: true });
             return () => {
                 window.removeEventListener("mousemove", handleMouseMove);
+                window.removeEventListener("touchmove", handleTouchMove);
             };
         }
-    }, [isMobile, mouseX, mouseY]);
-
-    // Lightweight static ambient on mobile: plain radial gradients (no large `blur()`
-    // filters, no infinite animations, no touch-following spotlight). The big blur
-    // filters here are a primary cause of iOS Safari blowing its GPU-memory budget and
-    // reloading the page.
-    if (isMobile) {
-        return (
-            <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-                <div
-                    className="absolute inset-0 opacity-20"
-                    style={{
-                        background:
-                            "radial-gradient(600px circle at 15% 10%, rgba(231,125,34,0.12), transparent 60%), radial-gradient(500px circle at 90% 90%, rgba(240,237,228,0.08), transparent 60%)",
-                    }}
-                />
-            </div>
-        );
-    }
+    }, [mouseX, mouseY]);
 
     return (
         <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
