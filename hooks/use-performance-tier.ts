@@ -11,8 +11,12 @@ export type PerformanceTier = 'flagship' | 'high' | 'medium' | 'low';
  * - medium: Mid-range mobile (4-5 cores, 2-3 years old)
  * - low: Budget mobile (≤4 cores, older devices)
  */
-export function usePerformanceTier(): PerformanceTier {
-    const [tier, setTier] = useState<PerformanceTier>('high');
+// Returns `null` until detection runs on the client. Callers should hold off mounting
+// any heavy renderer until a concrete tier is known — otherwise the SSR/initial default
+// would build the desktop-class scene on phones and immediately tear it down, leaking a
+// WebGL context on every load.
+export function usePerformanceTier(): PerformanceTier | null {
+    const [tier, setTier] = useState<PerformanceTier | null>(null);
 
     useEffect(() => {
         const detectTier = (): PerformanceTier => {

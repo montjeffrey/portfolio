@@ -276,12 +276,12 @@ const EvervaultPattern = React.memo(function EvervaultPattern({
     // Throttling frames for scramble effect
     let lastTime = 0;
     const interval = 50;
-    let animationFrameId: number;
+    let animationFrameId: number | null = null;
 
     const draw = (time: number) => {
       // Logic for automatic resizing
       const rect = canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2); // cap backing store; 3x phones otherwise allocate ~2.25x the pixels per canvas
 
       const width = rect.width * dpr;
       const height = rect.height * dpr;
@@ -327,10 +327,37 @@ const EvervaultPattern = React.memo(function EvervaultPattern({
       animationFrameId = requestAnimationFrame(draw);
     };
 
-    animationFrameId = requestAnimationFrame(draw);
+    const start = () => {
+      if (animationFrameId === null) {
+        animationFrameId = requestAnimationFrame(draw);
+      }
+    };
+    const stop = () => {
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    };
+
+    // Keep the scramble running while the section is on screen (including the mobile
+    // scroll-driven reveal), but stop redrawing once it's scrolled away. Several of these
+    // canvases live on the page; idling the off-screen ones frees real memory without
+    // changing anything visible.
+    const visibilityObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          start();
+        } else {
+          stop();
+        }
+      },
+      { rootMargin: "100px" }
+    );
+    visibilityObserver.observe(canvas);
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      visibilityObserver.disconnect();
+      stop();
     };
   }, [isMobile]);
 
