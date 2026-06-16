@@ -433,6 +433,9 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
 
 const MemoizedBeamBackground = React.memo(BeamBackground);
 
+// Stable module-level reference so the typing effect below doesn't re-run on every render
+const SKILLS = ['Python', 'AWS', 'Security', 'Operations'];
+
 export default function Hero() {
   const [textIndex, setTextIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
@@ -442,9 +445,11 @@ export default function Hero() {
 
   const tier = usePerformanceTier(); // Use our new hook
 
-  // Desktop (high) and flagship mobile get BeamBackground with post-processing
-  // Medium/Low tier gets shader-based MobileBeam
-  const showHeavyBeam = tier === 'high' || tier === 'flagship';
+  // Only desktop ('high') gets the heavy BeamBackground (UnrealBloom post-processing +
+  // per-frame CPU matrix loop). ALL mobile tiers — including flagship phones — use the
+  // lightweight GPU-shader MobileBeam. Giving flagship phones the desktop pipeline was
+  // exhausting mobile GPU/memory budgets and causing Safari to reload the tab mid-session.
+  const showHeavyBeam = tier === 'high';
 
   // Splash screen effect - show content after beam fully loads and settles
   useEffect(() => {
@@ -457,10 +462,9 @@ export default function Hero() {
     };
   }, []);
 
-  const skills = ['Python', 'AWS', 'Security', 'Operations'];
-
   useEffect(() => {
-    const fullText = skills[textIndex];
+    const fullText = SKILLS[textIndex];
+    let pauseTimer: ReturnType<typeof setTimeout> | undefined;
 
     const handleTyping = () => {
       if (isDeleting) {
@@ -474,25 +478,28 @@ export default function Hero() {
     const typeInterval = setInterval(handleTyping, typingSpeed);
 
     if (!isDeleting && displayText === fullText) {
-      setTimeout(() => setIsDeleting(true), 2000);
+      pauseTimer = setTimeout(() => setIsDeleting(true), 2000);
     } else if (isDeleting && displayText === '') {
       setIsDeleting(false);
-      setTextIndex((prev: number) => (prev + 1) % skills.length);
+      setTextIndex((prev: number) => (prev + 1) % SKILLS.length);
     }
 
-    return () => clearInterval(typeInterval);
-  }, [displayText, isDeleting, textIndex, skills, tier]); // Add tier to deps
+    return () => {
+      clearInterval(typeInterval);
+      if (pauseTimer) clearTimeout(pauseTimer);
+    };
+  }, [displayText, isDeleting, textIndex]);
 
   return (
     <div className="relative w-full min-h-[100dvh] h-auto bg-bg-dark overflow-hidden pb-20 sm:pb-10">
       {/* Background Layer */}
       {showHeavyBeam ? (
         <MemoizedBeamBackground
-          isMobile={tier === 'flagship'}
-          tier={tier as 'flagship' | 'high'}
+          isMobile={false}
+          tier="high"
         />
       ) : (
-        <MobileBeam performanceTier={tier as 'medium' | 'low'} />
+        <MobileBeam performanceTier={tier as 'flagship' | 'medium' | 'low'} />
       )}
 
       {/* Content Layer - Immersive Splash Screen Effect */}
