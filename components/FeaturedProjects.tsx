@@ -20,6 +20,13 @@ const featuredProjects = [
     href: "/projects/levelz-barber-studio",
     type: "secondary",
   },
+  {
+    title: "The Gen Z Mama",
+    tags: ["Next.js", "Local SEO", "Booking Funnel"],
+    description: "A warm, mobile-first site for a licensed Wharton, NJ childcare provider \u2014 facility and travel care with pricing, a parenting blog for SEO, and a low-friction inquiry funnel, built on Next.js.",
+    href: "/projects/the-gen-z-mama",
+    type: "secondary",
+  },
 ];
 
 import { DotBackground } from "@/components/ui/dot-background";

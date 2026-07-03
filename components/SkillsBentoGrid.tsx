@@ -5,13 +5,13 @@ import { EvervaultBackground } from "@/components/ui/evervault-background";
 
 const skills = [
   {
-    title: "Operations & Analytics",
+    title: "Automation & Operations",
     icon: BarChart3,
     description: (
       <>
-        <strong className="text-secondary group-hover:text-primary transition-colors duration-300">Business logic automation</strong> —
-        Streamlining complex workflows with Salesforce, Lawmatics, and
-        intelligent data validation.
+        <strong className="text-secondary group-hover:text-primary transition-colors duration-300">Business process automation</strong> —
+        Erasing manual busywork by streamlining workflows across CRMs,
+        spreadsheets, and APIs with intelligent data validation.
       </>
     ),
     outcome: "Cut manual data tasks by 50% through custom CRM automation workflows",

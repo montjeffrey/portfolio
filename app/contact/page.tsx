@@ -7,6 +7,7 @@ import { Mail, Phone, Linkedin, MapPin, Send, CheckCircle2, AlertCircle } from "
 
 const projectTypes = [
   "Web Development",
+  "Automation & Integrations",
   "Cloud Solutions",
   "Data Analytics",
   "Consulting",
