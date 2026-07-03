@@ -42,7 +42,7 @@ export default function AboutIntro() {
               Beyond the Code
             </h2>
             <p className="text-lg md:text-xl text-secondary/80 leading-relaxed">
-              I transform complex business challenges into scalable technical solutions. With a foundation in Electrical Engineering and years of operational management experience, I bring a unique perspective to development—understanding not just how to build, but why it matters to the bottom line.
+              I transform complex business challenges into scalable technical solutions. With a foundation in Electrical Engineering and years of operational management experience, I bring a unique perspective to development—understanding not just how to build, but why it matters to the bottom line. Lately that means building automations that erase manual busywork and designing fast, modern websites for growing businesses.
             </p>
           </motion.div>
 

@@ -14,6 +14,10 @@ interface ProjectCardProps {
   features: string[];
   href: string;
   index: number;
+  /** Label for the card's call-to-action. Defaults to "View Case Study". */
+  ctaLabel?: string;
+  /** When true, the links open in a new tab (used for live-site/contact links). */
+  external?: boolean;
 }
 
 export default function ProjectCard({
@@ -25,7 +29,12 @@ export default function ProjectCard({
   features,
   href,
   index,
+  ctaLabel = "View Case Study",
+  external = false,
 }: ProjectCardProps) {
+  const externalLinkProps = external
+    ? { target: "_blank", rel: "noopener noreferrer" }
+    : {};
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -67,8 +76,9 @@ export default function ProjectCard({
           </div>
           <Link
             href={href}
+            {...externalLinkProps}
             className="text-primary hover:text-primary/80 transition-colors"
-            aria-label={`View ${title} case study`}
+            aria-label={external ? `Visit ${title}` : `View ${title} case study`}
           >
             <ExternalLink className="w-5 h-5" />
           </Link>
@@ -114,10 +124,11 @@ export default function ProjectCard({
         {/* CTA */}
         <Link
           href={href}
+          {...externalLinkProps}
           className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold group/link transition-all duration-300"
-          aria-label={`View case study for ${title}`}
+          aria-label={`${ctaLabel} — ${title}`}
         >
-          View Case Study
+          {ctaLabel}
           <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" aria-hidden="true" />
         </Link>
       </div>

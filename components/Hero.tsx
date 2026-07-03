@@ -457,7 +457,7 @@ export default function Hero() {
     };
   }, []);
 
-  const skills = ['Python', 'AWS', 'Security', 'Operations'];
+  const skills = ['Automation', 'Web Design', 'Cloud', 'Security'];
 
   useEffect(() => {
     const fullText = skills[textIndex];
@@ -508,7 +508,7 @@ export default function Hero() {
               Solutions Engineer: Where Operations Meet Innovation
             </h1>
             <p className="text-[clamp(1rem,2vw,1.875rem)] text-secondary/80 font-light leading-relaxed max-w-4xl mx-auto px-4">
-              Bridging the gap between business operations and technical implementation through full-stack development, cloud infrastructure, and data-driven solutions.
+              Bridging the gap between business operations and technical implementation through automation, full-stack development, and data-driven solutions.
             </p>
             <div className="flex flex-col md:flex-row items-center justify-center gap-2 sm:gap-4 text-[clamp(2.5rem,4vw,3.5rem)] font-serif mt-8 sm:mt-12 min-h-[4rem]">
               <span className="text-secondary">Specializing in</span>
