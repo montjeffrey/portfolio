@@ -32,7 +32,7 @@ const timeline = [
     period: "2024-Present",
     title: "Solutions Engineering",
     institution: "Freelance Developer & Consultant",
-    description: "Combining all previous experiences to deliver full-stack solutions for businesses. From building responsive websites to implementing ML algorithms, I bring a unique operational perspective to technical development.",
+    description: "Combining all previous experiences to deliver automation, systems integration, and full-stack web solutions for businesses. From erasing manual busywork to building responsive client websites and ML tools, I bring an operational perspective to technical work.",
     icon: Rocket,
     color: "text-primary",
   },
@@ -56,17 +56,17 @@ const certifications = [
   },
   {
     name: "AWS Certified Cloud Practitioner",
-    year: "Coursework completed, exam pending January 2026",
+    year: "Coursework completed, exam in progress",
     status: "in-progress",
   },
   {
     name: "Microsoft Azure Fundamentals (AZ-900)",
-    year: "Expected January 2026",
+    year: "In progress",
     status: "in-progress",
   },
   {
     name: "CompTIA Trifecta (Security+, Network+, A+)",
-    year: "Coursework completed, Security+exam expected December 2025",
+    year: "Coursework completed, Security+ exam in progress",
     status: "in-progress",
   },
 ];
