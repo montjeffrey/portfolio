@@ -13,7 +13,7 @@
     "clsx": "^2.1.0",
     "framer-motion": "^11.0.0",
     "lucide-react": "^0.344.0",
-    "next": "^16.1.0-canary.10",
+    "next": "^16.2.4",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "sharp": "^0.34.5",
@@ -31,5 +31,9 @@
   },
   "optionalDependencies": {
     "@img/sharp-linux-x64": "^0.34.5"
+  },
+  "overrides": {
+    "picomatch@<2.3.2": "^2.3.2",
+    "picomatch@>=4.0.0 <4.0.4": "^4.0.4"
   }
 }
