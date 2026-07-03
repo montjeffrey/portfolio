@@ -412,11 +412,41 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
     // Restore opacity logic triggers in the loop, but reset just in case
     material.opacity = initialOpacity;
 
+    const canvas = renderer.domElement;
+
+    // Pause the render loop while the tab is backgrounded so we stop holding GPU memory
+    // when nothing is visible — sustained off-screen usage is a common trigger for the
+    // mobile browser deciding to discard/reload the tab.
+    const handleVisibility = () => {
+      window.cancelAnimationFrame(animationFrameId);
+      if (!document.hidden) {
+        lastFrameTime = performance.now();
+        animate();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    // If the OS reclaims the WebGL context (memory pressure), recover instead of wedging.
+    const handleContextLost = (event: Event) => {
+      event.preventDefault();
+      window.cancelAnimationFrame(animationFrameId);
+    };
+    const handleContextRestored = () => {
+      window.cancelAnimationFrame(animationFrameId);
+      lastFrameTime = performance.now();
+      animate();
+    };
+    canvas.addEventListener('webglcontextlost', handleContextLost as EventListener, false);
+    canvas.addEventListener('webglcontextrestored', handleContextRestored as EventListener, false);
+
     animate();
 
     return () => {
       observer.disconnect();
       window.cancelAnimationFrame(animationFrameId);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      canvas.removeEventListener('webglcontextlost', handleContextLost as EventListener);
+      canvas.removeEventListener('webglcontextrestored', handleContextRestored as EventListener);
       if (container) {
         while (container.firstChild) {
           container.removeChild(container.firstChild);
@@ -424,7 +454,13 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
       }
       geometry.dispose();
       material.dispose();
+      if (bloom) bloom.dispose();
       if (composer) composer.dispose();
+      // Critical: actually release the GPU context. Without renderer.dispose() +
+      // forceContextLoss() the browser keeps the context and its bloom render targets
+      // alive long after unmount, accumulating across re-inits until iOS reloads the tab.
+      renderer.dispose();
+      renderer.forceContextLoss();
     };
   }, [isMobile, tier]);
 
@@ -485,8 +521,10 @@ export default function Hero() {
 
   return (
     <div className="relative w-full min-h-[100dvh] h-auto bg-bg-dark overflow-hidden pb-20 sm:pb-10">
-      {/* Background Layer */}
-      {showHeavyBeam ? (
+      {/* Background Layer - wait for the resolved tier before mounting any renderer so
+          phones never spin up (and then leak) the desktop-class WebGL scene. The dark
+          container background covers this sub-second detection window. */}
+      {tier === null ? null : showHeavyBeam ? (
         <MemoizedBeamBackground
           isMobile={tier === 'flagship'}
           tier={tier as 'flagship' | 'high'}

@@ -18,9 +18,9 @@ const resumeOptions = [
     color: "text-blue-400",
   },
   {
-    id: "public-info",
-    title: "Public Information Specialist Resume",
-    description: "For Digital Communications, Content Management roles",
+    id: "general",
+    title: "General Resume",
+    description: "For Business Analysis, Project Management, Operations roles",
     icon: Newspaper,
     color: "text-green-400",
   },

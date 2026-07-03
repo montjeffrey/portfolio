@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowLeft, Smartphone, Calendar, TrendingUp, Zap, Scissors, MapPin, Clock, Users } from "lucide-react";
+import { ArrowLeft, Smartphone, Calendar, TrendingUp, Zap, Scissors, MapPin, Clock, Users, ExternalLink } from "lucide-react";
 import { useState } from "react";
 
 export default function LevelzBarberStudioCaseStudy() {
@@ -40,9 +40,15 @@ export default function LevelzBarberStudioCaseStudy() {
             <span className="px-4 py-2 bg-primary/20 text-primary rounded-full border border-primary/30">
               Web Development
             </span>
-            <span className="px-4 py-2 bg-secondary/10 text-secondary/80 rounded-full">
-              Live at levelzbarbershop.com
-            </span>
+            <a
+              href="https://levelzbarberstudio.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 text-secondary/80 rounded-full hover:bg-primary/20 hover:text-primary transition-colors"
+            >
+              Live at levelzbarberstudio.com
+              <ExternalLink className="w-4 h-4" />
+            </a>
           </div>
           <p className="text-xl text-secondary/80 leading-relaxed">
             Modern barbershop website with integrated booking system, improving customer acquisition and streamlining appointment management for a local business.
