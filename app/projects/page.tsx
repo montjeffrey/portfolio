@@ -39,6 +39,36 @@ const projects = [
     href: "/projects/levelz-barber-studio",
   },
   {
+    title: "Elevate HRG — Contractor Website",
+    techStack: ["Next.js", "React", "Tailwind CSS", "Motion", "GSAP", "Local SEO"],
+    category: "Web Development",
+    status: "Live at elevatehrg.com",
+    description:
+      "Conversion-focused website for a veteran-owned NJ exterior renovation contractor (roofing, windows, siding, gutters, doors, and insulation). Choreographed motion, a matrixed local-SEO page system, and structured data built to win local search and drive booked consultations.",
+    features: [
+      "Matrixed local-SEO system: county + city pages with unique copy",
+      "LocalBusiness / RoofingContractor / Review JSON-LD schema",
+      "Choreographed hero, sticky service stack, before/after sliders",
+      "Short lead-capture form with validation and email delivery",
+    ],
+    href: "/projects/elevate-hrg",
+  },
+  {
+    title: "The Gen Z Mama — Childcare Website",
+    techStack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Local SEO"],
+    category: "Web Development",
+    status: "Live at thegenzmama.com",
+    description:
+      "Brand-forward marketing site for a licensed, insured childcare provider in Wharton, NJ — facility-based and travel-to-home care, a parenting blog, and an inquiry funnel that turns visiting parents into booked care.",
+    features: [
+      "Facility and travel care paths, each with pricing and details",
+      "Categorized parenting blog for SEO and repeat visits",
+      "Local SEO with OpenGraph/Twitter metadata for nearby search",
+      "Low-friction \"Inquire for Care\" lead funnel as the primary CTA",
+    ],
+    href: "/projects/the-gen-z-mama",
+  },
+  {
     title: "Automated Security Assessment Suite",
     techStack: ["Python", "JSON", "Markdown", "Wireshark"],
     category: "Security Tools",
@@ -54,6 +84,21 @@ const projects = [
     href: "/projects/security-assessment",
   },
   {
+    title: "Bug Bounty Research",
+    techStack: ["Bugcrowd", "Web AppSec", "OAuth / SSO", "Secrets Exposure", "HTTP/CORS"],
+    category: "Security Tools",
+    status: "Bugcrowd Researcher",
+    description:
+      "Web-application security research on Bugcrowd across multiple public programs — secrets exposure, subdomain takeover / OAuth abuse, and auth and access-control flaws. One accepted finding plus additional reported research, all anonymized and within authorized scope.",
+    features: [
+      "Hardcoded API key in a public JS bundle → unauthorized API access",
+      "Subdomain takeover enabling OAuth authorization-code interception",
+      "User-ID disclosure via password-reset chained with username enumeration",
+      "Reported across multiple public programs; coordinated disclosure, targets anonymized",
+    ],
+    href: "/projects/bug-bounties",
+  },
+  {
     title: "Law Firm CRM Integration System",
     techStack: ["Lawmatics", "Docketwise", "Python", "REST APIs"],
     category: "Automation",
@@ -67,6 +112,54 @@ const projects = [
       "Financial integration with LawPay/QuickBooks",
     ],
     href: "/projects/crm-integration",
+  },
+  {
+    title: "Business Process Automation",
+    techStack: ["Python", "REST APIs", "Webhooks", "Schedulers"],
+    category: "Automation",
+    status: "Ongoing client work",
+    description:
+      "Custom automations that take repetitive operational work — data entry, file handling, notifications, and recurring reports — off people's plates so small teams can run lean without adding headcount.",
+    features: [
+      "Event-driven triggers and scheduled jobs",
+      "Automated data entry, validation, and cleanup",
+      "Notification and alerting workflows",
+      "Hands-off recurring report generation",
+    ],
+    href: "/contact",
+    ctaLabel: "Start a project",
+  },
+  {
+    title: "Systems & Data Integration",
+    techStack: ["Python", "REST APIs", "SQL", "Webhooks"],
+    category: "Automation",
+    status: "Ongoing client work",
+    description:
+      "Connecting disconnected tools — CRMs, spreadsheets, billing, and email — into one synchronized flow so data stays consistent across platforms without manual copying or re-keying.",
+    features: [
+      "Two-way sync between business platforms",
+      "API and webhook integrations",
+      "De-duplication and a single source of truth",
+      "Scheduled, monitored data pipelines",
+    ],
+    href: "/contact",
+    ctaLabel: "Start a project",
+  },
+  {
+    title: "Custom Web Apps & Internal Tools",
+    techStack: ["Next.js", "React", "TypeScript", "Node.js"],
+    category: "Web Development",
+    status: "Ongoing client work",
+    description:
+      "Lightweight web apps and dashboards that put a clean, usable interface on top of messy data and manual processes — built to match how a business actually operates.",
+    features: [
+      "Custom dashboards and admin tools",
+      "Form-driven internal workflows",
+      "Role-based access and authentication",
+      "Deployed and maintained in production",
+    ],
+    href: "/contact",
+    ctaLabel: "Start a project",
   },
 ];
 
@@ -94,7 +187,7 @@ export default function ProjectsPage() {
               Building Solutions That Matter
             </h1>
             <p className="text-lg md:text-xl text-secondary/80 leading-relaxed">
-              From ML-powered analytics to seamless business integrations, explore projects that showcase technical innovation meeting real-world needs.
+              From business automation and client websites to ML-powered analytics, explore work that pairs technical depth with real-world business impact — named projects and the everyday automations that keep businesses running.
             </p>
           </motion.div>
         </div>
@@ -142,4 +235,3 @@ export default function ProjectsPage() {
     </div>
   );
 }
-
