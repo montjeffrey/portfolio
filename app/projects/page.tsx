@@ -27,7 +27,7 @@ const projects = [
     title: "Levelz Barber Studio Website",
     techStack: ["HTML/CSS", "JavaScript", "Booksy API", "AWS Hosting"],
     category: "Web Development",
-    status: "Live at levelzbarbershop.com",
+    status: "Live at levelzbarberstudio.com",
     description:
       "Modern barbershop website with integrated booking system, improving customer acquisition and streamlining appointment management for a local business.",
     features: [

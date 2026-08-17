@@ -104,7 +104,7 @@ Real-time sports betting analytics platform leveraging machine learning to impro
 #### Project 2: Levelz Barber Studio Website
 **Tech Stack:** HTML/CSS • JavaScript • Booksy API • AWS Hosting  
 **Category:** Web Development  
-**Status:** Live at levelzbarbershop.com
+**Status:** Live at levelzbarberstudio.com
 
 Modern barbershop website with integrated booking system, improving customer acquisition and streamlining appointment management for a local business.
 
