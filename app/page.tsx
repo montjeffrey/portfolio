@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Hero from "@/components/Hero";
+import TailnetScan from "@/components/TailnetScan";
 import AboutIntro from "@/components/AboutIntro";
 import SkillsBentoGrid from "@/components/SkillsBentoGrid";
 import FeaturedProjects from "@/components/FeaturedProjects";
@@ -16,6 +17,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <TailnetScan />
       <AboutIntro />
       <SkillsBentoGrid />
       <FeaturedProjects />

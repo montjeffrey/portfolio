@@ -36,6 +36,12 @@ export function ScrollScene({
   );
 }
 
+// Scroll progress and parallax mode of the enclosing ScrollScene, for scenes that
+// drive their own transforms. Null outside a ScrollScene.
+export function useSceneProgress(): SceneContextValue | null {
+  return useContext(SceneContext);
+}
+
 export function ParallaxLayer({
   depth,
   scaleRange,
