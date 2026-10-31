@@ -12,8 +12,9 @@ export default function AboutIntro() {
     offset: ["start end", "end start"]
   });
 
-  // Blur increases as section exits viewport (when scrollYProgress > 0.5)
-  const blur = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 0, 8, 16]);
+  // Photo fades as the section exits the viewport. Opacity, not blur: a scroll-linked
+  // filter forces repaints that make mobile Safari reload the tab.
+  const fade = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [1, 1, 0.55, 0.15]);
 
   return (
     <section ref={sectionRef} className="relative py-20 px-6 bg-bg-dark overflow-hidden z-10 w-full">
@@ -89,7 +90,7 @@ export default function AboutIntro() {
                 className="relative w-full h-full rounded-lg overflow-hidden"
                 whileHover={{ y: -8, scale: 1.02 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                style={{ filter: `blur(${blur}px)` }}
+                style={{ opacity: fade }}
               >
                 {/* Glassmorphism backdrop overlay - no blur, just gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-lg z-10 pointer-events-none" />
