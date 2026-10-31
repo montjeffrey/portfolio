@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Hero from "@/components/Hero";
 import TailnetScan from "@/components/TailnetScan";
+import OpenSourceTrack from "@/components/OpenSourceTrack";
 import AboutIntro from "@/components/AboutIntro";
 import SkillsBentoGrid from "@/components/SkillsBentoGrid";
-import FeaturedProjects from "@/components/FeaturedProjects";
 import Capabilities from "@/components/Capabilities";
 import BrandStatement from "@/components/BrandStatement";
 import BottomCTA from "@/components/BottomCTA";
@@ -18,9 +18,9 @@ export default function Home() {
     <>
       <Hero />
       <TailnetScan />
+      <OpenSourceTrack />
       <AboutIntro />
       <SkillsBentoGrid />
-      <FeaturedProjects />
       <Capabilities />
       <BrandStatement />
       <BottomCTA />

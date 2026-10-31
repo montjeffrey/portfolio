@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { EvervaultBackground } from "@/components/ui/evervault-background";
 import {
   ArrowRight,
   Workflow,
@@ -94,8 +95,10 @@ export default function Capabilities() {
                   shadow-lg shadow-primary/10 hover:shadow-primary/20"
               >
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.03] to-transparent pointer-events-none" />
+                {/* This section has no spotlight background; each card carries a small one instead */}
+                <EvervaultBackground className="rounded-2xl" radius={220} buffer={0} desktopOnly tone="soft" />
 
-                <div className="relative z-10">
+                <div className="spotlight-text relative z-10">
                   <div className="flex items-center gap-3 mb-4">
                     <span className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/15 border border-primary/30">
                       <Icon className="w-6 h-6 text-primary" />

@@ -81,7 +81,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 │   ├── Footer.tsx         # Site footer
 │   ├── Hero.tsx           # Hero section with typing effect and beam background
 │   ├── SkillsBentoGrid.tsx # Skills showcase in Bento grid layout
-│   ├── FeaturedProjects.tsx # Featured projects section
+│   ├── TailnetScan.tsx    # Scene 2: interactive tailnet-sentry graph
+│   ├── OpenSourceTrack.tsx # Scene 3: pinned track of open-source tools with live demos
 │   ├── BrandStatement.tsx # Brand statement section
 │   ├── BottomCTA.tsx      # Bottom call-to-action
 │   └── ProjectCard.tsx    # Project card with tech stack marquee

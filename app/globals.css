@@ -68,9 +68,38 @@
     animation: peer-flow 1.1s linear infinite;
   }
 
+  /* Countdown under the active step of a scene 3 demo */
+  @keyframes step-fill {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  .step-fill {
+    transform-origin: left;
+    animation: step-fill linear forwards;
+  }
+
+  /* Sections that carry the encrypted-text spotlight fade it out at the top and bottom
+     edges, so it hands off smoothly to the section above and below */
+  .spotlight-fade {
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  /* Reading shade for text that sits over the spotlight: a tight dark edge plus a wide soft
+     halo, inherited by every heading and paragraph inside the wrapper */
+  .spotlight-text {
+    text-shadow: 0 0 3px rgba(13, 13, 13, 0.9), 0 0 16px rgba(13, 13, 13, 0.85);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .scan-pulse,
-    .peer-flow {
+    .peer-flow,
+    .step-fill {
       animation: none;
     }
   }

@@ -8,10 +8,10 @@ export default function BrandStatement() {
   return (
     <section className="relative py-20 px-6 overflow-hidden min-h-[600px]">
       {/* Evervault background effect - covers entire section */}
-      <EvervaultBackground className="rounded-none" radius={450} />
+      <EvervaultBackground className="rounded-none spotlight-fade" radius={450} />
 
       {/* Content wrapper with glassmorphism */}
-      <div className="relative z-10 max-w-4xl mx-auto text-center">
+      <div className="spotlight-text relative z-10 max-w-4xl mx-auto text-center">
         <div
           className="space-y-8 backdrop-blur-xl bg-bg-elevated/50 rounded-3xl p-8 md:p-12 border border-primary/20 shadow-lg shadow-primary/10"
         >
