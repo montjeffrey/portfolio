@@ -21,26 +21,26 @@ const timeline = [
     color: "text-green-400",
   },
   {
-    period: "2022-2024",
-    title: "The Strategic Pivot",
-    institution: "Certifications & Skill Building",
-    description: "Completed FreeCodeCamp's JavaScript Algorithms & Data Structures and Responsive Web Design tracks, and self-taught Python, React, and ML fundamentals. Traded a management title for the skills to build the systems I used to manage.",
+    period: "2022-2025",
+    title: "Where Data Integrity Started",
+    institution: "The Scheer Immigration Law Group",
+    description: "Administered Lawmatics (CRM) and Docketwise (CMS) across 1,000+ clients and 5,000+ records, and led the move to digital record-keeping for sensitive legal documents. Taught myself Python and JavaScript on the side to build the systems I was administering.",
     icon: RefreshCw,
     color: "text-purple-400",
   },
   {
-    period: "2024",
-    title: "Freelance & First Builds",
+    period: "2025",
+    title: "Freelance & Open Source",
     institution: "Freelance Developer & Consultant",
-    description: "Launched an independent practice and started shipping results for clients: business websites that win local search, automations that erase hours of manual work, and a law-firm CRM integration serving 5,000+ clients that lifted lead quality 60%—plus a machine-learning analytics platform on the side.",
+    description: "Shipped and maintain production sites for three local businesses, and started publishing developer tooling: agent-harness for coding agents, landfirst for merge planning, and tailnet-sentry and compute-pool for Tailscale networks.",
     icon: Rocket,
     color: "text-primary",
   },
   {
-    period: "2025-Present",
-    title: "Security Research & Scaling Clients",
-    institution: "Freelance + Bugcrowd Researcher",
-    description: "Expanded from building to breaking. Earned CompTIA Security+ and joined Bugcrowd as a security researcher — landing an accepted vulnerability finding. Delivered four live business websites plus ongoing automation and integration work, while deepening networking expertise toward the CCNA.",
+    period: "Dec 2025-Present",
+    title: "Systems & Automation, Security-First",
+    institution: "Divine Energy Solutions + Bugcrowd Researcher",
+    description: "Building the internal platform and integrations for an energy-efficiency contractor: exactly-once job processing, OAuth integrations, and unprivileged containerized workers. Earned CompTIA Security+, landed an accepted Bugcrowd finding, and working toward the CCNA.",
     icon: Shield,
     color: "text-red-400",
   },
@@ -63,8 +63,8 @@ const certifications = [
     status: "completed",
   },
   {
-    name: "AWS Cloud Practitioner",
-    year: "Coursework completed",
+    name: "AWS Cloud Practitioner 2023 training (Skillsoft, 9 courses)",
+    year: "2025",
     status: "completed",
   },
   {
@@ -77,12 +77,17 @@ const certifications = [
     year: "In progress",
     status: "in-progress",
   },
+  {
+    name: "CompTIA CySA+",
+    year: "Up next",
+    status: "in-progress",
+  },
 ];
 
 const stats = [
-  { value: "4", label: "Live client websites shipped" },
-  { value: "5,000+", label: "Clients served via CRM integration" },
-  { value: "60%", label: "Lead-quality lift delivered" },
+  { value: "Security+", label: "CompTIA certified" },
+  { value: "4", label: "Open-source tools published" },
+  { value: "3", label: "Live client websites shipped" },
   { value: "Bugcrowd", label: "Accepted security research finding" },
 ];
 
@@ -90,19 +95,19 @@ const technicalSkills = [
   {
     category: "Languages & Frameworks",
     skills: [
-      { name: "Frontend", items: ["HTML5", "CSS3", "JavaScript (ES6+)", "React"] },
-      { name: "Backend", items: ["Python", "Java", "C#", "Node.js"] },
-      { name: "Databases", items: ["SQL", "Relational database design"] },
-      { name: "Cloud", items: ["AWS (VPC, EC2, S3)", "Azure fundamentals"] },
+      { name: "Languages", items: ["TypeScript", "Python", "Go", "SQL"] },
+      { name: "Web", items: ["Next.js", "React", "Node.js", "Tailwind CSS"] },
+      { name: "Data", items: ["PostgreSQL / Supabase", "Redis / BullMQ", "Celery"] },
+      { name: "Cloud", items: ["Azure", "AWS (VPC, EC2, IAM, S3)", "Netlify", "DNS"] },
     ],
   },
   {
     category: "Tools & Platforms",
     skills: [
-      { name: "Version Control", items: ["Git", "GitHub"] },
-      { name: "CRM/CMS", items: ["Salesforce", "Lawmatics", "Docketwise"] },
-      { name: "Development", items: ["VS Code", "REST APIs", "Postman"] },
-      { name: "Security", items: ["Wireshark", "Nmap", "CVSS framework"] },
+      { name: "Infrastructure", items: ["Docker", "Linux", "Tailscale", "GitHub Actions"] },
+      { name: "Integration", items: ["REST APIs", "OAuth 2.0", "Webhooks", "Playwright"] },
+      { name: "Agents", items: ["MCP servers", "Claude Code", "Codex"] },
+      { name: "Security", items: ["Kali Linux", "Nmap", "Wireshark", "Metasploit"] },
     ],
   },
 ];
@@ -223,10 +228,10 @@ export default function AboutPage() {
               Managing CRM systems for 5000+ clients taught me that good code isn't just functional; it's maintainable, scalable, and user-friendly. Leading teams showed me that the best solutions come from understanding both technical constraints and human needs.
             </p>
             <p>
-              Today that operational instinct shows up in results for the businesses I work with: four live websites winning local search, automations that erase hours of manual busywork every week, and integrations that keep messy data in sync. Managing CRM data for 5,000+ clients taught me that software only matters when it makes someone's day easier—so that's exactly what I build.
+              Today I build the internal systems a business runs on: job queues that survive a worker being killed mid-batch, integrations that move invoices and job data between platforms without anyone re-keying them, and the sites three local businesses use to win customers. On my own time I write developer tooling and publish it on GitHub.
             </p>
             <p>
-              I've also turned that same systematic thinking toward security. After earning my CompTIA Security+, I began researching vulnerabilities on Bugcrowd, where an accepted finding confirmed what I'd suspected: understanding how systems break makes you better at building ones that don't. For the clients I serve, that means solutions that are secure and reliable by default—and I'm deepening those foundations further toward the CCNA.
+              Security is how I build, not a separate track. After earning my CompTIA Security+, I began researching vulnerabilities on Bugcrowd, where an accepted finding confirmed what I&apos;d suspected: understanding how systems break makes you better at building ones that don&apos;t. That shows up as least-privilege workers, secrets kept out of the environment, and failure tested on purpose. Next up are the CCNA and CySA+.
             </p>
           </div>
 

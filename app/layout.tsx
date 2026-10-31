@@ -8,8 +8,8 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Jeffrey Montoya - Solutions Engineer",
-  description: "Solutions Engineer specializing in full-stack development, cloud architecture, and ML-powered applications. Bridging operations and innovation.",
+  title: "Jeffrey Montoya - Security-Minded Systems Engineer",
+  description: "Security-minded systems engineer. I build data pipelines, integrations, and developer tooling that move fast without moving recklessly. CompTIA Security+.",
 };
 
 export default function RootLayout({

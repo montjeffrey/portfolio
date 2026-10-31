@@ -39,10 +39,10 @@ export default function AboutIntro() {
             className="space-y-6"
           >
             <h2 className="text-4xl md:text-5xl font-serif text-secondary">
-              Beyond the Code
+              What I Build
             </h2>
             <p className="text-lg md:text-xl text-secondary/80 leading-relaxed">
-              I transform complex business challenges into scalable technical solutions. With a foundation in Electrical Engineering and years of operational management experience, I bring a unique perspective to development—understanding not just how to build, but why it matters to the bottom line. Lately that means building automations that erase manual busywork and designing fast, modern websites for growing businesses.
+              I build the internal systems businesses actually run on: data pipelines, integrations between platforms that were never meant to talk, and job queues that don&apos;t lose records when something crashes. I came up through Electrical Engineering and years of operations work, so I build the way an operator needs it to work, then secure it before it ships.
             </p>
           </motion.div>
 
@@ -103,7 +103,7 @@ export default function AboutIntro() {
                 {/* Actual Image - positioned to show top half */}
                 <Image
                   src="/Photos/Portfolio-picture.jpg"
-                  alt="Jeffrey Montoya - Solutions Engineer"
+                  alt="Jeffrey Montoya"
                   fill
                   className="object-cover object-top transition-transform duration-500 md:group-hover:scale-105"
                   priority

@@ -34,10 +34,10 @@ export default function Footer() {
                 Jeffrey Montoya
               </h3>
               <p className="text-secondary/80 text-sm">
-                Solutions Engineer
+                Security-Minded Systems Engineer
               </p>
               <p className="text-secondary/60 text-sm mt-2">
-                Building bridges between operations and innovation, one line of code at a time.
+                Systems that move fast without moving recklessly.
               </p>
             </div>
 

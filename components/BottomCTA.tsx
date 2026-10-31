@@ -16,11 +16,11 @@ export default function BottomCTA() {
           className="space-y-8"
         >
           <h2 className="text-4xl md:text-5xl font-serif text-secondary mb-6">
-            Ready to Build Something Amazing?
+            Hiring for Security or Infrastructure?
           </h2>
 
           <p className="text-xl text-secondary/80 leading-relaxed max-w-2xl mx-auto">
-            Whether you're looking for a developer who understands business operations or a solutions engineer who can bridge technical and strategic goals, let's connect.
+            I&apos;m open to security, infrastructure, and automation roles, hybrid or remote from New Jersey. Let&apos;s talk about what you&apos;re building.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">

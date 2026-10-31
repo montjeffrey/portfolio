@@ -25,18 +25,18 @@ export default function SportsAnalyticsCaseStudy() {
           </Link>
 
           <h1 className="text-5xl md:text-6xl font-serif text-secondary mb-6">
-            Sports Analytics Parlay Generator
+            Sports Analytics Pipeline
           </h1>
           <div className="flex flex-wrap gap-3 mb-6">
             <span className="px-4 py-2 bg-primary/20 text-primary rounded-full border border-primary/30">
               Data/ML
             </span>
             <span className="px-4 py-2 bg-secondary/10 text-secondary/80 rounded-full">
-              Live Application
+              Private research project
             </span>
           </div>
           <p className="text-xl text-secondary/80 leading-relaxed">
-            A full-stack application using Random Forest algorithms to analyze real-time sports data and generate intelligent betting recommendations with proven accuracy improvements.
+            A six-sport ingestion and grading pipeline that scores its own model against the betting market, and refuses to publish a pick until the model has earned it.
           </p>
         </motion.div>
 
@@ -48,26 +48,26 @@ export default function SportsAnalyticsCaseStudy() {
           className="mb-16 bg-bg-elevated rounded-2xl p-8 border border-primary/20"
         >
           <h2 className="text-3xl font-serif text-secondary mb-6">Project Overview</h2>
-          
+
           <div className="space-y-6">
             <div>
               <h3 className="text-xl font-semibold text-secondary mb-2">Challenge</h3>
               <p className="text-secondary/80 leading-relaxed">
-                Sports betting relies heavily on intuition and basic statistics, leading to poor prediction rates and financial losses for casual bettors.
+                A model that looks confident is easy to build. Knowing whether it actually beats the market, the hardest baseline there is, takes graded history, honest scoring, and a willingness to hear &quot;no.&quot;
               </p>
             </div>
 
             <div>
               <h3 className="text-xl font-semibold text-secondary mb-2">Solution</h3>
               <p className="text-secondary/80 leading-relaxed">
-                Developed a full-stack application that applies machine learning to real-time sports data, providing data-driven betting recommendations with measurably improved accuracy.
+                A Flask, Celery, Redis, and PostgreSQL stack that ingests MLB, NFL, NBA, NHL, MLS, and EPL, grades every prop nightly from box scores, and compares model probabilities with de-vigged market prices before anything is published.
               </p>
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-secondary mb-2">Impact</h3>
+              <h3 className="text-xl font-semibold text-secondary mb-2">Approach</h3>
               <p className="text-secondary/80 leading-relaxed">
-                Reduced prediction error rate by 35% compared to baseline statistical models while providing plain-language explanations for general audiences.
+                Publication is gated on measured edge, not confidence. When the model can&apos;t show an edge in a market, that market falls back to market-priced, conservative picks, or to nothing at all.
               </p>
             </div>
           </div>
@@ -104,16 +104,23 @@ export default function SportsAnalyticsCaseStudy() {
 
           <div className="bg-bg-elevated rounded-2xl p-8 border border-primary/20 space-y-6">
             <div>
-              <h3 className="text-xl font-semibold text-secondary mb-3">Why Random Forest?</h3>
+              <h3 className="text-xl font-semibold text-secondary mb-3">Score against the market, not against zero</h3>
               <p className="text-secondary/80 leading-relaxed">
-                After testing multiple ML approaches, Random Forest provided the best balance of accuracy and interpretability. The ensemble method reduced overfitting while handling the complex, non-linear relationships in sports data.
+                Hit rate on its own flatters a model. Every prediction is scored with the Brier score next to the market&apos;s own de-vigged probability, and each published leg freezes its closing quote so closing-line value can be audited later.
               </p>
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-secondary mb-3">API Integration Strategy</h3>
+              <h3 className="text-xl font-semibold text-secondary mb-3">Grading integrity before modeling</h3>
               <p className="text-secondary/80 leading-relaxed mb-4">
-                Implemented a robust data pipeline that merges multiple sources (ESPN for stats, SportsData.io for injuries) with smart caching to minimize API costs while maintaining real-time relevance.
+                Bad grades poison every metric downstream. Props on players who never appeared are voided, games stored with another game&apos;s box score are re-graded, and duplicate player identities are merged, each repair behind a dated database backup.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold text-secondary mb-3">Spend paid data deliberately</h3>
+              <p className="text-secondary/80 leading-relaxed mb-4">
+                Odds APIs bill per call. Free sources handle stats and scheduling, and only one explicit command chain is allowed to spend paid odds credits.
               </p>
             </div>
 
@@ -121,21 +128,20 @@ export default function SportsAnalyticsCaseStudy() {
             <div className="bg-bg-dark rounded-lg p-6 border border-primary/10">
               <h4 className="text-lg font-semibold text-secondary mb-4">Code Highlight</h4>
               <pre className="text-sm text-secondary/80 font-mono overflow-x-auto">
-{`def generate_prediction(team_data, injury_report, recent_games):
+{`def publishable(market, evidence):
     """
-    Core prediction logic using ensemble learning
-    with recency bias and injury impact factors
+    A market publishes model-priced legs only when graded,
+    out-of-sample evidence says the model beats the market.
     """
-    features = engineer_features(team_data, injury_report)
-    weighted_recent = apply_recency_bias(recent_games)
-    prediction = model.predict_proba(features, weighted_recent)
-    return format_user_friendly(prediction)`}
+    if evidence.model_brier >= evidence.market_brier:
+        return Mode.MARKET_BLEND   # priced at the market, conservative tiers only
+    return Mode.MODEL_EDGE`}
               </pre>
             </div>
           </div>
         </motion.section>
 
-        {/* Results & Metrics */}
+        {/* What it runs */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -144,15 +150,15 @@ export default function SportsAnalyticsCaseStudy() {
         >
           <h2 className="text-3xl font-serif text-secondary mb-8 flex items-center gap-3">
             <Zap className="w-8 h-8 text-primary" />
-            Results & Metrics
+            What It Runs
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
-              { label: "Prediction Accuracy Improvement", value: "35%", desc: "over baseline" },
-              { label: "Real-time Processing", value: "100+", desc: "games daily" },
-              { label: "User Satisfaction", value: "87%", desc: "based on explanations" },
-              { label: "Architecture", value: "Scalable", desc: "supporting concurrent users" },
+              { label: "Sports Ingested", value: "6", desc: "MLB, NFL, NBA, NHL, MLS, EPL" },
+              { label: "Props Graded", value: "7,000+", desc: "from box scores, nightly" },
+              { label: "Baseline", value: "Market", desc: "de-vigged odds, Brier-scored" },
+              { label: "Publication", value: "Gated", desc: "on measured edge, not confidence" },
             ].map((metric, i) => (
               <motion.div
                 key={i}
@@ -172,4 +178,3 @@ export default function SportsAnalyticsCaseStudy() {
     </div>
   );
 }
-

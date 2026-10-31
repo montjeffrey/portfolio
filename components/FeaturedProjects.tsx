@@ -7,25 +7,28 @@ import { SpotlightBackground } from "@/components/ui/spotlight-background";
 
 const featuredProjects = [
   {
-    title: "Sports Analytics Parlay Generator",
-    tags: ["Live Data", "ML-Powered", "API Connected"],
-    description: "A full-stack application using Random Forest algorithms to analyze real-time sports data and generate intelligent betting recommendations with proven accuracy improvements.",
-    href: "/projects/sports-analytics",
-    type: "primary",
+    title: "agent-harness",
+    tags: ["Python", "MCP", "Approval Gates"],
+    description: "Portable memory and code-graph toolkit for coding agents: an MCP server, bounded project memory with provenance rules and human review gates, and blast-radius analysis. Works with Claude Code, Codex, and Gemini. CI runs a 12-job matrix (3 OS \u00d7 4 Python) with pinned actions and OIDC releases.",
+    href: "https://github.com/montjeffrey/agent-harness",
   },
   {
-    title: "Levelz Barber Studio",
-    tags: ["Mobile-First", "Booksy Integration", "Live Booking"],
-    description: "A modern, responsive website with seamless appointment booking integration, improving customer engagement and streamlining business operations.",
-    href: "/projects/levelz-barber-studio",
-    type: "secondary",
+    title: "tailnet-sentry",
+    tags: ["Go", "Tailscale API", "Defensive"],
+    description: "Scan your own tailnet, mark known devices healthy, flag the anomaly, quarantine it. A defensive Go CLI over the Tailscale API.",
+    href: "https://github.com/montjeffrey/tailnet-sentry",
   },
   {
-    title: "The Gen Z Mama",
-    tags: ["Next.js", "Local SEO", "Booking Funnel"],
-    description: "A warm, mobile-first site for a licensed Wharton, NJ childcare provider \u2014 facility and travel care with pricing, a parenting blog for SEO, and a low-friction inquiry funnel, built on Next.js.",
-    href: "/projects/the-gen-z-mama",
-    type: "secondary",
+    title: "landfirst",
+    tags: ["Go", "TUI", "Git Internals"],
+    description: "Which branch do I merge first? Compares git patch IDs instead of commit hashes, cutting false \u201cunlanded work\u201d reports from 2,073 to 45 on a real repo. Predicts conflicts with git merge-tree and never rewrites history.",
+    href: "https://github.com/montjeffrey/landfirst",
+  },
+  {
+    title: "compute-pool",
+    tags: ["Go", "Tailscale", "Scheduling"],
+    description: "Share CPU between your own devices over Tailscale: run commands on the least-loaded machine, fan out tasks, and watch it on a live dashboard.",
+    href: "https://github.com/montjeffrey/compute-pool",
   },
 ];
 
@@ -46,7 +49,7 @@ export default function FeaturedProjects() {
           }}
           className="text-4xl md:text-5xl font-serif text-secondary text-center mb-16"
         >
-          Featured Projects
+          Open-Source Builds
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -94,13 +97,15 @@ export default function FeaturedProjects() {
                   {project.description}
                 </p>
 
-                <Link
+                <a
                   href={project.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold group-hover:gap-4 transition-all duration-300"
                 >
-                  View Case Study
+                  View on GitHub
                   <ArrowRight className="w-5 h-5" />
-                </Link>
+                </a>
               </div>
             </motion.div>
           ))}

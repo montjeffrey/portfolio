@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About - Jeffrey Montoya",
-  description: "Learn about Jeffrey Montoya's journey from Electrical Engineering to Solutions Engineering, combining operational expertise with technical innovation.",
+  description: "Jeffrey Montoya's path from Electrical Engineering and operations to security-minded systems engineering: CompTIA Security+, Bugcrowd research, and open-source tooling.",
 };
 
 export default function AboutLayout({

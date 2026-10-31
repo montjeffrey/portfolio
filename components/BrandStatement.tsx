@@ -18,16 +18,16 @@ export default function BrandStatement() {
           <div className="flex items-center justify-center gap-3 mb-6">
             <Target className="w-8 h-8 text-primary" />
             <h2 className="text-4xl md:text-5xl font-serif text-secondary">
-              Engineering Solutions for Real-World Impact
+              Security Is How I Build
             </h2>
           </div>
 
           <p className="text-xl md:text-2xl text-secondary/80 leading-relaxed">
-            My journey from Electrical Engineering to Operations Management to Software Development isn't just a career path, it's my competitive advantage. I understand the technical constraints engineers face, the operational challenges managers navigate, and the customer needs that drive business decisions.
+            Workers run unprivileged. Credentials live in mounted secret files, not environment variables. Failure gets tested on purpose: kill the worker mid-batch, then prove nothing was lost or duplicated.
           </p>
 
           <p className="text-lg text-secondary/70 leading-relaxed">
-            Today, I leverage this multifaceted experience to build secure, scalable, and business-focused technical solutions that don't just work—they deliver measurable results.
+            The same rule runs through my tools: agents propose and humans approve, and nothing rewrites history or force-pushes. Fast is only useful if you can trust what shipped.
           </p>
         </div>
       </div>

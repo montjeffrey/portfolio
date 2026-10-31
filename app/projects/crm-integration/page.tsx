@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowLeft, Database, TrendingUp, Users, FileText, DollarSign } from "lucide-react";
+import { ArrowLeft, Database, TrendingUp, Network, FileText, DollarSign } from "lucide-react";
 
 export default function CRMIntegrationCaseStudy() {
   return (
@@ -24,18 +24,18 @@ export default function CRMIntegrationCaseStudy() {
           </Link>
 
           <h1 className="text-5xl md:text-6xl font-serif text-secondary mb-6">
-            Law Firm CRM Integration System
+            Law Firm Lead Tracking &amp; Records
           </h1>
           <div className="flex flex-wrap gap-3 mb-6">
             <span className="px-4 py-2 bg-primary/20 text-primary rounded-full border border-primary/30">
               Automation
             </span>
             <span className="px-4 py-2 bg-secondary/10 text-secondary/80 rounded-full">
-              Deployed (5000+ clients)
+              In production, 2022–2025
             </span>
           </div>
           <p className="text-xl text-secondary/80 leading-relaxed">
-            Comprehensive data management system integrating multiple CRM/CMS platforms, improving lead quality by 60% and streamlining client communications.
+            Spreadsheet pipelines that pulled every marketing partner&apos;s leads into one tracking view, a secured and fully logged digitization of sensitive client documents, and the office network underneath it all, for an immigration law firm with 1,000+ clients.
           </p>
         </motion.div>
 
@@ -50,26 +50,26 @@ export default function CRMIntegrationCaseStudy() {
             <Database className="w-8 h-8 text-primary" />
             Project Overview
           </h2>
-          
+
           <div className="space-y-6">
             <div>
               <h3 className="text-xl font-semibold text-secondary mb-2">Challenge</h3>
               <p className="text-secondary/80 leading-relaxed">
-                Law firm managing 5000+ clients across multiple disconnected systems (Lawmatics, Docketwise) leading to data inconsistencies, duplicate entries, and inefficient workflows.
+                Leads arrived from several marketing partners, each in its own format, with no single view of which source produced clients worth keeping. Thousands of sensitive paper documents also had to become digital without losing track of a single one.
               </p>
             </div>
 
             <div>
               <h3 className="text-xl font-semibold text-secondary mb-2">Solution</h3>
               <p className="text-secondary/80 leading-relaxed">
-                Developed a comprehensive integration system that synchronizes data across platforms, automates lead scoring and routing, and streamlines document and financial workflows.
+                Built Excel pipelines that normalized each partner&apos;s lead data into one tracking sheet, organized the firm&apos;s file system for scanned records, and kept a complete log of every sensitive document as it was scanned and secured. I also maintained the office network and the Lawmatics and Docketwise records the team worked from.
               </p>
             </div>
 
             <div>
               <h3 className="text-xl font-semibold text-secondary mb-2">Impact</h3>
               <p className="text-secondary/80 leading-relaxed">
-                60% improvement in lead quality, 50% reduction in manual data entry, and seamless integration with financial systems (LawPay/QuickBooks).
+                Lead tracking by source fed a 60% improvement in lead quality, and every digitized document is accounted for in the log. 5,000+ client records were kept consistent, with payments reconciled through LawPay and QuickBooks.
               </p>
             </div>
           </div>
@@ -84,34 +84,34 @@ export default function CRMIntegrationCaseStudy() {
         >
           <h2 className="text-3xl font-serif text-secondary mb-8 flex items-center gap-3">
             <TrendingUp className="w-8 h-8 text-primary" />
-            Key Features
+            What I Built
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
               {
-                title: "Multi-System Data Synchronization",
-                description: "Real-time synchronization between Lawmatics, Docketwise, and custom databases ensuring data consistency across all platforms",
-                icon: Database,
-                metric: "5000+ clients synced",
-              },
-              {
-                title: "Automated Lead Scoring & Routing",
-                description: "Intelligent lead scoring algorithm automatically routes high-quality leads to appropriate attorneys based on case type and expertise",
-                icon: Users,
+                title: "Partner Lead Pipelines",
+                description: "Excel pipelines that pulled lead data from each marketing partner, normalized it to one format, and fed a single tracking view of which sources produced qualified clients.",
+                icon: TrendingUp,
                 metric: "60% lead quality improvement",
               },
               {
-                title: "Document Digitization Workflow",
-                description: "Automated document processing pipeline that extracts, indexes, and stores client documents across all systems",
+                title: "Secured Document Digitization",
+                description: "A reorganized file system for scanned records and a complete log of every sensitive document as it was scanned and secured, so nothing went missing in the move from paper.",
                 icon: FileText,
-                metric: "50% reduction in manual entry",
+                metric: "Every document logged",
               },
               {
-                title: "Financial Integration",
-                description: "Seamless integration with LawPay and QuickBooks for automated invoice generation, payment tracking, and financial reporting",
+                title: "Office Network & Systems",
+                description: "Maintained the office network and connectivity, and administered Lawmatics (CRM) and Docketwise (CMS) records for the legal team.",
+                icon: Network,
+                metric: "5,000+ records maintained",
+              },
+              {
+                title: "Payments & Reconciliation",
+                description: "Handled client payments and financial records in LawPay and QuickBooks, keeping the books aligned with case records.",
                 icon: DollarSign,
-                metric: "Real-time financial sync",
+                metric: "LawPay + QuickBooks",
               },
             ].map((feature, i) => {
               const Icon = feature.icon;
@@ -144,7 +144,7 @@ export default function CRMIntegrationCaseStudy() {
         >
           <h2 className="text-3xl font-serif text-secondary mb-6">Technical Stack</h2>
           <div className="flex flex-wrap gap-3">
-            {["Lawmatics", "Docketwise", "Python", "REST APIs"].map((tech, i) => (
+            {["Excel", "Lawmatics", "Docketwise", "LawPay", "QuickBooks", "Office Networking"].map((tech, i) => (
               <span
                 key={i}
                 className="px-4 py-2 bg-primary/20 text-primary rounded-full border border-primary/30 font-mono text-sm"
@@ -158,4 +158,3 @@ export default function CRMIntegrationCaseStudy() {
     </div>
   );
 }
-

@@ -493,7 +493,7 @@ export default function Hero() {
     };
   }, []);
 
-  const skills = ['Automation', 'Web Design', 'Cloud', 'Security'];
+  const skills = ['Security', 'Automation', 'Infrastructure', 'Agent Tooling'];
 
   useEffect(() => {
     const fullText = skills[textIndex];
@@ -543,10 +543,10 @@ export default function Hero() {
             className="space-y-8 sm:space-y-6"
           >
             <h1 className="text-[clamp(2rem,5vw,6rem)] font-serif text-secondary leading-tight px-4 sm:px-2">
-              Solutions Engineer: Where Operations Meet Innovation
+              I build systems that move fast without moving recklessly.
             </h1>
             <p className="text-[clamp(1rem,2vw,1.875rem)] text-secondary/80 font-light leading-relaxed max-w-4xl mx-auto px-4">
-              Bridging the gap between business operations and technical implementation through automation, full-stack development, and data-driven solutions.
+              Security-minded systems engineer. Data pipelines, integrations, and developer tooling, secured as they&apos;re built. CompTIA Security+.
             </p>
             <div className="flex flex-col md:flex-row items-center justify-center gap-2 sm:gap-4 text-[clamp(2.5rem,4vw,3.5rem)] font-serif mt-8 sm:mt-12 min-h-[4rem]">
               <span className="text-secondary">Specializing in</span>
