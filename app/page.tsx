@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Hero from "@/components/Hero";
 import TailnetScan from "@/components/TailnetScan";
 import OpenSourceTrack from "@/components/OpenSourceTrack";
+import PipelineScene from "@/components/PipelineScene";
 import AboutIntro from "@/components/AboutIntro";
 import SkillsBentoGrid from "@/components/SkillsBentoGrid";
 import Capabilities from "@/components/Capabilities";
@@ -19,6 +20,7 @@ export default function Home() {
       <Hero />
       <TailnetScan />
       <OpenSourceTrack />
+      <PipelineScene />
       <AboutIntro />
       <SkillsBentoGrid />
       <Capabilities />

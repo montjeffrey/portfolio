@@ -83,6 +83,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 │   ├── SkillsBentoGrid.tsx # Skills showcase in Bento grid layout
 │   ├── TailnetScan.tsx    # Scene 2: interactive tailnet-sentry graph
 │   ├── OpenSourceTrack.tsx # Scene 3: pinned track of open-source tools with live demos
+│   ├── PipelineScene.tsx  # Scene 4: scroll-driven release pipeline (test, fail and retry, scan, sign, ship)
 │   ├── BrandStatement.tsx # Brand statement section
 │   ├── BottomCTA.tsx      # Bottom call-to-action
 │   └── ProjectCard.tsx    # Project card with tech stack marquee
