@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<!--
+  Form blueprint for Netlify Forms. Netlify detects forms only in static HTML
+  at deploy time, and the Next.js runtime renders /contact itself, so the
+  contact form is declared here. app/contact/page.tsx posts to this file.
+  The field names must match the ones the page sends.
+-->
+<html lang="en">
+  <head><meta charset="utf-8" /><meta name="robots" content="noindex" /><title>Forms</title></head>
+  <body>
+    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="contact" />
+      <input name="bot-field" />
+      <input name="name" />
+      <input type="email" name="email" />
+      <input name="company" />
+      <input name="projectType" />
+      <textarea name="message"></textarea>
+      <input name="preferredContact" />
+    </form>
+  </body>
+</html>

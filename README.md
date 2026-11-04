@@ -7,7 +7,7 @@ Source for [montjeffrey.dev](https://montjeffrey.dev), the portfolio and service
 - **Framework:** Next.js 16 (App Router), React 18, TypeScript
 - **Styling and motion:** Tailwind CSS, Framer Motion, three.js for the background effects
 - **Hosting:** Netlify. The `main` branch deploys to production; pull requests get a deploy preview.
-- **Contact:** the form builds a pre-filled email to the address on the Contact page. There is no backend and no database.
+- **Contact:** the form posts to [Netlify Forms](https://docs.netlify.com/manage/forms/setup/). Netlify detects forms only in static HTML, so the form is declared in `public/__forms.html` and the Contact page submits to it with `fetch`. If a submission fails, the page offers a pre-filled email instead. There is no other backend and no database.
 
 ## Layout
 
