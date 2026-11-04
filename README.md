@@ -84,6 +84,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 │   ├── TailnetScan.tsx    # Scene 2: interactive tailnet-sentry graph
 │   ├── OpenSourceTrack.tsx # Scene 3: pinned track of open-source tools with live demos
 │   ├── PipelineScene.tsx  # Scene 4: scroll-driven release pipeline (test, fail and retry, scan, sign, ship)
+│   ├── ClientSpotlight.tsx # Scene 5: client sites lit by a flashlight cursor (lit on view on phones)
 │   ├── BrandStatement.tsx # Brand statement section
 │   ├── BottomCTA.tsx      # Bottom call-to-action
 │   └── ProjectCard.tsx    # Project card with tech stack marquee

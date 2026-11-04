@@ -7,6 +7,7 @@ import AboutIntro from "@/components/AboutIntro";
 import SkillsBentoGrid from "@/components/SkillsBentoGrid";
 import Capabilities from "@/components/Capabilities";
 import BrandStatement from "@/components/BrandStatement";
+import ClientSpotlight from "@/components/ClientSpotlight";
 import BottomCTA from "@/components/BottomCTA";
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export default function Home() {
       <SkillsBentoGrid />
       <Capabilities />
       <BrandStatement />
+      <ClientSpotlight />
       <BottomCTA />
     </>
   );
