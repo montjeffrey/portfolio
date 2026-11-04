@@ -86,7 +86,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 │   ├── PipelineScene.tsx  # Scene 4: scroll-driven release pipeline (test, fail and retry, scan, sign, ship)
 │   ├── ClientSpotlight.tsx # Scene 5: client sites lit by a flashlight cursor (lit on view on phones)
 │   ├── BrandStatement.tsx # Brand statement section
-│   ├── BottomCTA.tsx      # Bottom call-to-action
+│   ├── BottomCTA.tsx      # Scene 6: contact section where the dots settle back into the hero grid
 │   └── ProjectCard.tsx    # Project card with tech stack marquee
 ├── lib/                   # Utility functions
 │   ├── supabase.ts        # Supabase client configuration

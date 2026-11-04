@@ -325,7 +325,7 @@ function PoolVisual({ step }: { step: number }) {
 
 function Card({ tag, title, blurb, href, children }: { tag: string; title: string; blurb: string; href: string; children: ReactNode }) {
   return (
-    <article className="flex-none w-full lg:w-[440px] rounded-2xl border border-secondary/12 bg-bg-dark p-6 flex flex-col gap-4">
+    <article className="flex-none w-full lg:w-[440px] rounded-2xl border border-secondary/15 bg-bg-dark p-6 flex flex-col gap-4">
       <span className="font-mono text-xs tracking-wide text-primary">{tag}</span>
       <h3 className="text-3xl font-serif text-secondary">
         <DecodeText text={title} />

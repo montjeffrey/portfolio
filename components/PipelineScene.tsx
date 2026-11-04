@@ -214,7 +214,7 @@ export default function PipelineScene() {
 
         <ul className="mt-12 flex flex-wrap gap-2 md:justify-center">
           {FACTS.map((f) => (
-            <li key={f} className="rounded-full border border-secondary/12 px-3 py-1 font-mono text-xs text-secondary/60">
+            <li key={f} className="rounded-full border border-secondary/15 px-3 py-1 font-mono text-xs text-secondary/60">
               {f}
             </li>
           ))}

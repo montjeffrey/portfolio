@@ -87,7 +87,7 @@ function ClientCard({ client, canHover, featured }: { client: Client; canHover: 
         onPointerMove={canHover ? move : undefined}
         onPointerEnter={canHover ? () => setHovering(true) : undefined}
         onPointerLeave={canHover ? () => setHovering(false) : undefined}
-        className="relative overflow-hidden rounded-xl border border-secondary/12 bg-bg-elevated"
+        className="relative overflow-hidden rounded-xl border border-secondary/15 bg-bg-elevated"
         style={{ ["--fr" as string]: featured ? "320px" : "220px" }}
       >
         {/* Browser bar, so it reads as a live site rather than a picture */}
@@ -120,7 +120,7 @@ function ClientCard({ client, canHover, featured }: { client: Client; canHover: 
         <p className="text-[15px] leading-relaxed text-secondary/70 max-w-2xl">{client.blurb}</p>
         <ul className="flex flex-wrap gap-2" aria-label={`${client.name} stack`}>
           {client.stack.map((s) => (
-            <li key={s} className="rounded-full border border-secondary/12 px-3 py-1 font-mono text-xs text-secondary/60">
+            <li key={s} className="rounded-full border border-secondary/15 px-3 py-1 font-mono text-xs text-secondary/60">
               {s}
             </li>
           ))}
