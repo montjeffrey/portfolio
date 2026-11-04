@@ -75,7 +75,7 @@ export default function LevelzBarberStudioCaseStudy() {
             <div>
               <h3 className="text-xl font-semibold text-secondary mb-2">Solution</h3>
               <p className="text-secondary/80 leading-relaxed">
-                Developed a modern, mobile-first website featuring real-time appointment booking through Booksy API integration. The site showcases services (Haircuts, Fades, Beard Trims, Hot Towel Shaves), staff profiles, location information, and business hours. Implemented SEO optimization targeting local search terms like "barbershop near me" and "best barber in [location]".
+                Developed a modern, mobile-first website featuring real-time appointment booking through an embedded Booksy widget. The site showcases services (Haircuts, Fades, Beard Trims, Hot Towel Shaves), staff profiles, location information, and business hours. Implemented SEO optimization targeting local search terms like "barbershop near me" and "best barber in [location]".
               </p>
             </div>
 
@@ -158,9 +158,9 @@ export default function LevelzBarberStudioCaseStudy() {
 
           <div className="bg-bg-elevated rounded-2xl p-8 border border-primary/20 space-y-6">
             <div>
-              <h3 className="text-xl font-semibold text-secondary mb-3">Booksy API Implementation</h3>
+              <h3 className="text-xl font-semibold text-secondary mb-3">Booksy Booking Integration</h3>
               <p className="text-secondary/80 leading-relaxed mb-4">
-                Successfully integrated third-party booking platform while maintaining site performance and security. Custom JavaScript middleware handles authentication, availability checking, and booking confirmation.
+                Embedded Booksy's official booking widget so customers see live availability and book without leaving the site, while Booksy handles payments, confirmations, and reminders. Every Book button on the site, including links inside FAQ answers, opens the same booking dialog.
               </p>
             </div>
 
@@ -168,19 +168,14 @@ export default function LevelzBarberStudioCaseStudy() {
             <div className="bg-bg-dark rounded-lg p-6 border border-primary/10">
               <h4 className="text-lg font-semibold text-secondary mb-4">Code Example</h4>
               <pre className="text-sm text-secondary/80 font-mono overflow-x-auto">
-{`// Secure API integration with error handling
-async function checkAvailability(serviceId, date) {
-    try {
-        const response = await secureAPICall('/availability', {
-            service: serviceId,
-            date: formatDate(date),
-            location: SHOP_ID
-        });
-        return processAvailability(response);
-    } catch (error) {
-        return handleBookingError(error);
-    }
-}`}
+{`// Booksy widget: any element with .js-booksy-open opens the booking dialog
+window.booksyWidgetConfig = {
+    id: "1066445",
+    country: "us",
+    lang: "en-US",
+    button: { container: ".js-booksy-open", label: "Book Now!" },
+    mode: "dialog"
+};`}
               </pre>
             </div>
 
@@ -192,14 +187,13 @@ async function checkAvailability(serviceId, date) {
               </h4>
               <ul className="space-y-3">
                 {[
-                  "Direct Booksy API integration for real-time availability and instant booking confirmation",
+                  "Embedded Booksy widget for real-time availability and instant booking confirmation",
                   "Mobile-first responsive design optimized for on-the-go booking",
                   "Service showcase: Haircuts, Fades, Beard Trims, Hot Towel Shaves with pricing",
                   "Staff profiles highlighting barber expertise and specialties",
                   "Location integration with Google Maps and business hours display",
-                  "Custom CMS allowing staff to update services, pricing, and announcements",
                   "SEO optimization targeting local search terms and Google Business integration",
-                  "Automated email confirmations and appointment reminders",
+                  "Email confirmations and appointment reminders handled by Booksy",
                 ].map((feature, i) => (
                   <li key={i} className="text-secondary/80 flex items-start gap-2">
                     <span className="text-primary mt-1">•</span>

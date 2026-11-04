@@ -40,3 +40,7 @@ OPTIMIZATION_CONTEXT.md
 OPTIMIZATION_PLAN_TIER3.md
 .antigravitycli/
 
+
+# editor and agent settings
+.cursor/
+.vscode/

@@ -40,12 +40,12 @@ const skills = [
     description: (
       <>
         <strong className="text-secondary group-hover:text-primary transition-colors duration-300">Secure, scalable cloud foundations</strong> —
-        VPC configuration, DNS management, and production deployments on AWS &
-        Azure.
+        VPC configuration, DNS management, and production deployments with
+        preview builds and security headers.
       </>
     ),
-    outcome: "Deployed production sites on AWS with infrastructure-as-code practices",
-    badges: ["AWS Deployed", "Multi-Environment"],
+    outcome: "Client sites deployed and maintained on Netlify, with custom domains and DNS",
+    badges: ["Netlify", "Custom Domains & DNS"],
     emoji: "🌩️",
     gradient: "from-primary/20 to-primary/5",
   },

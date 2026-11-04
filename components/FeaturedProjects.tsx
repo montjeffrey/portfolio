@@ -7,24 +7,24 @@ import { SpotlightBackground } from "@/components/ui/spotlight-background";
 
 const featuredProjects = [
   {
-    title: "Sports Analytics Parlay Generator",
-    tags: ["Live Data", "ML-Powered", "API Connected"],
-    description: "A full-stack application using Random Forest algorithms to analyze real-time sports data and generate intelligent betting recommendations with proven accuracy improvements.",
-    href: "/projects/sports-analytics",
-    type: "primary",
-  },
-  {
     title: "Levelz Barber Studio",
     tags: ["Mobile-First", "Booksy Integration", "Live Booking"],
     description: "A modern, responsive website with seamless appointment booking integration, improving customer engagement and streamlining business operations.",
     href: "/projects/levelz-barber-studio",
-    type: "secondary",
+    type: "primary",
   },
   {
     title: "The Gen Z Mama",
     tags: ["Next.js", "Local SEO", "Booking Funnel"],
     description: "A warm, mobile-first site for a licensed Wharton, NJ childcare provider \u2014 facility and travel care with pricing, a parenting blog for SEO, and a low-friction inquiry funnel, built on Next.js.",
     href: "/projects/the-gen-z-mama",
+    type: "secondary",
+  },
+  {
+    title: "Sports Analytics Parlay Generator",
+    tags: ["Live Data", "ML-Powered", "API Connected"],
+    description: "A full-stack application using Random Forest algorithms to analyze real-time sports data and generate intelligent betting recommendations with proven accuracy improvements.",
+    href: "/projects/sports-analytics",
     type: "secondary",
   },
 ];

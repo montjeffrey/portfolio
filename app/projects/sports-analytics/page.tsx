@@ -32,7 +32,7 @@ export default function SportsAnalyticsCaseStudy() {
               Data/ML
             </span>
             <span className="px-4 py-2 bg-secondary/10 text-secondary/80 rounded-full">
-              Live Application
+              Personal project · in progress
             </span>
           </div>
           <p className="text-xl text-secondary/80 leading-relaxed">

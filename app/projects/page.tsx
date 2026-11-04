@@ -9,31 +9,16 @@ const categories = ["All", "Web Development", "Data/ML", "Security Tools", "Auto
 
 const projects = [
   {
-    title: "Sports Analytics Parlay Generator",
-    techStack: ["Python", "Random Forest", "ESPN API", "React", "JavaScript"],
-    category: "Data/ML",
-    status: "Live Application",
-    description:
-      "Real-time sports betting analytics platform leveraging machine learning to improve prediction accuracy. Integrates multiple data sources, implements recency bias algorithms, and delivers insights through an intuitive React interface.",
-    features: [
-      "Random Forest ML model with continuous accuracy improvements",
-      "Real-time API integration with ESPN and SportsData.io",
-      "Automated data cleaning and validation pipeline",
-      "Responsive frontend with live prediction updates",
-    ],
-    href: "/projects/sports-analytics",
-  },
-  {
     title: "Levelz Barber Studio Website",
-    techStack: ["HTML/CSS", "JavaScript", "Booksy API", "AWS Hosting"],
+    techStack: ["HTML/CSS", "JavaScript", "Booksy widget", "Netlify"],
     category: "Web Development",
     status: "Live at levelzbarberstudio.com",
     description:
       "Modern barbershop website with integrated booking system, improving customer acquisition and streamlining appointment management for a local business.",
     features: [
-      "Direct Booksy API integration for real-time availability",
+      "Embedded Booksy widget for live availability and online booking",
       "Mobile-first responsive design",
-      "Custom CMS for staff content updates",
+      "Service, barber and product pages built for the shop",
       "SEO optimization improving local search visibility",
     ],
     href: "/projects/levelz-barber-studio",
@@ -67,6 +52,21 @@ const projects = [
       "Low-friction \"Inquire for Care\" lead funnel as the primary CTA",
     ],
     href: "/projects/the-gen-z-mama",
+  },
+  {
+    title: "Sports Analytics Parlay Generator",
+    techStack: ["Python", "Random Forest", "ESPN API", "React", "JavaScript"],
+    category: "Data/ML",
+    status: "Personal project · in progress",
+    description:
+      "Real-time sports betting analytics platform leveraging machine learning to improve prediction accuracy. Integrates multiple data sources, implements recency bias algorithms, and delivers insights through an intuitive React interface.",
+    features: [
+      "Random Forest ML model with continuous accuracy improvements",
+      "Real-time API integration with ESPN and SportsData.io",
+      "Automated data cleaning and validation pipeline",
+      "Responsive frontend with live prediction updates",
+    ],
+    href: "/projects/sports-analytics",
   },
   {
     title: "Automated Security Assessment Suite",

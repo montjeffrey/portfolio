@@ -94,14 +94,14 @@ export default function Footer() {
                 </a>
               </div>
               <p className="text-secondary/60 text-sm mt-4">
-                Currently: Open to full-time opportunities in Cloud, Security, and Full-Stack Development
+                Currently: Booking new client projects in automation, systems integration, and web development
               </p>
             </div>
           </div>
 
           <div className="border-t border-primary/20 mt-8 pt-8 text-center">
             <p className="text-secondary/60 text-sm">
-              © {currentYear} Jeffrey Montoya. Built with React, hosted on AWS.
+              © {currentYear} Jeffrey Montoya. Built with Next.js, hosted on Netlify.
             </p>
           </div>
         </div>
