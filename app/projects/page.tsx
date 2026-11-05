@@ -108,15 +108,15 @@ const projects = [
   },
   {
     title: "Levelz Barber Studio Website",
-    techStack: ["HTML/CSS", "JavaScript", "Booksy API", "AWS Hosting"],
+    techStack: ["HTML/CSS", "JavaScript", "Booksy widget", "Netlify"],
     category: "Web Development",
     status: "Live at levelzbarberstudio.com",
     description:
       "Modern barbershop website with integrated booking system, improving customer acquisition and streamlining appointment management for a local business.",
     features: [
-      "Direct Booksy API integration for real-time availability",
+      "Embedded Booksy widget for live availability and online booking",
       "Mobile-first responsive design",
-      "Custom CMS for staff content updates",
+      "Service, barber and product pages built for the shop",
       "SEO optimization improving local search visibility",
     ],
     href: "/projects/levelz-barber-studio",
