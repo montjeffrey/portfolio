@@ -51,7 +51,7 @@ function render(v) {
       (j) => `<div class="job">
   <div class="row"><span><span class="role">${esc(j.role)}</span>, ${esc(j.org)}</span><span class="dates">${esc(j.dates)}</span></div>
   <div class="sub">${esc(j.place)}${j.blurb ? ` · ${esc(j.blurb)}` : ""}</div>
-  <ul>${j.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>
+  <ul>${j.bullets.map((b) => `<li>${Array.isArray(b) ? `<strong>${esc(b[0])}:</strong> ${esc(b[1])}` : esc(b)}</li>`).join("")}</ul>
 </div>`
     )
     .join("\n");

@@ -26,16 +26,19 @@ const divine = {
   place: "Dover, NJ",
   dates: "Dec 2025 – Present",
   blurb:
-    "HVAC, insulation and weatherization contractor working NJ utility and clean-energy programs.",
+    "HVAC, insulation and weatherization contractor working NJ utility and clean-energy programs. Responsible for the company's IT, data and internal software, working directly with managers and leadership.",
+  // [lead-in, text]: the lead-in renders bold so a multi-hat role scans quickly
   bullets: {
-    crm: "Designed and deployed the company's production CRM (Next.js, TypeScript, Supabase/PostgreSQL), replacing fragmented program, customer and job tracking with one source of truth and leadership KPI dashboards.",
-    outbox:
-      "Built exactly-once async processing: a transactional outbox with idempotency keys feeding Redis/BullMQ, proven by a chaos test that SIGKILLs the worker mid-batch and asserts zero duplicate or lost records.",
-    qbo: "Integrated QuickBooks Online over OAuth 2.0 for invoice and payment sync, running as an unprivileged Docker worker with credentials mounted as secret files rather than environment variables.",
-    etl: "Built CRM-to-CRM ETL (Comfort Partners measure codes into Orcatec job creation, plus SnuggPro), eliminating duplicate manual entry across program systems.",
-    kpi: "Automated technician productivity reporting in Python and Playwright: reconciled Orcatec jobs against ADP hours with fuzzy matching and produced the KPI dashboards used for bonus eligibility.",
-    intake:
-      "Standardized intake validation to NJ Clean Energy and utility program rules so records stay audit-ready.",
+    it: ["IT & network", "Implemented and now run the company's network and IT infrastructure end to end: staff accounts and devices, technical implementation of new systems, and incident response."],
+    crm: ["Internal platform", "Designed and deployed the production CRM (Next.js, TypeScript, Supabase/PostgreSQL): proposals and price books, scheduling, a technician field app, job closeout with photo evidence, and invoicing and receivables, behind role-based access and append-only audit logs."],
+    crmShort: ["Internal platform", "Designed and deployed the company's production CRM, replacing fragmented program, customer and job tracking with one system for scheduling, proposals, job closeout, invoicing and payments."],
+    outbox: ["Reliability", "Built exactly-once background processing (transactional outbox, idempotency keys, Redis/BullMQ), proven by a chaos test that SIGKILLs the worker mid-batch and finds zero duplicate or lost records; stuck or failed jobs alert immediately."],
+    qbo: ["Secure integrations", "QuickBooks Online over OAuth 2.0 for invoice and payment sync, running as an unprivileged Docker worker with credentials mounted as secret files rather than environment variables."],
+    migration: ["Migration", "Leading the move off Orcatec with cutover and back-out runbooks, a decommission checklist, and an integrity manifest for every job photo and file."],
+    kpi: ["KPIs & incentives", "Work directly with managers to build the data pipelines behind their KPIs: Python and Playwright jobs reconcile Orcatec work against ADP hours with fuzzy matching, feeding the productivity and monthly incentive reports I deliver to leadership."],
+    programs: ["Utility programs", "Prepare NJ Clean Energy and utility program submissions, validate intake against program rules, and sync program data between systems (Comfort Partners measure codes into Orcatec jobs, SnuggPro review stages into the CRM)."],
+    sir: ["Energy modeling", "Built an Excel savings-to-investment ratio (SIR) calculator for PSE&G program jobs that follows New Jersey TRM (Technical Reference Manual) standards."],
+    web: ["Brand & web", "Lead the company's branding, website redevelopment and local SEO."],
   },
 };
 
@@ -163,6 +166,8 @@ const education = [
 
 // ---------- Variants ----------
 
+const d = divine.bullets;
+
 export const variants = [
   {
     id: "technical",
@@ -170,7 +175,7 @@ export const variants = [
     label: "Security & Infrastructure",
     headline: "Security-Minded Systems Engineer",
     summary:
-      "I build the internal systems a business runs on (data pipelines, integrations and job queues) and secure them as I build: least privilege, secrets kept out of the environment, and failure tested on purpose. CompTIA Security+, an accepted Bugcrowd finding, CCNA in progress. Bilingual English/Spanish. Open to hybrid or remote roles.",
+      "I run IT, the network and the internal software for an NJ energy-efficiency contractor, and secure them as I build: least privilege, secrets kept out of the environment, and failure tested on purpose. CompTIA Security+, an accepted Bugcrowd finding, CCNA in progress. Bilingual English/Spanish. Open to hybrid or remote roles.",
     skills: [
       ["Security", "Least-privilege access, secrets management, OAuth 2.0, Postgres row-level security, OWASP web testing (IDOR, CSRF, XSS, open redirect), Kali Linux, Nmap, Wireshark, Metasploit"],
       ["Supply chain & CI", "GitHub Actions, actions pinned to commit SHAs, signed build provenance, vulnerability and secret scanning, CodeQL, OpenSSF Scorecard"],
@@ -179,7 +184,7 @@ export const variants = [
       ["Data & backend", "PostgreSQL/Supabase, Redis/BullMQ, Celery, Next.js, Node.js, Playwright, REST APIs, webhooks, ETL"],
     ],
     experience: [
-      { ...divine, bullets: [divine.bullets.qbo, divine.bullets.outbox, divine.bullets.crm, divine.bullets.etl, divine.bullets.intake] },
+      { ...divine, bullets: [d.it, d.qbo, d.outbox, d.crm, d.kpi, d.programs, d.web] },
       { ...freelance, bullets: [freelance.bullets.sites, freelance.bullets.hardening, freelance.bullets.hosting] },
       { ...scheer, bullets: [scheer.bullets.digitize, scheer.bullets.crm, scheer.bullets.network] },
     ],
@@ -204,7 +209,7 @@ export const variants = [
       ["Business systems", "QuickBooks Online, Orcatec, ADP, Salesforce, Lawmatics, Docketwise, Microsoft 365, Google Workspace"],
     ],
     experience: [
-      { ...divine, bullets: [divine.bullets.crm, divine.bullets.outbox, divine.bullets.qbo, divine.bullets.etl, divine.bullets.kpi] },
+      { ...divine, bullets: [d.crm, d.outbox, d.qbo, d.migration, d.kpi, d.programs, d.sir, d.it] },
       { ...freelance, bullets: [freelance.bullets.sites, freelance.bullets.hosting] },
       { ...scheer, bullets: [scheer.bullets.leads, scheer.bullets.crm, scheer.bullets.digitize] },
     ],
@@ -221,24 +226,24 @@ export const variants = [
     compact: true,
     headline: "IT, Data & Business Systems",
     summary:
-      "Operations and systems professional who keeps records accurate and the tools behind them running: CRM administration, data validation, reporting automation, and network and endpoint support across a law firm, a pharmacy, a nonprofit and an energy contractor. CompTIA Security+. Bilingual English/Spanish.",
+      "IT and operations professional who runs the network, data and business systems for an NJ energy contractor: IT administration, KPI reporting for managers, utility program submissions and CRM administration. CompTIA Security+. Bilingual English/Spanish.",
     skills: [
       ["Business systems", "Lawmatics, Docketwise, Salesforce, QuickBooks Online, LawPay, ADP, Orcatec, Microsoft 365, Google Workspace"],
       ["Data & reporting", "Excel (lookups, pivots, validation), SQL, Python and Playwright automation, KPI dashboards, ETL between systems"],
       ["IT support", "Windows and Linux, networking (TCP/IP, DNS, DHCP, Wi-Fi), endpoints, shared drives and access control, website hosting and DNS"],
     ],
     experience: [
-      { ...divine, bullets: [divine.bullets.crm, divine.bullets.kpi, divine.bullets.etl, divine.bullets.intake] },
-      { ...scheer, bullets: [scheer.bullets.crm, scheer.bullets.intake, scheer.bullets.leads, scheer.bullets.digitize, scheer.bullets.paymentsNetwork] },
+      { ...divine, bullets: [d.it, d.kpi, d.programs, d.sir, d.crmShort, d.web] },
+      { ...scheer, bullets: [scheer.bullets.crm, scheer.bullets.intake, scheer.bullets.digitize, scheer.bullets.paymentsNetwork] },
       { ...freelance, bullets: [freelance.bullets.sites] },
     ],
-    earlier,
+    earlier: earlier.slice(0, 2),
     projectsTitle: null,
     projects: [],
     certs: [
       "CompTIA Security+ (2026) · Cisco CCNA in progress · freeCodeCamp (2 certifications)",
       "Training: CompTIA A+ / Network+ / Security+, LasComp Institute of IT (2025); AWS Cloud Practitioner, Skillsoft (2025)",
     ],
-    education,
+    education: ["Coursework: New Jersey Institute of Technology, Electrical Engineering (69 credits); County College of Morris, Business Administration"],
   },
 ];
