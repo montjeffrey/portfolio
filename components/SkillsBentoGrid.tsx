@@ -44,7 +44,7 @@ const skills = [
         credential doesn&apos;t become an incident.
       </>
     ),
-    outcome: "Unprivileged workers, secrets mounted as files, releases published through OIDC",
+    outcome: "Read-only CI tokens, SHA-pinned actions, secret scanning, and release binaries with signed build provenance",
     badges: ["Docker", "Tailscale", "GitHub Actions"],
     emoji: "🌩️",
     gradient: "from-primary/20 to-primary/5",

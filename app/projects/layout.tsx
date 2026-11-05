@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Projects - Jeffrey Montoya",
-  description: "Explore work by Jeffrey Montoya — business automation, client websites, systems integration, ML analytics, and security tooling.",
+  description: "Open-source security and infrastructure tooling, client sites, and research by Jeffrey Montoya: tailnet-sentry, agent-harness, landfirst, compute-pool.",
 };
 
 export default function ProjectsLayout({

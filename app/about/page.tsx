@@ -29,10 +29,10 @@ const timeline = [
     color: "text-purple-400",
   },
   {
-    period: "2025",
+    period: "2025-2026",
     title: "Freelance & Open Source",
     institution: "Freelance Developer & Consultant",
-    description: "Shipped and maintain production sites for three local businesses, and started publishing developer tooling: agent-harness for coding agents, landfirst for merge planning, and tailnet-sentry and compute-pool for Tailscale networks.",
+    description: "Shipped and maintain production sites for three local businesses, then in 2026 published developer tooling: agent-harness for coding agents, landfirst for merge planning, and tailnet-sentry and compute-pool for Tailscale networks.",
     icon: Rocket,
     color: "text-primary",
   },
@@ -98,7 +98,7 @@ const technicalSkills = [
       { name: "Languages", items: ["TypeScript", "Python", "Go", "SQL"] },
       { name: "Web", items: ["Next.js", "React", "Node.js", "Tailwind CSS"] },
       { name: "Data", items: ["PostgreSQL / Supabase", "Redis / BullMQ", "Celery"] },
-      { name: "Cloud", items: ["Azure", "AWS (VPC, EC2, IAM, S3)", "Netlify", "DNS"] },
+      { name: "Cloud", items: ["Azure", "AWS (training: VPC, EC2, IAM, S3)", "Netlify", "DNS"] },
     ],
   },
   {
@@ -225,7 +225,7 @@ export default function AboutPage() {
               I started in Electrical Engineering at NJIT, where I learned to think systematically about complex problems. When I transitioned to operations management at CVS and later at a law firm, I discovered how technology could transform business efficiency—but only when built by someone who truly understands operational needs.
             </p>
             <p>
-              Managing CRM systems for 5000+ clients taught me that good code isn't just functional; it's maintainable, scalable, and user-friendly. Leading teams showed me that the best solutions come from understanding both technical constraints and human needs.
+              Keeping 5,000+ records consistent for a 1,000+ client law firm taught me that good code isn't just functional; it's maintainable, scalable, and user-friendly. Leading teams showed me that the best solutions come from understanding both technical constraints and human needs.
             </p>
             <p>
               Today I build the internal systems a business runs on: job queues that survive a worker being killed mid-batch, integrations that move invoices and job data between platforms without anyone re-keying them, and the sites three local businesses use to win customers. On my own time I write developer tooling and publish it on GitHub.
@@ -244,7 +244,7 @@ export default function AboutPage() {
               </h3>
               <ul className="space-y-3 text-secondary/80">
                 <li>• <strong className="text-secondary">Problem-Solving:</strong> Every bug is a puzzle, every feature request an opportunity to innovate</li>
-                <li>• <strong className="text-secondary">Continuous Learning:</strong> From AWS certifications to new frameworks, I'm always expanding my toolkit</li>
+                <li>• <strong className="text-secondary">Continuous Learning:</strong> From cloud training to new frameworks, I'm always expanding my toolkit</li>
                 <li>• <strong className="text-secondary">Real Impact:</strong> Building solutions that deliver measurable business results</li>
                 <li>• <strong className="text-secondary">Community:</strong> Mentoring the next generation through Dover College Promise</li>
               </ul>
@@ -276,7 +276,7 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-bg-elevated rounded-2xl p-8 border border-primary/20">
-              <h3 className="text-2xl font-serif text-secondary mb-6">Current Certifications</h3>
+              <h3 className="text-2xl font-serif text-secondary mb-6">Certifications & Training</h3>
               <div className="space-y-4">
                 {certifications
                   .filter((c) => c.status === "completed")

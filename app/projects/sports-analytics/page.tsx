@@ -156,7 +156,7 @@ export default function SportsAnalyticsCaseStudy() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
               { label: "Sports Ingested", value: "6", desc: "MLB, NFL, NBA, NHL, MLS, EPL" },
-              { label: "Props Graded", value: "7,000+", desc: "from box scores, nightly" },
+              { label: "Grading", value: "Nightly", desc: "every prop graded from box scores" },
               { label: "Baseline", value: "Market", desc: "de-vigged odds, Brier-scored" },
               { label: "Publication", value: "Gated", desc: "on measured edge, not confidence" },
             ].map((metric, i) => (

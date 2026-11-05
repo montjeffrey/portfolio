@@ -2,19 +2,9 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowLeft, Smartphone, Calendar, TrendingUp, Zap, Scissors, MapPin, Clock, Users, ExternalLink } from "lucide-react";
-import { useState } from "react";
+import { ArrowLeft, Smartphone, Calendar, Scissors, MapPin, Clock, Users, ExternalLink } from "lucide-react";
 
 export default function LevelzBarberStudioCaseStudy() {
-  const [selectedView, setSelectedView] = useState<"before" | "after">("before");
-
-  const metrics = [
-    { label: "Page Speed", before: "2.8s", after: "0.9s", improvement: "68% faster" },
-    { label: "Mobile Score", before: "65", after: "98", improvement: "+33 points" },
-    { label: "Accessibility", before: "72", after: "95", improvement: "+23 points" },
-    { label: "SEO Score", before: "Page 3", after: "Top 5", improvement: "Improved ranking" },
-  ];
-
   return (
     <div className="min-h-screen bg-bg-dark pt-8 pb-20">
       <div className="max-w-5xl mx-auto px-6">
@@ -51,7 +41,7 @@ export default function LevelzBarberStudioCaseStudy() {
             </a>
           </div>
           <p className="text-xl text-secondary/80 leading-relaxed">
-            Modern barbershop website with integrated booking system, improving customer acquisition and streamlining appointment management for a local business.
+            Modern barbershop website for a local business, with online booking through Booksy's embedded widget.
           </p>
         </motion.div>
 
@@ -68,79 +58,23 @@ export default function LevelzBarberStudioCaseStudy() {
             <div>
               <h3 className="text-xl font-semibold text-secondary mb-2">Challenge</h3>
               <p className="text-secondary/80 leading-relaxed">
-                Levelz Barber Studio, a local barbershop, struggled with phone-based bookings that often led to missed appointments and scheduling conflicts. The business had minimal online presence, making it difficult for new customers to discover their services, view pricing, or understand what made them unique. Staff spent significant time managing bookings manually, reducing time available for customer service.
+                Levelz Barber Studio, a local barbershop, needed a website where new customers could find its services, prices, barbers, and hours, and book an appointment without calling the shop.
               </p>
             </div>
 
             <div>
               <h3 className="text-xl font-semibold text-secondary mb-2">Solution</h3>
               <p className="text-secondary/80 leading-relaxed">
-                Developed a modern, mobile-first website featuring real-time appointment booking through an embedded Booksy widget. The site showcases services (Haircuts, Fades, Beard Trims, Hot Towel Shaves), staff profiles, location information, and business hours. Implemented SEO optimization targeting local search terms like "barbershop near me" and "best barber in [location]".
+                Built a hand-coded, mobile-first static site (plain HTML, CSS, and JavaScript, no framework) deployed on Netlify, with real-time appointment booking through an embedded Booksy widget. The site covers services and pricing, the barbers, products, a gallery, booking, and contact details. Schema.org structured data describes the shop, its services and products, and its FAQ, so search engines can show hours, prices, and answers directly.
               </p>
             </div>
 
             <div>
               <h3 className="text-xl font-semibold text-secondary mb-2">Impact</h3>
               <p className="text-secondary/80 leading-relaxed">
-                40% increase in online bookings within the first month, improved Google Business ranking from page 3 to top 5 local results, and reduced phone inquiries by 60%—freeing staff to focus on delivering quality cuts. The booking system eliminated double-booking errors and provided customers with 24/7 appointment scheduling convenience.
+                The shop has a fast, mobile-first static site on Netlify with Booksy's embedded booking widget on every page. A Lighthouse CI workflow checks Core Web Vitals budgets (LCP 2.5s or less, INP 200ms or less, CLS 0.1 or less) on desktop and mobile for every pull request.
               </p>
             </div>
-          </div>
-        </motion.section>
-
-        {/* Before/After Performance Metrics */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mb-16"
-        >
-          <h2 className="text-3xl font-serif text-secondary mb-8 flex items-center gap-3">
-            <TrendingUp className="w-8 h-8 text-primary" />
-            Before/After Transformation
-          </h2>
-
-          {/* Toggle Switch */}
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <button
-              onClick={() => setSelectedView("before")}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                selectedView === "before"
-                  ? "bg-primary text-bg-dark"
-                  : "bg-bg-elevated text-secondary/60 border border-primary/20"
-              }`}
-            >
-              Before
-            </button>
-            <button
-              onClick={() => setSelectedView("after")}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                selectedView === "after"
-                  ? "bg-primary text-bg-dark"
-                  : "bg-bg-elevated text-secondary/60 border border-primary/20"
-              }`}
-            >
-              After
-            </button>
-          </div>
-
-          {/* Metrics Display */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {metrics.map((metric, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: selectedView === "before" ? -20 : 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
-                className="bg-bg-elevated rounded-xl p-6 border border-primary/20"
-              >
-                <div className="text-sm text-secondary/60 mb-2">{metric.label}</div>
-                <div className="text-3xl font-bold text-primary mb-1">
-                  {selectedView === "before" ? metric.before : metric.after}
-                </div>
-                <div className="text-sm text-secondary/80">{metric.improvement}</div>
-              </motion.div>
-            ))}
           </div>
         </motion.section>
 
@@ -148,7 +82,7 @@ export default function LevelzBarberStudioCaseStudy() {
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
           className="mb-16 space-y-8"
         >
           <h2 className="text-3xl font-serif text-secondary mb-8 flex items-center gap-3">
@@ -160,7 +94,7 @@ export default function LevelzBarberStudioCaseStudy() {
             <div>
               <h3 className="text-xl font-semibold text-secondary mb-3">Booksy Booking Integration</h3>
               <p className="text-secondary/80 leading-relaxed mb-4">
-                Embedded Booksy's official booking widget so customers see live availability and book without leaving the site, while Booksy handles payments, confirmations, and reminders. Every Book button on the site, including links inside FAQ answers, opens the same booking dialog.
+                Embedded Booksy's official booking widget so customers see live availability and book without leaving the site, while Booksy handles payments, confirmations, and reminders. Every Book button opens the same Booksy booking dialog, and FAQ answers link to the booking page.
               </p>
             </div>
 
@@ -189,10 +123,10 @@ window.booksyWidgetConfig = {
                 {[
                   "Embedded Booksy widget for real-time availability and instant booking confirmation",
                   "Mobile-first responsive design optimized for on-the-go booking",
-                  "Service showcase: Haircuts, Fades, Beard Trims, Hot Towel Shaves with pricing",
+                  "Service menu with pricing, from haircuts and beard work to hot towel shaves",
                   "Staff profiles highlighting barber expertise and specialties",
                   "Location integration with Google Maps and business hours display",
-                  "SEO optimization targeting local search terms and Google Business integration",
+                  "Schema.org structured data for the shop, its services and products, and its FAQ",
                   "Email confirmations and appointment reminders handled by Booksy",
                 ].map((feature, i) => (
                   <li key={i} className="text-secondary/80 flex items-start gap-2">
@@ -209,7 +143,7 @@ window.booksyWidgetConfig = {
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
           className="mb-16"
           >
           <h2 className="text-3xl font-serif text-secondary mb-8 flex items-center gap-3">
@@ -226,11 +160,11 @@ window.booksyWidgetConfig = {
               </h3>
               <ul className="space-y-3">
                 {[
-                  { service: "Classic Haircut", price: "$25", desc: "Traditional barber cut with clippers and scissors" },
-                  { service: "Fade & Style", price: "$30", desc: "Modern fade techniques with styling" },
-                  { service: "Beard Trim", price: "$15", desc: "Precise beard shaping and trimming" },
-                  { service: "Hot Towel Shave", price: "$35", desc: "Traditional straight razor shave with hot towel treatment" },
-                  { service: "Haircut + Beard", price: "$40", desc: "Complete grooming package" },
+                  { service: "LVL 1: Haircut", price: "$30", desc: "Haircut" },
+                  { service: "LVL 2: Haircut and Beard", price: "$40", desc: "Haircut and beard" },
+                  { service: "LVL 5: Full Service", price: "$80", desc: "Haircut, beard, eyebrows, steamer, and wash" },
+                  { service: "Kids Special", price: "$25", desc: "12 and under" },
+                  { service: "Hot Towel Shave", price: "$20", desc: "Classic hot towel shave" },
                 ].map((item, i) => (
                   <li key={i} className="border-b border-primary/10 pb-3 last:border-0">
                     <div className="flex justify-between items-start mb-1">
@@ -256,9 +190,9 @@ window.booksyWidgetConfig = {
                     Hours
                   </div>
                   <div className="text-secondary">
-                    <div>Monday - Friday: 9:00 AM - 7:00 PM</div>
-                    <div>Saturday: 8:00 AM - 6:00 PM</div>
-                    <div>Sunday: 10:00 AM - 4:00 PM</div>
+                    <div>Monday - Friday: 9:00 AM - 6:00 PM</div>
+                    <div>Saturday: 9:00 AM - 3:00 PM</div>
+                    <div>Sunday: Closed</div>
                   </div>
                 </div>
                 <div>
@@ -267,7 +201,7 @@ window.booksyWidgetConfig = {
                     Team
                   </div>
                   <div className="text-secondary">
-                    Experienced barbers specializing in modern cuts, classic styles, and precision grooming
+                    Each barber has a profile on the Our Barbers page listing experience and specialties
                   </div>
                 </div>
                 <div>
@@ -276,7 +210,7 @@ window.booksyWidgetConfig = {
                     Location
                   </div>
                   <div className="text-secondary">
-                    Conveniently located with easy parking and accessible by public transit
+                    46 Main St, Succasunna, NJ, with an embedded Google Map on the contact page
                   </div>
                 </div>
               </div>

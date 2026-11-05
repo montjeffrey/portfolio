@@ -60,14 +60,21 @@ const STAGES: Stage[] = [
   },
   {
     label: "Ship",
-    text: "A tagged release builds a binary for every platform and publishes each one with its signed record attached.",
+    text:
+      "A tagged release builds six static binaries (Linux, macOS and Windows on amd64 and arm64), publishes them with SHA256SUMS, and records a signed provenance attestation for each one.",
     source: "tailnet-sentry v0.1.0",
     href: "https://github.com/montjeffrey/tailnet-sentry/releases/tag/v0.1.0",
   },
 ];
 
-// Only what a public workflow has actually run; checked against GitHub run history
-const FACTS = ["12-job test matrix", "3 OS × 4 Python", "Vulnerability and secret scans", "Signed build provenance"];
+// Only what the public repos show; checked against their workflow files and GitHub run history
+const FACTS = [
+  "12-job test matrix",
+  "3 OS × 4 Python",
+  "Vulnerability and secret scans",
+  "Signed build provenance",
+  "Actions pinned to exact commits",
+];
 
 // The run is told in eight beats. Scroll progress picks the beat; each beat animates on its own clock.
 type Beat = "run" | "fail" | "reset" | "rerun" | "scan" | "sign" | "ship" | "shipped";
@@ -360,7 +367,7 @@ function ShipPanel({ shipped, still }: { shipped: boolean; still: boolean }) {
     return () => clearTimeout(t);
   }, [still]);
 
-  const status = shipped ? "Shipped" : landed ? "6 binaries published, each with its signed record" : "Publishing the release";
+  const status = shipped ? "Shipped" : landed ? "6 binaries published, each with signed provenance" : "Publishing the release";
 
   return (
     <div className="flex h-full flex-col gap-3">
@@ -498,8 +505,8 @@ export default function PipelineScene() {
               Builds that fail when they find something that shouldn&apos;t ship.
             </h2>
             <p className="text-lg leading-relaxed text-secondary/70">
-              Scroll to follow one release through. A red step stops the line until it&apos;s fixed. Each step is taken from a
-              real workflow in my repositories.
+              Scroll through a release pipeline built from real workflows in two of my repositories. A red step stops the
+              line until it&apos;s fixed. Which job fails is illustrative.
             </p>
           </div>
 

@@ -19,7 +19,7 @@ const projects = [
       "Code graphs served over an MCP server",
       "Project memory with provenance rules and human review gates",
       "Blast-radius analysis joining memory to the code graph",
-      "12-job CI matrix (3 OS × 4 Python), pinned actions, OIDC releases",
+      "12-job CI matrix (3 OS × 4 Python) and SHA-pinned actions",
     ],
     href: "https://github.com/montjeffrey/agent-harness",
     ctaLabel: "View on GitHub",
@@ -112,12 +112,12 @@ const projects = [
     category: "Web Development",
     status: "Live at levelzbarberstudio.com",
     description:
-      "Modern barbershop website with integrated booking system, improving customer acquisition and streamlining appointment management for a local business.",
+      "Hand-built, mobile-first static site for a Succasunna, NJ barbershop, with online booking through Booksy’s embedded widget.",
     features: [
       "Embedded Booksy widget for live availability and online booking",
       "Mobile-first responsive design",
       "Service, barber and product pages built for the shop",
-      "SEO optimization improving local search visibility",
+      "Schema.org structured data for the shop, its services and products, and its FAQ",
     ],
     href: "/projects/levelz-barber-studio",
   },
@@ -140,7 +140,7 @@ const projects = [
     title: "Automated Security Assessment Suite",
     techStack: ["Python", "JSON", "Markdown", "Wireshark"],
     category: "Security Tools",
-    status: "Production Ready",
+    status: "Code not public",
     description:
       "Python-based security testing framework that automates pentesting workflows and generates comprehensive, non-technical reports for stakeholder review.",
     features: [
@@ -172,7 +172,7 @@ const projects = [
     category: "Automation",
     status: "In production, 2022–2025",
     description:
-      "Excel pipelines that pulled every marketing partner's leads into one tracking view, lifting lead quality 60%, plus a secured, fully logged digitization of sensitive client documents.",
+      "Excel pipelines that pulled every marketing partner's leads into one tracking view, plus a secured, fully logged digitization of sensitive client documents.",
     features: [
       "Partner lead data normalized into one tracking view",
       "Reorganized file system for scanned records",
@@ -185,7 +185,7 @@ const projects = [
     title: "Business Process Automation",
     techStack: ["Python", "REST APIs", "Webhooks", "Schedulers"],
     category: "Automation",
-    status: "Ongoing client work",
+    status: "Service offered",
     description:
       "Custom automations that take repetitive operational work — data entry, file handling, notifications, and recurring reports — off people's plates so small teams can run lean without adding headcount.",
     features: [
@@ -201,7 +201,7 @@ const projects = [
     title: "Systems & Data Integration",
     techStack: ["Python", "REST APIs", "SQL", "Webhooks"],
     category: "Automation",
-    status: "Ongoing client work",
+    status: "Service offered",
     description:
       "Connecting disconnected tools — CRMs, spreadsheets, billing, and email — into one synchronized flow so data stays consistent across platforms without manual copying or re-keying.",
     features: [
@@ -217,14 +217,14 @@ const projects = [
     title: "Custom Web Apps & Internal Tools",
     techStack: ["Next.js", "React", "TypeScript", "Node.js"],
     category: "Web Development",
-    status: "Ongoing client work",
+    status: "Service offered",
     description:
       "Lightweight web apps and dashboards that put a clean, usable interface on top of messy data and manual processes — built to match how a business actually operates.",
     features: [
       "Custom dashboards and admin tools",
       "Form-driven internal workflows",
       "Role-based access and authentication",
-      "Deployed and maintained in production",
+      "Built to be deployed and maintained in production",
     ],
     href: "/contact",
     ctaLabel: "Start a project",
@@ -255,7 +255,7 @@ export default function ProjectsPage() {
               Building Solutions That Matter
             </h1>
             <p className="text-lg md:text-xl text-secondary/80 leading-relaxed">
-              From business automation and client websites to ML-powered analytics, explore work that pairs technical depth with real-world business impact — named projects and the everyday automations that keep businesses running.
+              Open-source security and infrastructure tooling first, then the client sites and research behind it.
             </p>
           </motion.div>
         </div>

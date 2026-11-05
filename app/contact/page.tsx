@@ -6,6 +6,7 @@ import { Mail, Phone, Linkedin, MapPin, Send, CheckCircle2, AlertCircle } from "
 
 
 const projectTypes = [
+  "Security / infrastructure / automation role",
   "Web Development",
   "Automation & Integrations",
   "Cloud Solutions",
@@ -142,7 +143,7 @@ export default function ContactPage() {
               Let&apos;s Build Something Together
             </h1>
             <p className="text-lg md:text-xl text-secondary/80 leading-relaxed">
-              Whether you have a project in mind, need a technical solution for your business, or want to discuss how my unique background can benefit your team, I&apos;d love to hear from you.
+              Whether you&apos;re hiring for a security, infrastructure, or automation role, or have a client project in mind, I&apos;d love to hear from you.
             </p>
           </motion.div>
         </div>
@@ -207,7 +208,7 @@ export default function ContactPage() {
                   <div>
                     <div className="text-secondary/60 text-sm mb-1">Location</div>
                     <div className="text-secondary">Dover, NJ</div>
-                    <div className="text-secondary/60 text-sm">Open to remote opportunities</div>
+                    <div className="text-secondary/60 text-sm">Open to hybrid or remote roles and select client projects</div>
                   </div>
                 </div>
               </div>
@@ -231,7 +232,7 @@ export default function ContactPage() {
                   },
                   {
                     title: "☁️ Cloud Architecture",
-                    desc: "Looking to migrate to AWS or Azure? I can help design and implement secure, cost-effective cloud solutions.",
+                    desc: "Need hosting, DNS and deployment set up properly? I deploy and harden sites on Netlify and can plan a move to AWS or Azure.",
                   },
                   {
                     title: "📊 Data & Analytics",

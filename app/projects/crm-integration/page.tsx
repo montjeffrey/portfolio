@@ -69,7 +69,7 @@ export default function CRMIntegrationCaseStudy() {
             <div>
               <h3 className="text-xl font-semibold text-secondary mb-2">Impact</h3>
               <p className="text-secondary/80 leading-relaxed">
-                Lead tracking by source fed a 60% improvement in lead quality, and every digitized document is accounted for in the log. 5,000+ client records were kept consistent, with payments reconciled through LawPay and QuickBooks.
+                Lead tracking by source showed which partners produced qualified clients, and every digitized document is accounted for in the log. 5,000+ client records were kept consistent, with payments reconciled through LawPay and QuickBooks.
               </p>
             </div>
           </div>
@@ -93,7 +93,7 @@ export default function CRMIntegrationCaseStudy() {
                 title: "Partner Lead Pipelines",
                 description: "Excel pipelines that pulled lead data from each marketing partner, normalized it to one format, and fed a single tracking view of which sources produced qualified clients.",
                 icon: TrendingUp,
-                metric: "60% lead quality improvement",
+                metric: "One view of lead quality by source",
               },
               {
                 title: "Secured Document Digitization",

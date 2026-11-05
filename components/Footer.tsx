@@ -94,7 +94,7 @@ export default function Footer() {
                 </a>
               </div>
               <p className="text-secondary/60 text-sm mt-4">
-                Currently: Booking new client projects in automation, systems integration, and web development
+                Currently: open to security, infrastructure, and automation roles, and taking select client projects
               </p>
             </div>
           </div>

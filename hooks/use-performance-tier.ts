@@ -15,10 +15,21 @@ export type PerformanceTier = 'flagship' | 'high' | 'medium' | 'low';
 // any heavy renderer until a concrete tier is known — otherwise the SSR/initial default
 // would build the desktop-class scene on phones and immediately tear it down, leaking a
 // WebGL context on every load.
+//
+// Detection runs once per page load and the result is cached at module level, so the
+// many callers (directly and through useParallaxEnabled) share one result instead of
+// each opening its own WebGL probe context.
+let cachedTier: PerformanceTier | null = null;
+
 export function usePerformanceTier(): PerformanceTier | null {
     const [tier, setTier] = useState<PerformanceTier | null>(null);
 
     useEffect(() => {
+        if (cachedTier !== null) {
+            setTier(cachedTier);
+            return;
+        }
+
         const detectTier = (): PerformanceTier => {
             // Detect mobile/tablet
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -52,20 +63,26 @@ export function usePerformanceTier(): PerformanceTier | null {
                 const gl = canvas.getContext('webgl') as WebGLRenderingContext | null;
 
                 if (gl) {
-                    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-                    if (debugInfo) {
-                        const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string;
+                    try {
+                        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                        if (debugInfo) {
+                            const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string;
 
-                        // High-end mobile GPUs
-                        if (/Apple GPU|Apple M[0-9]|A1[5-9] GPU|A[2-9][0-9] GPU/i.test(renderer)) {
-                            gpuTier = 'high'; // Apple A15+ or M-series
-                        } else if (/Adreno [7-9][0-9]{2}|Mali-G7[0-9]|Mali-G[8-9][0-9]|Immortalis/i.test(renderer)) {
-                            gpuTier = 'high'; // Modern Android flagships
-                        } else if (/Adreno [5-6][0-9]{2}|Mali-G5[0-9]|Mali-G6[0-9]/i.test(renderer)) {
-                            gpuTier = 'medium'; // Mid-range GPUs
-                        } else if (/Adreno [0-4][0-9]{2}|Mali-[0-4]/i.test(renderer)) {
-                            gpuTier = 'low'; // Budget GPUs
+                            // High-end mobile GPUs
+                            if (/Apple GPU|Apple M[0-9]|A1[5-9] GPU|A[2-9][0-9] GPU/i.test(renderer)) {
+                                gpuTier = 'high'; // Apple A15+ or M-series
+                            } else if (/Adreno [7-9][0-9]{2}|Mali-G7[0-9]|Mali-G[8-9][0-9]|Immortalis/i.test(renderer)) {
+                                gpuTier = 'high'; // Modern Android flagships
+                            } else if (/Adreno [5-6][0-9]{2}|Mali-G5[0-9]|Mali-G6[0-9]/i.test(renderer)) {
+                                gpuTier = 'medium'; // Mid-range GPUs
+                            } else if (/Adreno [0-4][0-9]{2}|Mali-[0-4]/i.test(renderer)) {
+                                gpuTier = 'low'; // Budget GPUs
+                            }
                         }
+                    } finally {
+                        // Release the probe context right away so it does not count
+                        // against the browser's WebGL context limit or GPU memory.
+                        gl.getExtension('WEBGL_lose_context')?.loseContext();
                     }
                 }
             } catch (e) {
@@ -120,6 +137,7 @@ export function usePerformanceTier(): PerformanceTier | null {
         };
 
         const detectedTier = detectTier();
+        cachedTier = detectedTier;
         setTier(detectedTier);
 
         // Log tier for debugging (remove in production)

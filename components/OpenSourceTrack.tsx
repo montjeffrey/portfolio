@@ -269,7 +269,7 @@ function LandfirstVisual({ step }: { step: number }) {
 const POOL_STEPS: Step[] = [
   {
     label: "Machines",
-    caption: "Three of my machines share their CPU. Each is already busy with its own work.",
+    caption: "Three machines share their CPU. Each is already busy with its own work.",
     command: "$ pool nodes",
   },
   {

@@ -197,8 +197,8 @@ export default function BottomCTA() {
           Hiring for security or infrastructure?
         </h2>
         <p className="text-lg leading-relaxed text-secondary/75">
-          I&apos;m open to security, infrastructure, and automation roles, hybrid or remote from New Jersey. Let&apos;s talk
-          about what you&apos;re building.
+          I&apos;m open to security, infrastructure, and automation roles, hybrid or remote from New Jersey, and I take
+          on select client projects. Let&apos;s talk about what you&apos;re building.
         </p>
 
         <div className="mt-2 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">

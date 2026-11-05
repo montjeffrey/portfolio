@@ -125,8 +125,8 @@ const PEERS: [number, number][] = [
   [KALI, indexOf("nas")],
 ];
 
-// compute-pool: pools CPU across these machines and routes tiered work to the
-// least-loaded one
+// compute-pool: pools CPU across these machines; each task goes to the one with
+// the most idle CPU
 const POOL = ["desktop", "build-box", "laptop"].map(indexOf);
 const POOL_PAD = 38;
 
@@ -222,8 +222,8 @@ function DeviceCard({ active, isolated }: { active: Active; isolated: boolean })
         </p>
         <p className="text-secondary/70">
           Pools CPU across {POOL.map((i) => DEVICES[i].id).join(", ")} over the tailnet, even though laptop sits
-          on a different network. Each task runs on the least-loaded machine, batches fan out across the pool, and
-          tiered tasking sends heavy jobs to the bigger machines and light ones anywhere.
+          on a different network. Each task runs on the machine with the most idle CPU, and batches fan out across
+          every free job slot in the pool.
         </p>
         <a
           href="https://github.com/montjeffrey/compute-pool"
@@ -562,7 +562,11 @@ function TailnetGraph({ isolated, progress, animated }: { isolated: boolean; pro
 
         <motion.g style={animated ? { opacity: graphOpacity } : undefined}>
           {/* compute-pool envelope */}
-          <g {...nodeHandlers("pool")} aria-label="compute-pool. Show details.">
+          <g
+            {...nodeHandlers("pool")}
+            className="cursor-pointer outline-none [&:focus-visible>path]:[stroke-opacity:1] [&:focus-visible>path]:[stroke-width:2.5]"
+            aria-label="compute-pool. Show details."
+          >
             <path
               ref={poolRef}
               d={poolPath(POOL.map((i) => DEVICES[i]))}
