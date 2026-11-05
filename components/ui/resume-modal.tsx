@@ -1,37 +1,19 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Download, FileText, Code2, Newspaper } from "lucide-react";
-import { useState } from "react";
+import { X, Download, FileText } from "lucide-react";
+import { resumePath, resumeVariants, type ResumeVariant } from "@/lib/resumes";
 
 interface ResumeModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const resumeOptions = [
-  {
-    id: "technical",
-    title: "Technical Resume",
-    description: "For Software Development, Cloud Engineering, DevOps roles",
-    icon: Code2,
-    color: "text-blue-400",
-  },
-  {
-    id: "general",
-    title: "General Resume",
-    description: "For Business Analysis, Project Management, Operations roles",
-    icon: Newspaper,
-    color: "text-green-400",
-  },
-];
-
 export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
-  const handleDownload = (resumeId: string) => {
-    const pdfPath = `/resumes/${resumeId}.pdf`;
+  const handleDownload = (resume: ResumeVariant) => {
     const link = document.createElement("a");
-    link.href = pdfPath;
-    link.download = `${resumeId}-resume.pdf`;
+    link.href = resumePath(resume.id);
+    link.download = resume.downloadName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -59,7 +41,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative w-full max-w-2xl bg-bg-elevated rounded-2xl border border-primary/30 shadow-2xl shadow-primary/20 p-8">
+            <div className="relative w-full max-w-4xl bg-bg-elevated rounded-2xl border border-primary/30 shadow-2xl shadow-primary/20 p-8">
               {/* Close Button */}
               <button
                 onClick={onClose}
@@ -88,13 +70,13 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               </div>
 
               {/* Resume Options */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                {resumeOptions.map((resume) => {
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {resumeVariants.map((resume) => {
                   const Icon = resume.icon;
                   return (
                     <motion.button
                       key={resume.id}
-                      onClick={() => handleDownload(resume.id)}
+                      onClick={() => handleDownload(resume)}
                       whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       className="bg-bg-dark rounded-xl p-6 border border-primary/20 hover:border-primary/50 transition-all duration-300 text-left group"
