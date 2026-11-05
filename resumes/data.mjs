@@ -48,9 +48,9 @@ const freelance = {
     sites:
       "Shipped and maintain production sites for three local businesses: elevatehrg.com (Next.js, county and city service pages, validated lead capture), thegenzmama.com (Next.js, TypeScript) and levelzbarberstudio.com (hand-coded static site with Booksy booking).",
     hardening:
-      "Hardened client sites with security headers and input validation, and gate every Levelz pull request on Lighthouse CI Core Web Vitals budgets (LCP ≤ 2.5s, INP ≤ 200ms, CLS ≤ 0.1).",
+      "Configured security headers and validated lead-form input on elevatehrg.com, and gate every Levelz pull request on Lighthouse CI Core Web Vitals budgets (LCP ≤ 2.5s, INP ≤ 200ms, CLS ≤ 0.1).",
     hosting:
-      "Handle hosting, DNS, deployments, structured data and local SEO end to end, and pin CI actions to exact commits.",
+      "Handle hosting, DNS, deployments, structured data and local SEO end to end.",
   },
 };
 
@@ -129,7 +129,7 @@ const projects = {
   sports: {
     name: "Sports analytics pipeline",
     meta: "Python, Flask, Celery, Redis, PostgreSQL · private",
-    text: "Six-sport ingestion and nightly grading with a model-versus-market evaluation harness (Brier score against de-vigged odds, closing-line audit) that blocks publication when the model shows no measured edge. Nightly factor-learner refits label each market proven or unproven from scored history.",
+    text: "Six-sport ingestion and nightly grading with a model-versus-market evaluation harness (Brier score against de-vigged odds, closing-line audit) that blocks publication when the model shows no measured edge.",
   },
   assessment: {
     name: "Web security assessment suite",
