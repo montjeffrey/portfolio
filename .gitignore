@@ -44,3 +44,6 @@ OPTIMIZATION_PLAN_TIER3.md
 # editor and agent settings
 .cursor/
 .vscode/
+
+# generated resume HTML (npm run resumes -- --html)
+/resumes/*.html

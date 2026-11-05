@@ -1,62 +1,31 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FileText, Download, Eye, Briefcase, Code2, Newspaper } from "lucide-react";
-import { useState } from "react";
-
-const resumeTypes = [
-  {
-    id: "technical",
-    title: "Technical Resume",
-    description: "For: Software Development, Cloud Engineering, DevOps roles",
-    highlights: [
-      "Programming projects",
-      "Technical certifications",
-      "ML/AI experience",
-    ],
-    icon: Code2,
-    color: "text-blue-400",
-  },
-  {
-    id: "general",
-    title: "General Resume",
-    description: "For: Business Analysis, Project Management, Operations roles",
-    highlights: [
-      "Process optimization",
-      "Team leadership",
-      "Strategic planning",
-    ],
-    icon: Briefcase,
-    color: "text-green-400",
-  },
-];
+import { FileText, Download, Eye } from "lucide-react";
+import { resumePath, resumeVariants, type ResumeVariant } from "@/lib/resumes";
 
 const coreCompetencies = [
-  "Problem-Solving: Engineering approach to complex challenges",
-  "Communication: Bilingual, technical writing, public speaking",
-  "Leadership: Team management, mentorship, cross-functional collaboration",
-  "Technical Skills: Full-stack development, cloud platforms, data analysis",
-  "Business Acumen: CRM management, process optimization, ROI focus",
+  "Security by default: least privilege, secrets out of the environment, failure tested on purpose",
+  "Systems & automation: CRM platforms, integrations, ETL and job queues in production",
+  "Infrastructure: Linux, Docker, Tailscale, CI/CD with pinned actions and signed releases",
+  "Data integrity: validation, reconciliation and audit-ready records across business systems",
+  "Communication: bilingual English/Spanish, clear writing for technical and non-technical readers",
 ];
 
 import { EvervaultBackground } from "@/components/ui/evervault-background";
 
 export default function ResumeHubPage() {
-  const [selectedResume, setSelectedResume] = useState<string | null>(null);
-
-  const handleDownload = (resumeId: string, action: "view" | "download") => {
-    const pdfPath = `/resumes/${resumeId}.pdf`;
+  const handleDownload = (resume: ResumeVariant, action: "view" | "download") => {
+    const pdfPath = resumePath(resume.id);
 
     if (action === "download") {
-      // Create a temporary anchor element to trigger download
       const link = document.createElement("a");
       link.href = pdfPath;
-      link.download = `${resumeId}-resume.pdf`;
+      link.download = resume.downloadName;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } else {
-      // Open PDF in new tab for viewing
       window.open(pdfPath, "_blank", "noopener,noreferrer");
     }
   };
@@ -90,7 +59,7 @@ export default function ResumeHubPage() {
 
         {/* Resume Options */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          {resumeTypes.map((resume, index) => {
+          {resumeVariants.map((resume, index) => {
             const Icon = resume.icon;
             return (
               <motion.div
@@ -126,14 +95,14 @@ export default function ResumeHubPage() {
 
                 <div className="flex gap-3 mt-6">
                   <button
-                    onClick={() => handleDownload(resume.id, "view")}
+                    onClick={() => handleDownload(resume, "view")}
                     className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-transparent border border-primary/30 hover:border-primary text-secondary rounded-lg font-semibold transition-all duration-300 hover:scale-105 backdrop-blur-sm"
                   >
                     <Eye className="w-4 h-4" />
                     View PDF
                   </button>
                   <button
-                    onClick={() => handleDownload(resume.id, "download")}
+                    onClick={() => handleDownload(resume, "download")}
                     className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary/90 text-bg-dark rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/25"
                   >
                     <Download className="w-4 h-4" />
@@ -154,7 +123,7 @@ export default function ResumeHubPage() {
         >
           <h2 className="text-3xl font-serif text-secondary mb-8 flex items-center gap-3">
             <FileText className="w-8 h-8 text-primary" />
-            Core Competencies Across All Roles
+            Across Every Version
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
