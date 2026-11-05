@@ -1,6 +1,6 @@
 "use client";
 
-import { useMotionValue, useSpring, useMotionTemplate, motion } from "framer-motion";
+import { useMotionValue, useSpring, useMotionTemplate, useReducedMotion, motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import React from "react";
@@ -9,6 +9,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
 interface EvervaultBackgroundProps {
   className?: string;
   radius?: number;
+  // How far outside the box (px) the cursor still lights it. Cards in a grid use 0 so
+  // only the hovered card lights up.
+  buffer?: number;
+  // Card accents: skip phones, where the spotlight would sit on every card at once
+  desktopOnly?: boolean;
+  // "soft" dims the letters further for small cards where text sits close together
+  tone?: "full" | "soft";
 }
 
 const characters =
@@ -25,6 +32,9 @@ export const generateRandomString = (length: number) => {
 export function EvervaultBackground({
   className,
   radius = 300,
+  buffer = 50,
+  desktopOnly = false,
+  tone = "full",
 }: EvervaultBackgroundProps) {
   const isMobile = useIsMobile();
   const mouseX = useMotionValue(0);
@@ -171,7 +181,6 @@ export function EvervaultBackground({
       const clientX = event.clientX - left;
       const clientY = event.clientY - top;
 
-      const buffer = 50;
       if (
         clientX >= -buffer &&
         clientX <= width + buffer &&
@@ -191,7 +200,7 @@ export function EvervaultBackground({
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [isHovered, mouseX, mouseY, isMobile]);
+  }, [isHovered, mouseX, mouseY, isMobile, buffer]);
 
   // Separate effect for container-scoped events (Touch on Desktop)
   useEffect(() => {
@@ -222,6 +231,8 @@ export function EvervaultBackground({
     }
   }, [mouseX, mouseY, isMobile]);
 
+  if (desktopOnly && isMobile) return null;
+
   return (
     <div
       ref={containerRef}
@@ -237,6 +248,7 @@ export function EvervaultBackground({
         radius={smoothRadius}
         isHovered={isHovered}
         isMobile={isMobile}
+        tone={tone}
       />
     </div>
   );
@@ -248,14 +260,17 @@ const EvervaultPattern = React.memo(function EvervaultPattern({
   mouseY,
   radius,
   isHovered,
-  isMobile
+  isMobile,
+  tone
 }: {
   mouseX: ReturnType<typeof useMotionValue<number>>;
   mouseY: ReturnType<typeof useMotionValue<number>>;
   radius: any; // Allow MotionValue or number
   isHovered: boolean;
   isMobile: boolean;
+  tone: "full" | "soft";
 }) {
+  const reduceMotion = useReducedMotion();
   let maskImage = useMotionTemplate`radial-gradient(${radius}px at ${mouseX}px ${mouseY}px, white, transparent)`;
   let style = { maskImage, WebkitMaskImage: maskImage };
 
@@ -263,7 +278,8 @@ const EvervaultPattern = React.memo(function EvervaultPattern({
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    // Nothing to draw while the spotlight is off; it starts again when the cursor arrives
+    if (!canvas || !isHovered) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -302,7 +318,9 @@ const EvervaultPattern = React.memo(function EvervaultPattern({
         ctx.clearRect(0, 0, rect.width, rect.height);
 
         ctx.font = `bold ${fontSize}px monospace`;
-        ctx.fillStyle = "rgba(240, 237, 228, 0.8)"; // text-secondary/80
+        // Orange letters straight on the dark background (no bright fill, no lightening blend),
+        // so cream text on top of the spotlight keeps its contrast
+        ctx.fillStyle = "rgba(231, 125, 34, 0.55)"; // primary/55
         ctx.textBaseline = "top";
 
         const charMetrics = ctx.measureText("M");
@@ -324,7 +342,8 @@ const EvervaultPattern = React.memo(function EvervaultPattern({
         }
       }
 
-      animationFrameId = requestAnimationFrame(draw);
+      // Reduced motion: one still frame, redrawn only when the canvas resizes
+      animationFrameId = reduceMotion ? null : requestAnimationFrame(draw);
     };
 
     const start = () => {
@@ -355,38 +374,28 @@ const EvervaultPattern = React.memo(function EvervaultPattern({
     );
     visibilityObserver.observe(canvas);
 
+    const resizeObserver = new ResizeObserver(() => {
+      if (reduceMotion) start();
+    });
+    resizeObserver.observe(canvas);
+
     return () => {
       visibilityObserver.disconnect();
+      resizeObserver.disconnect();
       stop();
     };
-  }, [isMobile]);
+  }, [isMobile, isHovered, reduceMotion]);
 
   return (
     <div className="pointer-events-none m-0 p-0" style={{ margin: 0, padding: 0 }}>
       {/* Base gradient fade */}
       <div className="absolute inset-0 [mask-image:linear-gradient(white,transparent)] opacity-30 transition-opacity duration-500" />
 
-      {/* Vibrant gradient layer */}
+      {/* Canvas text layer, masked by the cursor spotlight */}
       <motion.div
-        className={`absolute inset-0 transition-opacity duration-300 ${isHovered ? "opacity-100" : "opacity-0"
+        className={`absolute inset-0 transition-opacity duration-300 ${isHovered ? (tone === "soft" ? "opacity-60" : "opacity-100") : "opacity-0"
           }`}
-        style={{
-          ...style,
-          background: `radial-gradient(circle at center, 
-            rgba(231, 125, 34, 0.8) 0%,
-            rgba(231, 125, 34, 0.6) 25%,
-            rgba(240, 237, 228, 0.4) 50%,
-            rgba(231, 125, 34, 0.3) 75%,
-            transparent 100%)`,
-          willChange: "mask-image"
-        }}
-      />
-
-      {/* Canvas Text Layer - masked by the same motion template */}
-      <motion.div
-        className={`absolute inset-0 mix-blend-overlay transition-opacity duration-300 ${isHovered ? "opacity-100" : "opacity-0"
-          }`}
-        style={style}
+        style={{ ...style, willChange: "mask-image" }}
       >
         <canvas
           ref={canvasRef}

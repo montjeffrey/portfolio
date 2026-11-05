@@ -5,38 +5,91 @@ import { motion } from "framer-motion";
 import ProjectCard from "@/components/ProjectCard";
 import { EvervaultBackground } from "@/components/ui/evervault-background";
 
-const categories = ["All", "Web Development", "Data/ML", "Security Tools", "Automation"];
+const categories = ["All", "Open Source", "Security Tools", "Web Development", "Data/ML", "Automation"];
 
 const projects = [
   {
-    title: "Sports Analytics Parlay Generator",
-    techStack: ["Python", "Random Forest", "ESPN API", "React", "JavaScript"],
-    category: "Data/ML",
-    status: "Live Application",
+    title: "agent-harness",
+    techStack: ["Python", "MCP", "ONNX", "GitHub Actions"],
+    category: "Open Source",
+    status: "Open source",
     description:
-      "Real-time sports betting analytics platform leveraging machine learning to improve prediction accuracy. Integrates multiple data sources, implements recency bias algorithms, and delivers insights through an intuitive React interface.",
+      "Portable memory and code-graph toolkit for coding agents, stdlib-only. Gives Claude Code, Codex, and Gemini queryable code graphs and bounded project memory, with every memory entry held for human review before it counts.",
     features: [
-      "Random Forest ML model with continuous accuracy improvements",
-      "Real-time API integration with ESPN and SportsData.io",
-      "Automated data cleaning and validation pipeline",
-      "Responsive frontend with live prediction updates",
+      "Code graphs served over an MCP server",
+      "Project memory with provenance rules and human review gates",
+      "Blast-radius analysis joining memory to the code graph",
+      "12-job CI matrix (3 OS × 4 Python) and SHA-pinned actions",
     ],
-    href: "/projects/sports-analytics",
+    href: "https://github.com/montjeffrey/agent-harness",
+    ctaLabel: "View on GitHub",
+    external: true,
   },
   {
-    title: "Levelz Barber Studio Website",
-    techStack: ["HTML/CSS", "JavaScript", "Booksy API", "AWS Hosting"],
-    category: "Web Development",
-    status: "Live at levelzbarberstudio.com",
+    title: "tailnet-sentry",
+    techStack: ["Go", "Tailscale API", "CLI"],
+    category: "Open Source",
+    status: "Open source",
     description:
-      "Modern barbershop website with integrated booking system, improving customer acquisition and streamlining appointment management for a local business.",
+      "Defensive Go CLI over the Tailscale API. Scan your own tailnet, mark known devices healthy, flag the anomaly, and quarantine it.",
     features: [
-      "Direct Booksy API integration for real-time availability",
-      "Mobile-first responsive design",
-      "Custom CMS for staff content updates",
-      "SEO optimization improving local search visibility",
+      "Inventory of every device on your tailnet",
+      "Known-good baseline with anomaly flagging",
+      "One-step quarantine of an unknown device",
+      "Scoped to networks you own",
     ],
-    href: "/projects/levelz-barber-studio",
+    href: "https://github.com/montjeffrey/tailnet-sentry",
+    ctaLabel: "View on GitHub",
+    external: true,
+  },
+  {
+    title: "landfirst",
+    techStack: ["Go", "TUI", "git merge-tree"],
+    category: "Open Source",
+    status: "Open source",
+    description:
+      "A live merge planner for repos with lots of parallel work: ranks branches by merge order, predicts conflicts between them, and knows about worktrees.",
+    features: [
+      "Patch-ID comparison cut false “unlanded work” from 2,073 to 45 on a real repo",
+      "Conflict prediction with git merge-tree",
+      "Worktree risk detection",
+      "Guarded writes: never rewrites history or force-pushes",
+    ],
+    href: "https://github.com/montjeffrey/landfirst",
+    ctaLabel: "View on GitHub",
+    external: true,
+  },
+  {
+    title: "compute-pool",
+    techStack: ["Go", "Tailscale", "Dashboard"],
+    category: "Open Source",
+    status: "Open source",
+    description:
+      "Share CPU between your own devices over Tailscale: run a command on the least-loaded machine, fan out tasks, and watch the pool on a live dashboard.",
+    features: [
+      "Least-loaded routing across your devices",
+      "Fan-out for batch tasks",
+      "Live load dashboard",
+      "Runs entirely inside your tailnet",
+    ],
+    href: "https://github.com/montjeffrey/compute-pool",
+    ctaLabel: "View on GitHub",
+    external: true,
+  },
+  {
+    title: "Sports Analytics Pipeline",
+    techStack: ["Python", "Flask", "Celery", "Redis", "PostgreSQL"],
+    category: "Data/ML",
+    status: "Private research project",
+    description:
+      "Six-sport ingestion and nightly grading pipeline with a model-versus-market evaluation harness. A pick only publishes when the model shows a measured edge over the market.",
+    features: [
+      "Ingests and grades MLB, NFL, NBA, NHL, MLS, and EPL",
+      "Model scored against de-vigged market odds (Brier, closing-line audit)",
+      "Publication gated on measured edge, not on confidence",
+      "Grading-integrity repairs with dated database backups",
+    ],
+    href: "/projects/sports-analytics",
   },
   {
     title: "Elevate HRG — Contractor Website",
@@ -52,6 +105,21 @@ const projects = [
       "Short lead-capture form with validation and email delivery",
     ],
     href: "/projects/elevate-hrg",
+  },
+  {
+    title: "Levelz Barber Studio Website",
+    techStack: ["HTML/CSS", "JavaScript", "Booksy widget", "Netlify"],
+    category: "Web Development",
+    status: "Live at levelzbarberstudio.com",
+    description:
+      "Hand-built, mobile-first static site for a Succasunna, NJ barbershop, with online booking through Booksy’s embedded widget.",
+    features: [
+      "Embedded Booksy widget for live availability and online booking",
+      "Mobile-first responsive design",
+      "Service, barber and product pages built for the shop",
+      "Schema.org structured data for the shop, its services and products, and its FAQ",
+    ],
+    href: "/projects/levelz-barber-studio",
   },
   {
     title: "The Gen Z Mama — Childcare Website",
@@ -72,7 +140,7 @@ const projects = [
     title: "Automated Security Assessment Suite",
     techStack: ["Python", "JSON", "Markdown", "Wireshark"],
     category: "Security Tools",
-    status: "Production Ready",
+    status: "Code not public",
     description:
       "Python-based security testing framework that automates pentesting workflows and generates comprehensive, non-technical reports for stakeholder review.",
     features: [
@@ -99,17 +167,17 @@ const projects = [
     href: "/projects/bug-bounties",
   },
   {
-    title: "Law Firm CRM Integration System",
-    techStack: ["Lawmatics", "Docketwise", "Python", "REST APIs"],
+    title: "Law Firm Lead Tracking & Records",
+    techStack: ["Excel", "Lawmatics", "Docketwise", "LawPay", "QuickBooks"],
     category: "Automation",
-    status: "Deployed (5000+ clients)",
+    status: "In production, 2022–2025",
     description:
-      "Comprehensive data management system integrating multiple CRM/CMS platforms, improving lead quality by 60% and streamlining client communications.",
+      "Excel pipelines that pulled every marketing partner's leads into one tracking view, plus a secured, fully logged digitization of sensitive client documents.",
     features: [
-      "Multi-system data synchronization",
-      "Automated lead scoring and routing",
-      "Document digitization workflow",
-      "Financial integration with LawPay/QuickBooks",
+      "Partner lead data normalized into one tracking view",
+      "Reorganized file system for scanned records",
+      "Complete log of every sensitive document digitized",
+      "Office network and CRM/CMS administration",
     ],
     href: "/projects/crm-integration",
   },
@@ -117,7 +185,7 @@ const projects = [
     title: "Business Process Automation",
     techStack: ["Python", "REST APIs", "Webhooks", "Schedulers"],
     category: "Automation",
-    status: "Ongoing client work",
+    status: "Service offered",
     description:
       "Custom automations that take repetitive operational work — data entry, file handling, notifications, and recurring reports — off people's plates so small teams can run lean without adding headcount.",
     features: [
@@ -133,7 +201,7 @@ const projects = [
     title: "Systems & Data Integration",
     techStack: ["Python", "REST APIs", "SQL", "Webhooks"],
     category: "Automation",
-    status: "Ongoing client work",
+    status: "Service offered",
     description:
       "Connecting disconnected tools — CRMs, spreadsheets, billing, and email — into one synchronized flow so data stays consistent across platforms without manual copying or re-keying.",
     features: [
@@ -149,14 +217,14 @@ const projects = [
     title: "Custom Web Apps & Internal Tools",
     techStack: ["Next.js", "React", "TypeScript", "Node.js"],
     category: "Web Development",
-    status: "Ongoing client work",
+    status: "Service offered",
     description:
       "Lightweight web apps and dashboards that put a clean, usable interface on top of messy data and manual processes — built to match how a business actually operates.",
     features: [
       "Custom dashboards and admin tools",
       "Form-driven internal workflows",
       "Role-based access and authentication",
-      "Deployed and maintained in production",
+      "Built to be deployed and maintained in production",
     ],
     href: "/contact",
     ctaLabel: "Start a project",
@@ -187,7 +255,7 @@ export default function ProjectsPage() {
               Building Solutions That Matter
             </h1>
             <p className="text-lg md:text-xl text-secondary/80 leading-relaxed">
-              From business automation and client websites to ML-powered analytics, explore work that pairs technical depth with real-world business impact — named projects and the everyday automations that keep businesses running.
+              Open-source security and infrastructure tooling first, then the client sites and research behind it.
             </p>
           </motion.div>
         </div>

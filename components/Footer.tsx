@@ -34,10 +34,10 @@ export default function Footer() {
                 Jeffrey Montoya
               </h3>
               <p className="text-secondary/80 text-sm">
-                Solutions Engineer
+                Security-Minded Systems Engineer
               </p>
               <p className="text-secondary/60 text-sm mt-2">
-                Building bridges between operations and innovation, one line of code at a time.
+                Systems that move fast without moving recklessly.
               </p>
             </div>
 
@@ -94,14 +94,14 @@ export default function Footer() {
                 </a>
               </div>
               <p className="text-secondary/60 text-sm mt-4">
-                Currently: Open to full-time opportunities in Cloud, Security, and Full-Stack Development
+                Currently: open to security, infrastructure, and automation roles, and taking select client projects
               </p>
             </div>
           </div>
 
           <div className="border-t border-primary/20 mt-8 pt-8 text-center">
             <p className="text-secondary/60 text-sm">
-              © {currentYear} Jeffrey Montoya. Built with React, hosted on AWS.
+              © {currentYear} Jeffrey Montoya. Built with Next.js, hosted on Netlify.
             </p>
           </div>
         </div>

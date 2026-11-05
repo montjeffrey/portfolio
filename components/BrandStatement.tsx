@@ -8,26 +8,26 @@ export default function BrandStatement() {
   return (
     <section className="relative py-20 px-6 overflow-hidden min-h-[600px]">
       {/* Evervault background effect - covers entire section */}
-      <EvervaultBackground className="rounded-none" radius={450} />
+      <EvervaultBackground className="rounded-none spotlight-fade" radius={450} />
 
       {/* Content wrapper with glassmorphism */}
-      <div className="relative z-10 max-w-4xl mx-auto text-center">
+      <div className="spotlight-text relative z-10 max-w-4xl mx-auto text-center">
         <div
           className="space-y-8 backdrop-blur-xl bg-bg-elevated/50 rounded-3xl p-8 md:p-12 border border-primary/20 shadow-lg shadow-primary/10"
         >
           <div className="flex items-center justify-center gap-3 mb-6">
             <Target className="w-8 h-8 text-primary" />
             <h2 className="text-4xl md:text-5xl font-serif text-secondary">
-              Engineering Solutions for Real-World Impact
+              Security Is How I Build
             </h2>
           </div>
 
           <p className="text-xl md:text-2xl text-secondary/80 leading-relaxed">
-            My journey from Electrical Engineering to Operations Management to Software Development isn't just a career path, it's my competitive advantage. I understand the technical constraints engineers face, the operational challenges managers navigate, and the customer needs that drive business decisions.
+            Workers run unprivileged. Credentials live in mounted secret files, not environment variables. Failure gets tested on purpose: kill the worker mid-batch, then prove nothing was lost or duplicated.
           </p>
 
           <p className="text-lg text-secondary/70 leading-relaxed">
-            Today, I leverage this multifaceted experience to build secure, scalable, and business-focused technical solutions that don't just work—they deliver measurable results.
+            The same rule runs through my tools: agents propose and humans approve, and nothing rewrites history or force-pushes. Fast is only useful if you can trust what shipped.
           </p>
         </div>
       </div>

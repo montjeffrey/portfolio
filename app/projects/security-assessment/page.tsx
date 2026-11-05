@@ -31,7 +31,7 @@ export default function SecurityAssessmentCaseStudy() {
               Security Tools
             </span>
             <span className="px-4 py-2 bg-secondary/10 text-secondary/80 rounded-full">
-              Production Ready
+              Code not public
             </span>
           </div>
           <p className="text-xl text-secondary/80 leading-relaxed">
@@ -68,7 +68,7 @@ export default function SecurityAssessmentCaseStudy() {
           </div>
         </motion.section>
 
-        {/* Terminal Output Example */}
+        {/* Illustrative Output */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -77,7 +77,7 @@ export default function SecurityAssessmentCaseStudy() {
         >
           <h2 className="text-3xl font-serif text-secondary mb-8 flex items-center gap-3">
             <Terminal className="w-8 h-8 text-primary" />
-            Terminal Output Example
+            Illustrative output
           </h2>
 
           <div className="bg-bg-dark rounded-lg p-6 border border-primary/20 font-mono text-sm">
@@ -88,7 +88,7 @@ export default function SecurityAssessmentCaseStudy() {
               <span className="ml-4 text-secondary/60">security-assessor.py</span>
             </div>
             <pre className="text-secondary/80 overflow-x-auto whitespace-pre-wrap">
-{`$ python security-assessor.py --target example.com --format json
+{`$ python security-assessor.py --target lab.local --format json
 
 [+] Initializing security assessment suite...
 [+] Loading vulnerability database... OK
@@ -102,19 +102,18 @@ export default function SecurityAssessmentCaseStudy() {
     Description: SSH service detected on port 22
     Recommendation: Implement key-based authentication only
 
-[!] VULNERABILITY FOUND
-    Type: Outdated SSL Certificate
-    Severity: HIGH
-    CVSS Score: 7.2
+[i] NOTE
+    Type: SSL Certificate Expiry
+    Severity: LOW
     Description: SSL certificate expires in 30 days
-    Recommendation: Renew certificate immediately
+    Recommendation: Schedule certificate renewal
 
 [+] Generating reports...
 [+] JSON report saved: security_report.json
 [+] Markdown report saved: security_report.md
 [+] Executive summary saved: executive_summary.pdf
 
-[+] Assessment complete. Found 2 vulnerabilities.
+[+] Assessment complete. Found 1 vulnerability, 1 note.
 [+] Total scan time: 2m 34s`}
             </pre>
           </div>

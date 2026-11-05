@@ -5,17 +5,17 @@ import { EvervaultBackground } from "@/components/ui/evervault-background";
 
 const skills = [
   {
-    title: "Automation & Operations",
+    title: "Automation & Integration",
     icon: BarChart3,
     description: (
       <>
-        <strong className="text-secondary group-hover:text-primary transition-colors duration-300">Business process automation</strong> —
-        Erasing manual busywork by streamlining workflows across CRMs,
-        spreadsheets, and APIs with intelligent data validation.
+        <strong className="text-secondary group-hover:text-primary transition-colors duration-300">Pipelines that don&apos;t drop records</strong> —
+        Integrations across CRMs, payroll, and accounting APIs, with
+        validation at every hop and failure tested on purpose.
       </>
     ),
-    outcome: "Cut manual data tasks by 50% through custom CRM automation workflows",
-    badges: ["5,000+ Records Managed", "CRM Automation"],
+    outcome: "Exactly-once job processing, proven by a chaos test that kills the worker mid-batch",
+    badges: ["Transactional Outbox", "Redis / BullMQ", "ETL"],
     emoji: "📊",
     gradient: "from-primary/20 to-primary/5",
   },
@@ -24,13 +24,13 @@ const skills = [
     icon: Code,
     description: (
       <>
-        <strong className="text-secondary group-hover:text-primary transition-colors duration-300">Responsive, data-driven applications</strong> —
-        Building robust web tools from complex CRM integrations to ML-powered
-        analytics.
+        <strong className="text-secondary group-hover:text-primary transition-colors duration-300">Typed apps from the API to the database</strong> —
+        Web apps, internal tools, and the client sites small businesses
+        run on.
       </>
     ),
-    outcome: "74% prediction accuracy in ML sports analytics platform",
-    badges: ["ML", "Random Forest", "API Integrations"],
+    outcome: "Three production client sites shipped and maintained end to end",
+    badges: ["Next.js", "TypeScript", "Supabase / Postgres"],
     emoji: "💻",
     gradient: "from-primary/20 to-primary/5",
   },
@@ -39,13 +39,13 @@ const skills = [
     icon: Cloud,
     description: (
       <>
-        <strong className="text-secondary group-hover:text-primary transition-colors duration-300">Secure, scalable cloud foundations</strong> —
-        VPC configuration, DNS management, and production deployments on AWS &
-        Azure.
+        <strong className="text-secondary group-hover:text-primary transition-colors duration-300">Least privilege by default</strong> —
+        Containers, tailnets, and CI pipelines built so a single leaked
+        credential doesn&apos;t become an incident.
       </>
     ),
-    outcome: "Deployed production sites on AWS with infrastructure-as-code practices",
-    badges: ["AWS Deployed", "Multi-Environment"],
+    outcome: "Read-only CI tokens, SHA-pinned actions, secret scanning, and release binaries with signed build provenance",
+    badges: ["Docker", "Tailscale", "GitHub Actions"],
     emoji: "🌩️",
     gradient: "from-primary/20 to-primary/5",
   },
@@ -55,12 +55,12 @@ const skills = [
     description: (
       <>
         <strong className="text-secondary group-hover:text-primary transition-colors duration-300">Security-first architecture</strong> —
-        Network analysis, vulnerability assessment, and automated testing
-        suites.
+        Network analysis, web application testing, and defensive tooling
+        for networks I own.
       </>
     ),
-    outcome: "Reduced vulnerability exposure through automated security testing suites",
-    badges: ["Kali Linux", "CVSS Tools", "Vulnerability Scanning"],
+    outcome: "CompTIA Security+ certified, with an accepted Bugcrowd finding",
+    badges: ["Security+", "OWASP Testing", "Kali Linux"],
     emoji: "🛡️",
     gradient: "from-primary/20 to-primary/5",
   },
@@ -131,13 +131,13 @@ export default function SkillsBentoGrid() {
   return (
     <section className="relative py-20 px-6 bg-bg-dark overflow-hidden min-h-[800px] group/section">
       {/* Evervault background effect - covers entire section */}
-      <EvervaultBackground className="rounded-none" radius={450} />
+      <EvervaultBackground className="rounded-none spotlight-fade" radius={450} />
 
       {/* Top Gradient Blend */}
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-bg-dark to-transparent z-10 pointer-events-none" />
 
       {/* Content wrapper - allows mouse events to pass through to background */}
-      <div className="relative z-10 max-w-7xl mx-auto">
+      <div className="spotlight-text relative z-10 max-w-7xl mx-auto">
         <div className="flex flex-col items-center mb-16">
           <h2
             data-spotlight-anchor="skills-title"

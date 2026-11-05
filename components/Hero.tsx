@@ -8,11 +8,13 @@ import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { RGBShiftShader } from 'three/examples/jsm/shaders/RGBShiftShader.js';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ResumeModal } from '@/components/ui/resume-modal';
 import { MobileScrollIndicator } from '@/components/ui/mobile-scroll-indicator';
 import { usePerformanceTier } from '@/hooks/use-performance-tier';
 import { MobileBeam } from './hero/MobileBeam';
+import { useParallaxEnabled } from '@/lib/parallax/use-parallax-enabled';
+import { HERO_RECEDE } from '@/lib/parallax/constants';
 
 interface BeamBackgroundProps {
   isMobile: boolean;
@@ -174,7 +176,31 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
     let animationFrameId: number;
     let lastFrameTime = performance.now();
     const targetFrameTime = tier === 'flagship' ? 1000 / 60 : 1000 / 120; // 60fps for mobile, 120fps for desktop
-    const startTime = lastFrameTime;
+
+    // Reduced motion skips the intro burst and settles straight into a calm idle
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const startTime = reduceMotion ? lastFrameTime - 10_000 : lastFrameTime;
+
+    // Cursor gravity: dots near the pointer lean toward it. Desktop only, since touch has no hover.
+    const gravityEnabled = !isMobile && !reduceMotion && window.matchMedia('(hover: hover)').matches;
+    const GRAVITY_RADIUS_SQ = 2.4 * 2.4;
+    const GRAVITY_STRENGTH = 0.32;
+    const pointer = { x: 0, y: 0, targetX: 0, targetY: 0, active: 0, targetActive: 0 };
+
+    const handlePointerMove = (event: PointerEvent) => {
+      const rect = container.getBoundingClientRect();
+      const inside = event.clientY >= rect.top && event.clientY <= rect.bottom;
+      pointer.targetX = camera.left + ((event.clientX - rect.left) / rect.width) * (camera.right - camera.left);
+      pointer.targetY = camera.top - ((event.clientY - rect.top) / rect.height) * (camera.top - camera.bottom);
+      pointer.targetActive = inside ? 1 : 0;
+    };
+    const handlePointerLeave = () => {
+      pointer.targetActive = 0;
+    };
+    if (gravityEnabled) {
+      window.addEventListener('pointermove', handlePointerMove, { passive: true });
+      document.documentElement.addEventListener('pointerleave', handlePointerLeave);
+    }
 
     // Pre-computed constants
     const TWO_PI = Math.PI * 2;
@@ -221,8 +247,8 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
     };
 
     const idleTargets = {
-      amp: 0.8,
-      speed: 0.4,
+      amp: reduceMotion ? 0.25 : 0.8,
+      speed: reduceMotion ? 0.15 : 0.4,
       opacity: tier === 'flagship' ? 0.85 : 1.0,
       falloff: 0.04,
       expansion: 0,
@@ -320,6 +346,19 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
         rgbShift.uniforms['amount'].value = 0.0015 + phase * 0.003;
       }
 
+      if (gravityEnabled) {
+        // Snap to the pointer when gravity is off so the well doesn't sweep in from the old spot
+        if (pointer.active < 0.01) {
+          pointer.x = pointer.targetX;
+          pointer.y = pointer.targetY;
+        }
+        const follow = 1 - Math.exp(-8 * dtSeconds);
+        pointer.x += (pointer.targetX - pointer.x) * follow;
+        pointer.y += (pointer.targetY - pointer.y) * follow;
+        pointer.active += (pointer.targetActive - pointer.active) * (1 - Math.exp(-4 * dtSeconds));
+      }
+      const pull = GRAVITY_STRENGTH * pointer.active;
+
       // Update instance matrices using direct buffer writes (faster than setMatrixAt)
       for (let i = 0; i < total; i++) {
         const x0 = basePos[i * 2 + 0];
@@ -335,8 +374,20 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
         // Apply pure outward expansion
         k += currentExpansion;
 
-        const px = x0 * k;
-        const py = y0 * k;
+        let px = x0 * k;
+        let py = y0 * k;
+
+        if (pull > 0.001) {
+          const dx = pointer.x - px;
+          const dy = pointer.y - py;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < GRAVITY_RADIUS_SQ) {
+            const fall = 1 - d2 / GRAVITY_RADIUS_SQ;
+            const f = fall * fall * pull;
+            px += dx * f;
+            py += dy * f;
+          }
+        }
 
         // Direct buffer write - only update translation (m12, m13) since scale/rotation are identity
         const offset = i * 16;
@@ -444,6 +495,8 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
     return () => {
       observer.disconnect();
       window.cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('pointermove', handlePointerMove);
+      document.documentElement.removeEventListener('pointerleave', handlePointerLeave);
       document.removeEventListener('visibilitychange', handleVisibility);
       canvas.removeEventListener('webglcontextlost', handleContextLost as EventListener);
       canvas.removeEventListener('webglcontextrestored', handleContextRestored as EventListener);
@@ -474,26 +527,22 @@ export default function Hero() {
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
-  const [contentVisible, setContentVisible] = useState(false);
 
   const tier = usePerformanceTier(); // Use our new hook
+  const parallaxMode = useParallaxEnabled();
 
   // Desktop (high) and flagship mobile get BeamBackground with post-processing
   // Medium/Low tier gets shader-based MobileBeam
   const showHeavyBeam = tier === 'high' || tier === 'flagship';
 
-  // Splash screen effect - show content after beam fully loads and settles
-  useEffect(() => {
-    const contentTimer = setTimeout(() => {
-      setContentVisible(true);
-    }, 3750); // 3.75s syncs with the shortened burst settling
+  // Hero content lifts and fades as the page scrolls past it (transform + opacity only)
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
+  const recedeY = useTransform(scrollYProgress, [0, 1], HERO_RECEDE.contentY);
+  const recedeOpacity = useTransform(scrollYProgress, [0, 0.8], HERO_RECEDE.opacity);
+  const recedeStyle = parallaxMode === 'off' ? undefined : { y: recedeY, opacity: recedeOpacity };
 
-    return () => {
-      clearTimeout(contentTimer);
-    };
-  }, []);
-
-  const skills = ['Automation', 'Web Design', 'Cloud', 'Security'];
+  const skills = ['Security', 'Automation', 'Infrastructure', 'Agent Tooling'];
 
   useEffect(() => {
     const fullText = skills[textIndex];
@@ -520,7 +569,7 @@ export default function Hero() {
   }, [displayText, isDeleting, textIndex, skills, tier]); // Add tier to deps
 
   return (
-    <div className="relative w-full min-h-[100dvh] h-auto bg-bg-dark overflow-hidden pb-20 sm:pb-10">
+    <div ref={heroRef} className="relative w-full min-h-[100dvh] h-auto bg-bg-dark overflow-hidden pb-20 sm:pb-10">
       {/* Background Layer - wait for the resolved tier before mounting any renderer so
           phones never spin up (and then leak) the desktop-class WebGL scene. The dark
           container background covers this sub-second detection window. */}
@@ -533,36 +582,41 @@ export default function Hero() {
         <MobileBeam performanceTier={tier as 'medium' | 'low'} />
       )}
 
-      {/* Content Layer - Immersive Splash Screen Effect */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100dvh-10rem)] px-8 sm:px-6 text-center">
+      {/* Content Layer - the headline is in the first paint; the beam intro plays behind it */}
+      <motion.div
+        style={recedeStyle}
+        className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100dvh-10rem)] px-8 sm:px-6 text-center"
+      >
         <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 1.0, ease: "easeOut" }}
-            className="space-y-8 sm:space-y-6"
-          >
+          <div className="space-y-8 sm:space-y-6">
             <h1 className="text-[clamp(2rem,5vw,6rem)] font-serif text-secondary leading-tight px-4 sm:px-2">
-              Solutions Engineer: Where Operations Meet Innovation
+              I build systems that move fast without moving recklessly.
             </h1>
-            <p className="text-[clamp(1rem,2vw,1.875rem)] text-secondary/80 font-light leading-relaxed max-w-4xl mx-auto px-4">
-              Bridging the gap between business operations and technical implementation through automation, full-stack development, and data-driven solutions.
-            </p>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-2 sm:gap-4 text-[clamp(2.5rem,4vw,3.5rem)] font-serif mt-8 sm:mt-12 min-h-[4rem]">
-              <span className="text-secondary">Specializing in</span>
-              <span className="relative min-w-[280px] sm:min-w-[300px] text-center">
-                <span className="relative z-10 text-primary px-4 py-2 rounded-md bg-secondary/95 backdrop-blur-sm inline-block">
-                  {displayText}
-                  <span className="animate-pulse">|</span>
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+              className="space-y-8 sm:space-y-6"
+            >
+              <p className="text-[clamp(1rem,2vw,1.875rem)] text-secondary/80 font-light leading-relaxed max-w-4xl mx-auto px-4">
+                Security-minded systems engineer. Data pipelines, integrations, and developer tooling, secured as they&apos;re built. CompTIA Security+.
+              </p>
+              <div className="flex flex-col md:flex-row items-center justify-center gap-2 sm:gap-4 text-[clamp(2.5rem,4vw,3.5rem)] font-serif mt-8 sm:mt-12 min-h-[4rem]">
+                <span className="text-secondary">Specializing in</span>
+                <span className="relative min-w-[280px] sm:min-w-[300px] text-center">
+                  <span className="relative z-10 text-primary px-4 py-2 rounded-md bg-secondary/95 backdrop-blur-sm inline-block">
+                    {displayText}
+                    <span className="animate-pulse">|</span>
+                  </span>
                 </span>
-              </span>
-            </div>
-          </motion.div>
+              </div>
+            </motion.div>
+          </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 1.0, delay: 0.3, ease: "easeOut" }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
             className="flex flex-col sm:flex-row gap-6 sm:gap-4 justify-center mt-16 sm:mt-12 w-full max-w-md sm:max-w-none mx-auto"
           >
             <Link
@@ -580,13 +634,11 @@ export default function Hero() {
             </button>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
 
-      {contentVisible && (
-        <div className="block sm:hidden">
-          <MobileScrollIndicator />
-        </div>
-      )}
+      <div className="block sm:hidden">
+        <MobileScrollIndicator />
+      </div>
 
       <ResumeModal
         isOpen={isResumeModalOpen}

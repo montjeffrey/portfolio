@@ -6,6 +6,7 @@ import { Mail, Phone, Linkedin, MapPin, Send, CheckCircle2, AlertCircle } from "
 
 
 const projectTypes = [
+  "Security / infrastructure / automation role",
   "Web Development",
   "Automation & Integrations",
   "Cloud Solutions",
@@ -52,46 +53,67 @@ export default function ContactPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  // Pre-filled email, offered if the form can't be delivered.
+  const mailtoHref = () => {
+    const { name, email, company, projectType, message } = formData;
+    const subject = `Portfolio Inquiry: ${projectType || "General"}`;
+    const body = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Company: ${company}`,
+      `Project Type: ${projectType}`,
+      "",
+      "Message:",
+      message,
+    ].join("\n");
+    return `mailto:montjeffrey@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
+  // Submissions go to Netlify Forms. The form is declared in
+  // public/__forms.html, because Netlify detects forms only in static HTML
+  // and the Next.js runtime renders this page itself.
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validateForm()) {
       return;
     }
 
-    const { name, email, company, projectType, message } = formData;
+    const botField =
+      (e.currentTarget.elements.namedItem("bot-field") as HTMLInputElement | null)?.value ?? "";
 
-    // Construct email body
-    const body = `
-Name: ${name}
-Email: ${email}
-Company: ${company}
-Project Type: ${projectType}
+    setIsSubmitting(true);
+    setSubmitStatus(null);
 
-Message:
-${message}
-    `.trim();
+    try {
+      const response = await fetch("/__forms.html", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          "form-name": "contact",
+          "bot-field": botField,
+          ...formData,
+        }).toString(),
+      });
+      if (!response.ok) {
+        throw new Error(`Form submission failed with HTTP ${response.status}`);
+      }
 
-    // Construct mailto link
-    const subject = `Portfolio Inquiry: ${projectType || 'General'}`;
-    const mailtoLink = `mailto:montjeffrey@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-    // Open email client
-    window.location.href = mailtoLink;
-
-    // Optional: Show a success message or clear form? 
-    // Usually with mailto, keeping the form filled is better so they can see what they sent, 
-    // or we can just reset it. Let's reset it to be clean.
-    setFormData({
-      name: "",
-      email: "",
-      company: "",
-      projectType: "",
-      message: "",
-      preferredContact: "Email",
-    });
-    setSubmitStatus("success");
-    setTimeout(() => setSubmitStatus(null), 5000);
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        projectType: "",
+        message: "",
+        preferredContact: "Email",
+      });
+      setSubmitStatus("success");
+    } catch {
+      // Keep what they typed so the email fallback carries it.
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -121,7 +143,7 @@ ${message}
               Let&apos;s Build Something Together
             </h1>
             <p className="text-lg md:text-xl text-secondary/80 leading-relaxed">
-              Whether you have a project in mind, need a technical solution for your business, or want to discuss how my unique background can benefit your team, I&apos;d love to hear from you.
+              Whether you&apos;re hiring for a security, infrastructure, or automation role, or have a client project in mind, I&apos;d love to hear from you.
             </p>
           </motion.div>
         </div>
@@ -186,7 +208,7 @@ ${message}
                   <div>
                     <div className="text-secondary/60 text-sm mb-1">Location</div>
                     <div className="text-secondary">Dover, NJ</div>
-                    <div className="text-secondary/60 text-sm">Open to remote opportunities</div>
+                    <div className="text-secondary/60 text-sm">Open to hybrid or remote roles and select client projects</div>
                   </div>
                 </div>
               </div>
@@ -210,7 +232,7 @@ ${message}
                   },
                   {
                     title: "☁️ Cloud Architecture",
-                    desc: "Looking to migrate to AWS or Azure? I can help design and implement secure, cost-effective cloud solutions.",
+                    desc: "Need hosting, DNS and deployment set up properly? I deploy and harden sites on Netlify and can plan a move to AWS or Azure.",
                   },
                   {
                     title: "📊 Data & Analytics",
@@ -247,7 +269,7 @@ ${message}
                   className="mb-6 p-4 bg-green-500/20 border border-green-500/50 rounded-lg flex items-center gap-3 text-green-400"
                 >
                   <CheckCircle2 className="w-5 h-5" />
-                  <span>Opening your email client...</span>
+                  <span>Thanks, your message was sent. I&apos;ll get back to you soon.</span>
                 </motion.div>
               )}
 
@@ -258,13 +280,26 @@ ${message}
                   className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg flex items-center gap-3 text-red-400"
                 >
                   <AlertCircle className="w-5 h-5" />
-                  <span>Error sending message. Please try again or contact me directly.</span>
+                  <span>
+                    Your message couldn&apos;t be sent.{" "}
+                    <a href={mailtoHref()} className="underline font-semibold">
+                      Send it by email instead
+                    </a>{" "}
+                    (it&apos;s pre-filled with what you wrote).
+                  </span>
                 </motion.div>
               )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Honeypot field for spam protection */}
-                <input type="text" name="_gotcha" style={{ display: "none" }} />
+                {/* Honeypot: Netlify discards submissions that fill this in */}
+                <input
+                  type="text"
+                  name="bot-field"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  style={{ display: "none" }}
+                />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -401,7 +436,7 @@ ${message}
                   ) : (
                     <>
                       <Send className="w-5 h-5" />
-                      Open Email Client
+                      Send Message
                     </>
                   )}
                 </button>
