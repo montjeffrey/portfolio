@@ -82,6 +82,26 @@ const BEATS: Beat[] = ["run", "fail", "reset", "rerun", "scan", "sign", "ship", 
 const BEAT_STARTS = [0.1, 0.22, 0.3, 0.44, 0.58, 0.72, 0.88]; // progress where beats 1..7 begin
 const beatAt = (p: number) => BEAT_STARTS.filter((s) => p >= s).length;
 
+// Phones: the sticky panel plays the step sitting right under it, the first one whose node
+// hasn't yet reached the end of the panel's connector, so that step is always fully readable
+// below the panel. As it rises, its beats play; when its node plugs into the connector the
+// next step takes over. Steps are equal-height rows, so progress maps evenly onto them.
+const STAGE_BEATS = [[0], [1, 2, 3], [4], [5], [6]];
+const PHONE_PANEL_TOP = 80; // sticky offset: under the 64px navbar, plus 16px of breathing room
+const PHONE_PANEL_H = 272; // StagePanel's h-[272px] below md
+const CONNECTOR_H = 40;
+const READ_LINE = PHONE_PANEL_TOP + PHONE_PANEL_H + CONNECTOR_H;
+const PLUG_IN = 0.08; // a node hands off once it has slid this far (in rows) into the connector
+const beatInList = (p: number) => {
+  // z counts how many rows of the list have risen past the end of the connector
+  const z = Math.max(p, 0) * STAGES.length - PLUG_IN;
+  const s = Math.max(0, Math.ceil(z));
+  if (s >= STAGES.length) return BEATS.length - 1; // the last step has plugged in: shipped
+  const beats = STAGE_BEATS[s];
+  const frac = s === 0 ? 0 : z - (s - 1); // (0, 1] while this step rises to the connector
+  return beats[Math.min(beats.length - 1, Math.floor(frac * beats.length))];
+};
+
 // Where the dot rests on the line for each beat (0 = Test, 1 = Ship), and which stage the beat belongs to
 const DOT_AT = [0, 0.25, 0, 0.25, 0.5, 0.75, 1, 1];
 const STAGE_OF = [0, 1, 1, 1, 2, 3, 4, 4];
@@ -419,6 +439,27 @@ function PanelHeader({ status, tone, right }: { status: string; tone: "orange" |
   );
 }
 
+// Hangs off the bottom of the sticky phone panel: a socket on its edge, a short lead down to
+// where the timeline's nodes pass, and a fade so the steps sliding under the panel dissolve
+// instead of being cut off.
+function PanelConnector({ red }: { red: boolean }) {
+  const color = red ? "bg-red-500" : "bg-primary";
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-full" style={{ height: CONNECTOR_H }}>
+      <div className="absolute inset-0 bg-gradient-to-b from-bg-dark via-bg-dark/70 to-transparent" />
+      <span
+        className={`absolute left-[14px] top-0 w-px bg-gradient-to-b ${
+          red ? "from-red-500" : "from-primary"
+        } to-transparent transition-colors duration-300`}
+        style={{ height: CONNECTOR_H }}
+      />
+      <span
+        className={`absolute left-[14.5px] top-0 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-bg-dark ${color} shadow-[0_0_10px_2px_rgba(231,125,34,0.45)] transition-colors duration-300`}
+      />
+    </div>
+  );
+}
+
 function StagePanel({ beat, still }: { beat: Beat; still: boolean }) {
   // Jobs beats share one panel so the tiles carry over from run to fail to re-run
   const group = beat === "run" || beat === "fail" || beat === "reset" || beat === "rerun" ? "jobs" : beat === "shipped" ? "ship" : beat;
@@ -470,18 +511,25 @@ export default function PipelineScene() {
   const outerRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLOListElement>(null);
   const { scrollYProgress: pinProgress } = useScroll({ target: outerRef, offset: ["start start", "end end"] });
-  const { scrollYProgress: listProgress } = useScroll({ target: listRef, offset: ["start 0.75", "end 0.45"] });
+  const { scrollYProgress: listProgress } = useScroll({
+    target: listRef,
+    offset: [`start ${READ_LINE}px`, `end ${READ_LINE}px`],
+  });
   // Tablets that are not pinned keep the panel static above a short node row, so the list is no
   // use as a driver there: the panel itself travels through the viewport while the beats play
   const panelRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: panelProgress } = useScroll({ target: panelRef, offset: ["start 0.85", "start 0.2"] });
   const finished = useMotionValue(1);
-  const progress = still ? finished : pinned ? pinProgress : wide ? panelProgress : listProgress;
+  // A sticky panel needs room below it for a step to read; phones held sideways don't have it,
+  // so they get the static panel and play the beats as it travels, like unpinned tablets
+  const short = useMediaQuery("(max-height: 599px)");
+  const onPhone = !still && !pinned && !wide && !short;
+  const progress = still ? finished : pinned ? pinProgress : onPhone ? listProgress : panelProgress;
 
   const [beatIndex, setBeatIndex] = useState(BEATS.length - 1);
-  const sync = (p: number) => setBeatIndex(beatAt(p));
+  const sync = (p: number) => setBeatIndex(onPhone ? beatInList(p) : beatAt(p));
   useMotionValueEvent(progress, "change", sync);
-  useEffect(() => sync(progress.get()), [progress]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => sync(progress.get()), [progress, onPhone]); // eslint-disable-line react-hooks/exhaustive-deps
   const beat = BEATS[beatIndex];
   const stage = STAGE_OF[beatIndex];
   const nodes = NODES[beatIndex];
@@ -517,9 +565,19 @@ export default function PipelineScene() {
             </p>
           </div>
 
-          {/* Phones and short screens: the panel sits above the list and stays in view while the list scrolls */}
-          <div ref={panelRef} className={pinned ? "hidden" : `z-20 mt-8 md:mx-auto md:max-w-2xl ${still ? "" : "sticky top-20 md:static"}`}>
+          {/* Phones and short screens: the panel sits above the list. On phones the panel sticks under the navbar on an opaque band, so the steps pass behind it
+              cleanly, and a connector runs from the panel down to the line: the step whose node meets
+              the connector is the one playing. */}
+          <div
+            ref={panelRef}
+            className={
+              pinned
+                ? "hidden"
+                : `z-20 md:mx-auto md:max-w-2xl ${onPhone ? "sticky top-16 mt-4 bg-bg-dark pt-4" : "mt-8"}`
+            }
+          >
             {!pinned && <StagePanel beat={beat} still={still} />}
+            {onPhone && <PanelConnector red={beat === "fail"} />}
           </div>
 
           <div className="relative mt-8">
@@ -555,7 +613,11 @@ export default function PipelineScene() {
                   }
                 >
                   <Node state={nodes[i]} index={i} />
-                  <div className="flex flex-col gap-1.5">
+                  <div
+                    className={`flex flex-col gap-1.5 transition-opacity duration-300 ${
+                      onPhone && i !== stage ? "opacity-40" : ""
+                    }`}
+                  >
                     <h3
                       className={`font-sans font-semibold transition-colors duration-300 ${pinned ? "text-base" : "text-lg"} ${
                         pinned && i !== stage ? "text-secondary/50" : "text-secondary"
