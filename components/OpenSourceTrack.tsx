@@ -112,7 +112,7 @@ function StepDemo({ steps, children }: { steps: Step[]; children: (step: number)
       {/* Announce only steps the visitor chose, never the autoplay */}
       <div className="min-h-[6.5rem] space-y-1.5" aria-live={held ? "polite" : "off"}>
         <p className="font-sans text-[15px] leading-relaxed text-secondary/90">{current.caption}</p>
-        <p className="font-mono text-[11.5px] text-secondary/40">{current.command}</p>
+        <p className="font-mono text-[11.5px] text-secondary/40 [overflow-wrap:anywhere]">{current.command}</p>
       </div>
 
       <div className="mt-auto flex flex-wrap items-center gap-2" role="group" aria-label="Demo steps">
@@ -126,7 +126,7 @@ function StepDemo({ steps, children }: { steps: Step[]; children: (step: number)
               setStep(i);
               setHeld(true);
             }}
-            className={`relative overflow-hidden rounded-full border px-3 py-1 font-sans text-xs transition-colors ${
+            className={`relative inline-flex min-h-10 items-center overflow-hidden rounded-full border px-3.5 py-1 font-sans text-xs transition-colors ${
               i === step ? "border-primary bg-primary/15 text-secondary" : "border-secondary/20 text-secondary/60 hover:border-secondary/50"
             }`}
           >
@@ -146,7 +146,7 @@ function StepDemo({ steps, children }: { steps: Step[]; children: (step: number)
           <button
             type="button"
             onClick={() => setHeld(false)}
-            className="rounded-full px-2 py-1 font-sans text-xs text-secondary/50 hover:text-primary transition-colors"
+            className="inline-flex min-h-10 items-center rounded-full px-3 py-1 font-sans text-xs text-secondary/50 hover:text-primary transition-colors"
           >
             ▶ play
           </button>
@@ -323,9 +323,9 @@ function PoolVisual({ step }: { step: number }) {
 
 // --- Cards and track -----------------------------------------------------------------
 
-function Card({ tag, title, blurb, href, children }: { tag: string; title: string; blurb: string; href: string; children: ReactNode }) {
+function Card({ tag, title, blurb, href, pinned, children }: { tag: string; title: string; blurb: string; href: string; pinned: boolean; children: ReactNode }) {
   return (
-    <article className="flex-none w-full lg:w-[440px] rounded-2xl border border-secondary/15 bg-bg-dark p-6 flex flex-col gap-4">
+    <article className={`flex-none w-full ${pinned ? "lg:w-[440px]" : ""} rounded-2xl border border-secondary/15 bg-bg-dark p-6 flex flex-col gap-4`}>
       <span className="font-mono text-xs tracking-wide text-primary">{tag}</span>
       <h3 className="text-3xl font-serif text-secondary">
         <DecodeText text={title} />
@@ -363,9 +363,13 @@ const CARDS = [
   },
 ];
 
-function Intro() {
+function Intro({ pinned }: { pinned: boolean }) {
   return (
-    <div className="flex-none w-full lg:w-[380px] flex flex-col justify-center gap-5 rounded-2xl border border-secondary/10 bg-bg-dark/85 p-6 lg:border-transparent lg:bg-transparent lg:p-0">
+    <div
+      className={`flex-none w-full flex flex-col justify-center gap-5 rounded-2xl border border-secondary/10 bg-bg-dark/85 p-6 ${
+        pinned ? "lg:w-[380px] lg:border-transparent lg:bg-transparent lg:p-0" : ""
+      }`}
+    >
       <span className="font-mono text-sm tracking-widest text-primary">02 · BUILT IN THE OPEN</span>
       <h2 id="track-heading" className="text-4xl md:text-5xl font-serif text-secondary leading-tight">
         Tools I build, publish, and use every day.
@@ -382,7 +386,10 @@ function Intro() {
 
 export default function OpenSourceTrack() {
   const mode = useParallaxEnabled();
-  const wide = useMediaQuery("(min-width: 1024px)");
+  // Pinning needs the card row (~650px) plus the nav to fit. Desktops (>=1280) always pin, as
+  // before; at 1024-1279 only when the visible height allows it (iPad landscape with Safari
+  // chrome is ~690px tall and would clip the cards).
+  const wide = useMediaQuery("(min-width: 1280px), (min-width: 1024px) and (min-height: 720px)");
   const pinned = wide && mode !== "off";
 
   const outerRef = useRef<HTMLElement>(null);
@@ -414,9 +421,9 @@ export default function OpenSourceTrack() {
 
   const items = (
     <>
-      <Intro />
+      <Intro pinned={pinned} />
       {CARDS.map((c) => (
-        <Card key={c.title} tag={c.tag} title={c.title} blurb={c.blurb} href={c.href}>
+        <Card key={c.title} tag={c.tag} title={c.title} blurb={c.blurb} href={c.href} pinned={pinned}>
           {c.demo}
         </Card>
       ))}
@@ -428,7 +435,7 @@ export default function OpenSourceTrack() {
       <section ref={outerRef} aria-labelledby="track-heading" className="relative py-24 px-6 bg-bg-elevated">
         {/* One screen-sized spotlight that rides along, not a canvas the height of the stack */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-          <div className="sticky top-0 h-screen">
+          <div className="sticky top-0 h-svh">
             <EvervaultBackground className="rounded-none spotlight-fade" radius={450} />
           </div>
         </div>
@@ -439,8 +446,8 @@ export default function OpenSourceTrack() {
 
   return (
     // Page height grows by exactly the sideways travel, so scroll speed feels native
-    <section ref={outerRef} aria-labelledby="track-heading" className="relative bg-bg-elevated" style={{ height: `calc(100vh + ${distance}px)` }}>
-      <div ref={viewportRef} className="sticky top-16 h-[calc(100vh-4rem)] overflow-hidden flex items-center">
+    <section ref={outerRef} aria-labelledby="track-heading" className="relative bg-bg-elevated" style={{ height: `calc(100svh + ${distance}px)` }}>
+      <div ref={viewportRef} className="sticky top-16 h-[calc(100svh-4rem)] overflow-hidden flex items-center">
         <EvervaultBackground className="rounded-none spotlight-fade" radius={450} />
         <motion.div ref={trackRef} style={{ x }} className="spotlight-text relative z-10 flex w-max items-stretch gap-8 px-[8vw] will-change-transform">
           {items}

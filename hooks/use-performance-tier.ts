@@ -31,8 +31,16 @@ export function usePerformanceTier(): PerformanceTier | null {
         }
 
         const detectTier = (): PerformanceTier => {
-            // Detect mobile/tablet
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            // Manual override for testing a tier on any device: ?tier=flagship|high|medium|low
+            const override = new URLSearchParams(window.location.search).get('tier');
+            if (override === 'flagship' || override === 'high' || override === 'medium' || override === 'low') {
+                return override;
+            }
+
+            // Detect mobile/tablet. iPadOS Safari reports a desktop Mac user agent, so a
+            // "Macintosh" with a multi-touch screen is treated as the tablet it is.
+            const isIPadOS = /Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1;
+            const isMobile = isIPadOS || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
                 navigator.userAgent
             );
 
@@ -50,9 +58,12 @@ export function usePerformanceTier(): PerformanceTier | null {
                 iosVersion = parseInt(iosMatch[1], 10);
             }
 
-            // Parse Android version (e.g., "Android 11")
+            // Parse Android version (e.g., "Android 11"). Chrome's reduced user agent
+            // freezes every device at "Android 10; K", so that string says nothing about
+            // the real OS and must not mark a current phone as outdated.
+            const isReducedAndroidUA = /Android 10; K\)/.test(userAgent);
             const androidMatch = userAgent.match(/Android (\d+)/i);
-            if (androidMatch) {
+            if (androidMatch && !isReducedAndroidUA) {
                 androidVersion = parseInt(androidMatch[1], 10);
             }
 
@@ -106,9 +117,11 @@ export function usePerformanceTier(): PerformanceTier | null {
                 (androidVersion !== null && androidVersion < 12); // Android < 12 (pre-2021)
 
             // Flagship mobile detection
-            // Criteria: 6+ cores OR flagship GPU OR known flagship device
+            // Criteria: 6+ cores (not trusted on reduced-UA Android) OR flagship GPU OR known flagship device
+            // Under Chrome's reduced UA most budget Android phones also report 8 cores, so
+            // there the core count alone can't qualify a phone; the GPU has to.
             const isFlagshipHardware =
-                concurrency >= 6 ||
+                (concurrency >= 6 && !isReducedAndroidUA) ||
                 gpuTier === 'high' ||
                 isFlagshipApple ||
                 isFlagshipSamsung ||

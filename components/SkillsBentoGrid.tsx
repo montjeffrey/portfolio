@@ -79,7 +79,7 @@ const SkillCard = ({
   return (
     <div
       data-spotlight-anchor="skills-card"
-      className="relative group rounded-2xl p-8 border transition-all duration-300 overflow-hidden
+      className="relative group rounded-2xl p-5 sm:p-8 border transition-all duration-300 overflow-hidden
         backdrop-blur-xl bg-bg-elevated/60
         border-primary/30 hover:border-primary/60
         hover:bg-bg-elevated/40 hover:backdrop-blur-2xl md:hover:scale-105 md:hover:-translate-y-2
@@ -91,12 +91,12 @@ const SkillCard = ({
 
       {/* Content layer */}
       <div className="relative z-10 h-full flex flex-col">
-        <div className="flex items-start gap-4 mb-4">
-          <div className="text-4xl">{skill.emoji}</div>
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <Icon className="w-6 h-6 text-primary" />
-              <h3 className="text-2xl font-serif text-secondary font-bold">
+        <div className="flex items-start gap-3 sm:gap-4 mb-4">
+          <div className="text-3xl sm:text-4xl">{skill.emoji}</div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 sm:gap-3 mb-2">
+              <Icon className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-primary" />
+              <h3 className="text-xl sm:text-2xl break-words min-w-0 font-serif text-secondary font-bold">
                 {skill.title}
               </h3>
             </div>
@@ -105,7 +105,7 @@ const SkillCard = ({
             </p>
 
             {/* Outcome Line */}
-            <div className="mb-4 pl-4 border-l-2 border-primary/50 text-secondary/90 italic text-sm">
+            <div className="mb-4 pl-3 sm:pl-4 border-l-2 border-primary/50 text-secondary/90 italic text-sm">
               "{skill.outcome}"
             </div>
 
@@ -114,7 +114,7 @@ const SkillCard = ({
               {skill.badges.map((badge) => (
                 <span
                   key={badge}
-                  className="px-2 py-1 bg-primary/10 rounded-md text-xs font-semibold text-primary border border-primary/20 whitespace-nowrap"
+                  className="px-2 py-1 bg-primary/10 rounded-md text-xs font-semibold text-primary border border-primary/20 sm:whitespace-nowrap"
                 >
                   {badge}
                 </span>

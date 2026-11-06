@@ -6,18 +6,18 @@ import { EvervaultBackground } from "@/components/ui/evervault-background";
 
 export default function BrandStatement() {
   return (
-    <section className="relative py-20 px-6 overflow-hidden min-h-[600px]">
+    <section className="relative py-20 px-6 overflow-hidden md:min-h-[600px]">
       {/* Evervault background effect - covers entire section */}
       <EvervaultBackground className="rounded-none spotlight-fade" radius={450} />
 
       {/* Content wrapper with glassmorphism */}
       <div className="spotlight-text relative z-10 max-w-4xl mx-auto text-center">
         <div
-          className="space-y-8 backdrop-blur-xl bg-bg-elevated/50 rounded-3xl p-8 md:p-12 border border-primary/20 shadow-lg shadow-primary/10"
+          className="space-y-8 backdrop-blur-xl bg-bg-elevated/50 rounded-3xl p-6 sm:p-8 md:p-12 border border-primary/20 shadow-lg shadow-primary/10"
         >
           <div className="flex items-center justify-center gap-3 mb-6">
-            <Target className="w-8 h-8 text-primary" />
-            <h2 className="text-4xl md:text-5xl font-serif text-secondary">
+            <Target className="w-7 h-7 sm:w-8 sm:h-8 shrink-0 text-primary" />
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-secondary">
               Security Is How I Build
             </h2>
           </div>

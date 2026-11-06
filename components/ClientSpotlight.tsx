@@ -130,7 +130,7 @@ function ClientCard({ client, canHover, featured }: { client: Client; canHover: 
             href={`https://${client.domain}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary underline-offset-4 hover:underline"
+            className="break-all text-primary underline-offset-4 hover:underline"
           >
             Visit {client.domain} ↗
           </a>

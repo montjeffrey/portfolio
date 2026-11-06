@@ -13,6 +13,7 @@ import { ResumeModal } from '@/components/ui/resume-modal';
 import { MobileScrollIndicator } from '@/components/ui/mobile-scroll-indicator';
 import { usePerformanceTier } from '@/hooks/use-performance-tier';
 import { MobileBeam } from './hero/MobileBeam';
+import { INITIAL_BEAM_STATE, REDUCED_MOTION_SKIP_SECONDS, easeToward, introTarget, type BeamState } from './hero/intro-timeline';
 import { useParallaxEnabled } from '@/lib/parallax/use-parallax-enabled';
 import { HERO_RECEDE } from '@/lib/parallax/constants';
 
@@ -24,15 +25,9 @@ interface BeamBackgroundProps {
 const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Refs for smooth parameter transitions
-  const paramsRef = useRef({
-    amp: 0,              // Start with no wave (grow into it)
-    speed: 0.4,
-    opacity: 0,          // Start invisible (fade in)
-    falloff: 0.005,      // Start with "bloom" wide wave
-    expansion: -1.1,     // Start collapsed at center
-    bloomStrength: 0,    // Track bloom intensity dynamically
-  });
+  // Current beam state, eased toward the intro timeline's target each frame. Starts
+  // collapsed and invisible with the bloom at its resting strength.
+  const paramsRef = useRef<BeamState>({ ...INITIAL_BEAM_STATE, glow: 1 });
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -51,9 +46,10 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
       precision: tier === 'flagship' ? 'mediump' : 'highp', // mediump saves GPU cycles on mobile
     });
 
-    // Aggressive pixel ratio optimization for mobile
+    // Pixel ratio: 1.5 on phones/tablets keeps the dots crisp on 3x screens while the
+    // composer and bloom render targets stay a fraction of a full-resolution buffer.
     const pixelRatio = tier === 'flagship' ?
-      Math.min(window.devicePixelRatio, 1.0) : // 1.0 for maximum mobile performance
+      Math.min(window.devicePixelRatio, 1.5) :
       Math.min(window.devicePixelRatio, 2.0);
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(container.clientWidth, container.clientHeight);
@@ -65,13 +61,28 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
 
     const camera = new THREE.OrthographicCamera();
 
-    // Optimized for smooth 60fps on flagship mobile - reduced dot count, lighter bloom
+    // Phones and tablets: a tighter grid than before so the dots read as dense as on desktop.
+    // The field extends ~3x the screen's longer side in both directions, like desktop, because
+    // the wave contracts it toward the center and the phone may rotate after mount; the
+    // total is capped to bound the per-frame loop.
+    const flagshipGrid = (() => {
+      const aspect = container.clientWidth / Math.max(container.clientHeight, 1);
+      const longSide = 10 * Math.max(aspect, 1);
+      const coverage = 3;
+      const maxDots = 3600;
+      const spacing = Math.max(0.45, (coverage * longSide) / Math.sqrt(maxDots));
+      const cols = Math.ceil((coverage * longSide) / spacing);
+      return { cols, rows: cols, spacing, dotRadius: spacing * 0.05, segments: 8 };
+    })();
+
     const TIER_CONFIG = {
       flagship: {
-        grid: { cols: 35, rows: 35, dotRadius: 0.048, spacing: 0.85, segments: 3 }, // 35x35 = 1,225 dots (larger dots, wider spacing)
-        bloom: { strength: 0.12, radius: 0.15, threshold: 0.6, enabled: true }, // Minimal bloom
+        grid: flagshipGrid,
+        // Threshold sits below a single dot's brightness so the bloom actually catches the
+        // field; at the old 0.6 only overlapping dots crossed it and the burst never glowed.
+        bloom: { strength: 0.35, radius: 0.6, threshold: 0.2, enabled: true },
         rgbShift: { amount: 0, enabled: false },
-        pixelRatio: 1.0
+        pixelRatio: 1.5
       },
       high: {
         grid: { cols: 100, rows: 100, dotRadius: 0.025, spacing: 0.55, segments: 8 },
@@ -82,9 +93,6 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
     };
 
     const config = TIER_CONFIG[tier];
-
-    // Initialize bloom strength target based on tier
-    paramsRef.current.bloomStrength = config.bloom.strength;
 
     // Setup Post-Processing with tiered settings
     let composer: EffectComposer | null = null;
@@ -179,7 +187,7 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
 
     // Reduced motion skips the intro burst and settles straight into a calm idle
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const startTime = reduceMotion ? lastFrameTime - 10_000 : lastFrameTime;
+    const startTime = reduceMotion ? lastFrameTime - REDUCED_MOTION_SKIP_SECONDS * 1000 : lastFrameTime;
 
     // Cursor gravity: dots near the pointer lean toward it. Desktop only, since touch has no hover.
     const gravityEnabled = !isMobile && !reduceMotion && window.matchMedia('(hover: hover)').matches;
@@ -202,57 +210,13 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
       document.documentElement.addEventListener('pointerleave', handlePointerLeave);
     }
 
-    // Pre-computed constants
     const TWO_PI = Math.PI * 2;
     const freq = 0.25;
     const smoothing = 2.5;
-    const flushStartSeconds = 1.75; // Start anticipation earlier (was 2.5)
-    const anticipationDuration = 1.0;
-    const burstDuration = 0.8;
-    const idleBlendSeconds = 1.5;
-
-    const clamp01 = (value: number) => Math.min(Math.max(value, 0), 1);
-    const smoothstep = (edge0: number, edge1: number, x: number) => {
-      const t = clamp01((x - edge0) / (edge1 - edge0));
-      return t * t * (3 - 2 * t);
-    };
-
-    const loadingTargets = {
-      amp: 0.6,
-      speed: 0.25,
-      opacity: tier === 'flagship' ? 0.6 : 0.75,
-      falloff: 0.02,
-      expansion: -0.2,
-      bloomStrength: config.bloom.strength
-    };
-
-    // Phase 1: Anticipation (Gather & Dim) through tighter contraction
-    const anticipationTargets = {
-      amp: 0.2,           // Calm before storm
-      speed: 1.5,         // Speed up significantly
-      opacity: 1.0,       // Full visibility
-      falloff: 0.03,      // Tighter beam
-      expansion: -0.8,    // Pull INWARD strongly (Gather)
-      bloomStrength: config.bloom.strength * 0.5 // Dim slightly
-    };
-
-    // Phase 2: Bloom Burst (Explosion)
-    const burstTargets = {
-      amp: 2.5,
-      speed: 0.1,         // Slow motion explosion look
-      opacity: 1.0,
-      falloff: 0.01,      // Wide beam
-      expansion: 1.5,     // Expand outward (but not offscreen)
-      bloomStrength: config.bloom.strength * 3.0 // FLASH!
-    };
-
-    const idleTargets = {
-      amp: reduceMotion ? 0.25 : 0.8,
-      speed: reduceMotion ? 0.15 : 0.4,
-      opacity: tier === 'flagship' ? 0.85 : 1.0,
-      falloff: 0.04,
-      expansion: 0,
-      bloomStrength: config.bloom.strength
+    const timelineOpts = {
+      loadingOpacity: tier === 'flagship' ? 0.6 : 0.75,
+      idleOpacity: tier === 'flagship' ? 0.85 : 1.0,
+      reduceMotion,
     };
 
     function animate() {
@@ -273,64 +237,11 @@ const BeamBackground: React.FC<BeamBackgroundProps> = ({ isMobile, tier }) => {
       const elapsedSeconds = (now - startTime) / 1000;
       const t = clock.getElapsedTime();
 
-      // --- TRANSITION LOGIC ---
-      // 1. Loading -> Anticipation
-      const anticipationStart = flushStartSeconds;
-      const anticipationEnd = anticipationStart + anticipationDuration;
+      // Loading -> anticipation -> burst -> idle, eased so phase changes never snap
+      easeToward(paramsRef.current, introTarget(elapsedSeconds, timelineOpts), lerpFactor);
 
-      // 2. Anticipation -> Burst
-      const burstStart = anticipationEnd;
-      const burstEnd = burstStart + burstDuration;
-
-      // 3. Burst -> Idle
-      const idleStart = burstEnd;
-      const idleEnd = idleStart + idleBlendSeconds;
-
-      const antiBlend = smoothstep(anticipationStart, anticipationEnd, elapsedSeconds);
-      const burstBlend = smoothstep(burstStart, burstEnd, elapsedSeconds);
-      const idleBlend = smoothstep(idleStart, idleEnd, elapsedSeconds);
-
-      // Multi-stage Lerp chain
-      // Current Target = Lerp(PreviousTarget, NextTarget, BlendFactor)
-
-      // Stage 1: Loading -> Anticipation
-      let targetAmp = THREE.MathUtils.lerp(loadingTargets.amp, anticipationTargets.amp, antiBlend);
-      let targetSpeed = THREE.MathUtils.lerp(loadingTargets.speed, anticipationTargets.speed, antiBlend);
-      let targetOpacity = THREE.MathUtils.lerp(loadingTargets.opacity, anticipationTargets.opacity, antiBlend);
-      let targetFalloff = THREE.MathUtils.lerp(loadingTargets.falloff, anticipationTargets.falloff, antiBlend);
-      let targetExpansion = THREE.MathUtils.lerp(loadingTargets.expansion, anticipationTargets.expansion, antiBlend);
-      let targetBloomStr = THREE.MathUtils.lerp(loadingTargets.bloomStrength, anticipationTargets.bloomStrength, antiBlend);
-
-      // Stage 2: -> Burst (Overwrites Stage 1 as flow progresses)
-      if (elapsedSeconds > anticipationStart) {
-        targetAmp = THREE.MathUtils.lerp(targetAmp, burstTargets.amp, burstBlend);
-        targetSpeed = THREE.MathUtils.lerp(targetSpeed, burstTargets.speed, burstBlend);
-        targetOpacity = THREE.MathUtils.lerp(targetOpacity, burstTargets.opacity, burstBlend);
-        targetFalloff = THREE.MathUtils.lerp(targetFalloff, burstTargets.falloff, burstBlend);
-        targetExpansion = THREE.MathUtils.lerp(targetExpansion, burstTargets.expansion, burstBlend);
-        targetBloomStr = THREE.MathUtils.lerp(targetBloomStr, burstTargets.bloomStrength, burstBlend);
-      }
-
-      // Stage 3: -> Idle
-      if (elapsedSeconds > burstStart) {
-        targetAmp = THREE.MathUtils.lerp(targetAmp, idleTargets.amp, idleBlend);
-        targetSpeed = THREE.MathUtils.lerp(targetSpeed, idleTargets.speed, idleBlend);
-        targetOpacity = THREE.MathUtils.lerp(targetOpacity, idleTargets.opacity, idleBlend);
-        targetFalloff = THREE.MathUtils.lerp(targetFalloff, idleTargets.falloff, idleBlend);
-        targetExpansion = THREE.MathUtils.lerp(targetExpansion, idleTargets.expansion, idleBlend);
-        targetBloomStr = THREE.MathUtils.lerp(targetBloomStr, idleTargets.bloomStrength, idleBlend);
-      }
-
-      // Smoothly interpolate current values towards targets (Lerp)
-      // Factor 0.04 gives a nice ease-out feel
-      paramsRef.current.amp += (targetAmp - paramsRef.current.amp) * lerpFactor;
-      paramsRef.current.speed += (targetSpeed - paramsRef.current.speed) * lerpFactor;
-      paramsRef.current.opacity += (targetOpacity - paramsRef.current.opacity) * lerpFactor;
-      paramsRef.current.falloff += (targetFalloff - paramsRef.current.falloff) * lerpFactor;
-      paramsRef.current.bloomStrength += (targetBloomStr - paramsRef.current.bloomStrength) * lerpFactor;
-      paramsRef.current.expansion += (targetExpansion - paramsRef.current.expansion) * lerpFactor;
-
-      const { amp: currentAmp, speed: currentSpeed, opacity: currentOpacity, falloff: currentFalloff, expansion: currentExpansion, bloomStrength: currentBloomStrength } = paramsRef.current;
+      const { amp: currentAmp, speed: currentSpeed, opacity: currentOpacity, falloff: currentFalloff, expansion: currentExpansion, glow: currentGlow } = paramsRef.current;
+      const currentBloomStrength = config.bloom.strength * currentGlow;
 
       // Update Bloom Strength dynamically
       if (bloom) {
@@ -601,9 +512,9 @@ export default function Hero() {
               <p className="text-[clamp(1rem,2vw,1.875rem)] text-secondary/80 font-light leading-relaxed max-w-4xl mx-auto px-4">
                 Security-minded systems engineer. Data pipelines, integrations, and developer tooling, secured as they&apos;re built. CompTIA Security+.
               </p>
-              <div className="flex flex-col md:flex-row items-center justify-center gap-2 sm:gap-4 text-[clamp(2.5rem,4vw,3.5rem)] font-serif mt-8 sm:mt-12 min-h-[4rem]">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-2 sm:gap-4 text-[clamp(2rem,10.5vw,2.5rem)] sm:text-[clamp(2.5rem,4vw,3.5rem)] font-serif mt-8 sm:mt-12 min-h-[4rem]">
                 <span className="text-secondary">Specializing in</span>
-                <span className="relative min-w-[280px] sm:min-w-[300px] text-center">
+                <span className="relative min-w-[240px] sm:min-w-[300px] max-w-full text-center">
                   <span className="relative z-10 text-primary px-4 py-2 rounded-md bg-secondary/95 backdrop-blur-sm inline-block">
                     {displayText}
                     <span className="animate-pulse">|</span>
