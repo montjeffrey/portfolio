@@ -5,7 +5,7 @@ export function ArchitectureDiagram() {
     <div className="w-full overflow-x-auto">
       <svg
         viewBox="0 0 1200 600"
-        className="w-full h-auto"
+        className="w-full min-w-[900px] h-auto"
         xmlns="http://www.w3.org/2000/svg"
       >
         {/* Background */}

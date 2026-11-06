@@ -270,7 +270,7 @@ function DeviceCard({ active, isolated }: { active: Active; isolated: boolean })
       <p className="text-secondary">
         {device.id} <span style={{ color: statusColor }}>· {status}</span>
       </p>
-      <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-0.5 text-secondary/70">
+      <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-0.5 text-secondary/70 [&>dd]:min-w-0 [&>dd]:[overflow-wrap:anywhere]">
         <dt className="text-secondary/45">os</dt>
         <dd>{device.info.os}</dd>
         <dt className="text-secondary/45">owner</dt>
@@ -550,7 +550,6 @@ function TailnetGraph({ isolated, progress, animated }: { isolated: boolean; pro
         ref={svgRef}
         viewBox={`0 -36 ${VIEW.w} ${VIEW.h + 36}`}
         className="w-full h-auto select-none overflow-visible"
-        style={{ touchAction: "pan-y" }}
         role="group"
         aria-label={
           isolated
@@ -702,7 +701,7 @@ function TailnetGraph({ isolated, progress, animated }: { isolated: boolean; pro
         </motion.g>
       </svg>
 
-      <div className="mt-3 min-h-[268px] rounded-lg border border-secondary/10 bg-black/40 p-4 font-mono text-[12.5px] leading-relaxed" aria-live="polite">
+      <div className="mt-3 min-h-[268px] rounded-lg border border-secondary/10 bg-black/40 p-4 font-mono text-[12px] leading-relaxed [overflow-wrap:anywhere] sm:text-[12.5px]" aria-live="polite">
         <DeviceCard active={active} isolated={isolated} />
         <p className="mt-3 text-[11px] text-secondary/35">Demo data shaped like a real sentry scan. Addresses and networks are illustrative.</p>
       </div>
@@ -738,7 +737,7 @@ function ScanBody() {
         </p>
 
         <div
-          className="rounded-xl border border-primary/25 bg-black/60 p-5 font-mono text-[13px] leading-relaxed text-secondary/85 min-h-[300px]"
+          className="rounded-xl border border-primary/25 bg-black/60 p-4 font-mono text-[12px] leading-relaxed text-secondary/85 min-h-[300px] [overflow-wrap:anywhere] sm:p-5 sm:text-[13px]"
           aria-live="polite"
         >
           <p className="text-secondary/50">$ sentry scan</p>
@@ -765,7 +764,7 @@ function ScanBody() {
               <button
                 type="button"
                 onClick={() => setStage("planned")}
-                className="rounded-md border border-primary px-3 py-1.5 text-primary hover:bg-primary/15 transition-colors"
+                className="min-h-10 rounded-md border border-primary px-3 py-1.5 text-primary hover:bg-primary/15 transition-colors"
               >
                 Dry run: isolate kali
               </button>
@@ -775,14 +774,14 @@ function ScanBody() {
                 <button
                   type="button"
                   onClick={() => setStage("isolated")}
-                  className="rounded-md bg-primary px-3 py-1.5 text-bg-dark font-semibold hover:bg-primary/90 transition-colors"
+                  className="min-h-10 rounded-md bg-primary px-3 py-1.5 text-bg-dark font-semibold hover:bg-primary/90 transition-colors"
                 >
                   Apply
                 </button>
                 <button
                   type="button"
                   onClick={() => setStage("flagged")}
-                  className="rounded-md border border-secondary/25 px-3 py-1.5 text-secondary/80 hover:border-secondary/60 transition-colors"
+                  className="min-h-10 rounded-md border border-secondary/25 px-3 py-1.5 text-secondary/80 hover:border-secondary/60 transition-colors"
                 >
                   Cancel
                 </button>
@@ -793,7 +792,7 @@ function ScanBody() {
                 <button
                   type="button"
                   onClick={() => setStage("flagged")}
-                  className="rounded-md border border-secondary/25 px-3 py-1.5 text-secondary/80 hover:border-secondary/60 transition-colors"
+                  className="min-h-10 rounded-md border border-secondary/25 px-3 py-1.5 text-secondary/80 hover:border-secondary/60 transition-colors"
                 >
                   sentry release kali
                 </button>
@@ -801,7 +800,7 @@ function ScanBody() {
                   href="https://github.com/montjeffrey/tailnet-sentry"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-md px-3 py-1.5 text-primary underline-offset-4 hover:underline"
+                  className="inline-flex min-h-10 items-center rounded-md px-3 py-1.5 text-primary underline-offset-4 hover:underline"
                 >
                   tailnet-sentry on GitHub →
                 </a>

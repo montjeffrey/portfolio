@@ -259,7 +259,7 @@ function ScanPanel() {
         {SCANS.map((s, i) => (
           <div key={s.tool} className="flex flex-col gap-2">
             <div className="flex items-baseline justify-between gap-3">
-              <span className="font-mono text-sm text-secondary">
+              <span className="font-mono text-xs text-secondary sm:text-sm">
                 {s.tool} <span className="text-secondary/45">· {s.what}</span>
               </span>
               <AnimatePresence>
@@ -426,7 +426,7 @@ function StagePanel({ beat, still }: { beat: Beat; still: boolean }) {
   return (
     <div
       aria-hidden="true"
-      className={`relative h-[232px] overflow-hidden rounded-xl border bg-bg-elevated/95 p-4 transition-colors duration-300 md:p-5 ${
+      className={`relative h-[272px] overflow-hidden md:h-[232px] rounded-xl border bg-bg-elevated/95 p-4 transition-colors duration-300 md:p-5 ${
         red ? "border-red-500/50" : "border-secondary/15"
       }`}
     >
@@ -458,7 +458,10 @@ export default function PipelineScene() {
   const mode = useParallaxEnabled();
   const wide = useMediaQuery("(min-width: 768px)");
   // Pinning needs room for the whole scene on one screen
-  const roomy = useMediaQuery("(min-width: 768px) and (min-height: 700px)");
+  // Touch devices (iPad Safari) lose ~70px to browser chrome, and the pinned layout needs ~780px
+  const roomy = useMediaQuery(
+    "(min-width: 768px) and (min-height: 700px) and (pointer: fine), (min-width: 768px) and (min-height: 780px)"
+  );
   const still = mode === "off";
   const pinned = roomy && !still;
 
@@ -468,8 +471,12 @@ export default function PipelineScene() {
   const listRef = useRef<HTMLOListElement>(null);
   const { scrollYProgress: pinProgress } = useScroll({ target: outerRef, offset: ["start start", "end end"] });
   const { scrollYProgress: listProgress } = useScroll({ target: listRef, offset: ["start 0.75", "end 0.45"] });
+  // Tablets that are not pinned keep the panel static above a short node row, so the list is no
+  // use as a driver there: the panel itself travels through the viewport while the beats play
+  const panelRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: panelProgress } = useScroll({ target: panelRef, offset: ["start 0.85", "start 0.2"] });
   const finished = useMotionValue(1);
-  const progress = still ? finished : pinned ? pinProgress : listProgress;
+  const progress = still ? finished : pinned ? pinProgress : wide ? panelProgress : listProgress;
 
   const [beatIndex, setBeatIndex] = useState(BEATS.length - 1);
   const sync = (p: number) => setBeatIndex(beatAt(p));
@@ -495,9 +502,9 @@ export default function PipelineScene() {
       ref={outerRef}
       aria-labelledby="pipeline-heading"
       className="relative bg-bg-dark"
-      style={pinned ? { height: "360vh" } : undefined}
+      style={pinned ? { height: "360svh" } : undefined}
     >
-      <div className={pinned ? "sticky top-0 flex h-screen flex-col justify-center px-6 pt-16" : "px-6 py-24"}>
+      <div className={pinned ? "sticky top-0 flex h-svh flex-col justify-center px-6 pt-16" : "px-6 py-24"}>
         <div className="mx-auto w-full max-w-6xl">
           <div className="flex max-w-3xl flex-col gap-4">
             <span className="font-mono text-sm tracking-widest text-primary">03 · SECDEVOPS</span>
@@ -511,11 +518,9 @@ export default function PipelineScene() {
           </div>
 
           {/* Phones and short screens: the panel sits above the list and stays in view while the list scrolls */}
-          {!pinned && (
-            <div className={`z-20 mt-8 md:mx-auto md:max-w-2xl ${still ? "" : "sticky top-20 md:static"}`}>
-              <StagePanel beat={beat} still={still} />
-            </div>
-          )}
+          <div ref={panelRef} className={pinned ? "hidden" : `z-20 mt-8 md:mx-auto md:max-w-2xl ${still ? "" : "sticky top-20 md:static"}`}>
+            {!pinned && <StagePanel beat={beat} still={still} />}
+          </div>
 
           <div className="relative mt-8">
             {/* Line, fill, and traveler. Phones: down the left edge. Wider: across the node row. */}

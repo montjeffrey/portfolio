@@ -1,11 +1,24 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
 import { SpotlightBackground } from "@/components/ui/spotlight-background";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function AboutIntro() {
+  // Columns stack below md, so the reveal is vertical there (a horizontal slide would start
+  // off-screen at 320px). Reduced motion gets a plain fade. Keyed on isMobile so the
+  // elements remount with the right initial offset once the breakpoint is known.
+  const isMobile = useIsMobile();
+  const reduceMotion = useReducedMotion();
+  // The reduced variants still name x and y: the server renders the desktop translateX
+  // before the preference is known, and explicit zeros make framer clear it on mount.
+  const enter = (x: number) =>
+    reduceMotion ? { opacity: 0, x: 0, y: 0 } : isMobile ? { opacity: 0, x: 0, y: 28 } : { opacity: 0, x, y: 0 };
+  const shown = { opacity: 1, x: 0, y: 0 };
+  // Tall stacked blocks rarely reach 30% visible at once on a phone
+  const viewport = { once: true, amount: isMobile ? 0.15 : 0.3 };
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -27,9 +40,10 @@ export default function AboutIntro() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Text Content - Left Side */}
           <motion.div
-            initial={{ opacity: 0, x: -80 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }} // Optimized viewport trigger
+            key={`text-${isMobile}`}
+            initial={enter(-80)}
+            whileInView={shown}
+            viewport={viewport}
             transition={{
               duration: 0.8,
               ease: [0.25, 0.1, 0.25, 1],
@@ -49,9 +63,10 @@ export default function AboutIntro() {
 
           {/* Image Container - Right Side */}
           <motion.div
-            initial={{ opacity: 0, x: 80 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }} // Optimized viewport trigger
+            key={`image-${isMobile}`}
+            initial={enter(80)}
+            whileInView={shown}
+            viewport={viewport}
             transition={{
               duration: 0.8,
               delay: 0.15,

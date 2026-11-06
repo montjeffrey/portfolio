@@ -46,7 +46,7 @@ export default function ProjectCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       whileHover={{ scale: 1.02, y: -5 }}
-      className="relative group rounded-2xl p-8 border transition-all duration-300 overflow-hidden
+      className="relative group rounded-2xl p-6 sm:p-8 border transition-all duration-300 overflow-hidden
         backdrop-blur-xl bg-bg-elevated/60
         border-primary/30 hover:border-primary/60
         hover:bg-bg-elevated/40 hover:backdrop-blur-2xl
@@ -61,8 +61,8 @@ export default function ProjectCard({
       <div className="relative z-10 space-y-6">
         {/* Header */}
         <div className="flex items-start justify-between gap-4">
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
               <span className="px-3 py-1 bg-primary/20 text-primary text-xs rounded-full border border-primary/30">
                 {category}
               </span>
@@ -70,14 +70,14 @@ export default function ProjectCard({
                 {status}
               </span>
             </div>
-            <h3 className="text-2xl font-serif text-secondary font-bold mb-2">
+            <h3 className="text-xl sm:text-2xl break-words font-serif text-secondary font-bold mb-2">
               {title}
             </h3>
           </div>
           <Link
             href={href}
             {...externalLinkProps}
-            className="text-primary hover:text-primary/80 transition-colors"
+            className="shrink-0 text-primary hover:text-primary/80 transition-colors"
             aria-label={external ? `Visit ${title}` : `View ${title} case study`}
           >
             <ExternalLink className="w-5 h-5" />
@@ -90,14 +90,19 @@ export default function ProjectCard({
         {/* Tech Stack Marquee */}
         <div className="relative overflow-hidden rounded-lg bg-bg-dark/50 p-4 border border-primary/10">
           <div
-            className={`flex gap-4 ${
-              isHovered ? "animate-scroll" : ""
+            className={`flex gap-4 [@media(hover:none)]:flex-wrap [@media(hover:none)]:gap-y-1 ${
+              isHovered ? "animate-scroll [@media(hover:none)]:!animate-none" : ""
             }`}
           >
+            {/* Touch screens can't hover to scroll the marquee, so they get the list wrapped
+                in full (and the duplicate copy that makes the loop seamless is hidden) */}
             {[...techStack, ...techStack].map((tech, i) => (
               <span
                 key={`${tech}-${i}`}
-                className="text-sm text-primary font-mono whitespace-nowrap"
+                aria-hidden={i >= techStack.length ? true : undefined}
+                className={`text-sm text-primary font-mono whitespace-nowrap ${
+                  i >= techStack.length ? "[@media(hover:none)]:hidden" : ""
+                }`}
               >
                 {tech}
               </span>

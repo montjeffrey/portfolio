@@ -6,6 +6,7 @@ import { useScroll, type MotionValue } from "framer-motion";
 import { Mail, Download, Github, Linkedin } from "lucide-react";
 import { ResumeModal } from "@/components/ui/resume-modal";
 import { useParallaxEnabled, type ParallaxMode } from "@/lib/parallax/use-parallax-enabled";
+import { usePerformanceTier } from "@/hooks/use-performance-tier";
 
 // Scene 6: the dots scattered by the scenes above drift back into the hero's grid as the
 // contact section arrives, so the page ends where it began. On devices with a cursor the
@@ -177,7 +178,11 @@ function ReconvergeField({ progress, mode }: { progress: MotionValue<number>; mo
 }
 
 export default function BottomCTA() {
-  const mode = useParallaxEnabled();
+  const parallax = useParallaxEnabled();
+  // The reconverge field redraws a Canvas2D frame on the main thread, unlike the
+  // compositor-only scroll motion elsewhere, so budget phones get its settled frame.
+  const tier = usePerformanceTier();
+  const mode: ParallaxMode = tier === "low" ? "off" : parallax;
   const [resumeOpen, setResumeOpen] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   // 0 when the section's top enters the screen, 1 when its middle reaches the middle
@@ -193,7 +198,7 @@ export default function BottomCTA() {
 
       <div className="relative mx-auto flex max-w-2xl flex-col items-center gap-6 rounded-2xl border border-secondary/15 bg-bg-dark/90 px-6 py-10 text-center md:px-12 md:py-12">
         <span className="font-mono text-sm tracking-widest text-primary">05 · GET IN TOUCH</span>
-        <h2 id="contact-heading" className="text-4xl font-serif leading-tight text-secondary md:text-5xl">
+        <h2 id="contact-heading" className="text-3xl font-serif leading-tight text-secondary sm:text-4xl md:text-5xl">
           Hiring for security or infrastructure?
         </h2>
         <p className="text-lg leading-relaxed text-secondary/75">
@@ -261,7 +266,7 @@ export default function BottomCTA() {
           rel="noopener noreferrer"
           className="group mt-2 flex flex-col items-center gap-1.5 rounded-lg border border-dashed border-primary/35 px-4 py-3 transition-colors hover:border-primary"
         >
-          <span className="font-mono text-sm text-primary" aria-hidden="true">
+          <span className="font-mono text-xs text-primary sm:text-sm" aria-hidden="true">
             FLAG{"{"}????_????_????_????{"}"}
           </span>
           <span className="text-sm text-secondary/70 group-hover:text-secondary">

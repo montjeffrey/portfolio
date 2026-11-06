@@ -88,7 +88,7 @@ export default function Capabilities() {
                   ease: [0.16, 1, 0.3, 1],
                 }}
                 whileHover={{ y: -5 }}
-                className="relative group rounded-2xl p-8 border transition-all duration-300 overflow-hidden
+                className="relative group rounded-2xl p-6 sm:p-8 border transition-all duration-300 overflow-hidden
                   backdrop-blur-xl bg-bg-elevated/60
                   border-primary/30 hover:border-primary/60
                   hover:bg-bg-elevated/40
@@ -100,10 +100,10 @@ export default function Capabilities() {
 
                 <div className="spotlight-text relative z-10">
                   <div className="flex items-center gap-3 mb-4">
-                    <span className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/15 border border-primary/30">
+                    <span className="flex items-center justify-center shrink-0 w-12 h-12 rounded-xl bg-primary/15 border border-primary/30">
                       <Icon className="w-6 h-6 text-primary" />
                     </span>
-                    <h3 className="text-xl font-serif text-secondary font-bold">
+                    <h3 className="text-xl min-w-0 font-serif text-secondary font-bold">
                       {cap.title}
                     </h3>
                   </div>
