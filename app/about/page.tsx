@@ -8,7 +8,7 @@ const timeline = [
     period: "2017-2019",
     title: "Engineering Foundation",
     institution: "NJIT - Electrical Engineering",
-    description: "Built analytical thinking and problem-solving skills through 69 credits of engineering coursework. Developed systematic approaches to complex problems that I apply to every coding challenge today.",
+    description: "Completed 69 credits of electrical engineering coursework. It taught me to take a hard problem apart and work through it one piece at a time.",
     icon: BookOpen,
     color: "text-blue-400",
   },
@@ -16,7 +16,7 @@ const timeline = [
     period: "2019-2022",
     title: "Operations & Management",
     institution: "CVS Pharmacy & Dover College Promise",
-    description: "Managed teams, streamlined operations, and discovered my passion for using technology to solve business problems. Led digital transformation initiatives and served as sole IT support for nonprofit organization.",
+    description: "Managed teams and daily operations at CVS, and was the only IT support for the nonprofit Dover College Promise. Both jobs showed me how much everyday work the right software could take over.",
     icon: Briefcase,
     color: "text-green-400",
   },
@@ -24,7 +24,7 @@ const timeline = [
     period: "2022-2025",
     title: "Where Data Integrity Started",
     institution: "The Scheer Immigration Law Group",
-    description: "Administered Lawmatics (CRM) and Docketwise (CMS) across 1,000+ clients and 5,000+ records, and led the move to digital record-keeping for sensitive legal documents. Taught myself Python and JavaScript on the side to build the systems I was administering.",
+    description: "Administered Lawmatics (CRM) and Docketwise (CMS) across 1,000+ clients and 5,000+ records, and led the move to digital record-keeping for sensitive legal documents. This is where I got back into coding, picking Python and JavaScript up again to build the systems I was administering.",
     icon: RefreshCw,
     color: "text-purple-400",
   },
@@ -219,13 +219,13 @@ export default function AboutPage() {
           </h2>
           <div className="space-y-6 text-secondary/80 leading-relaxed">
             <p>
-              My path to software development wasn't traditional, but that's exactly what makes me valuable to your team.
+              I started coding in high school. Then, for a good few years, life took me elsewhere: I studied electrical engineering at NJIT, managed teams at CVS, and ran the client and case systems at an immigration law firm.
             </p>
             <p>
-              I started in Electrical Engineering at NJIT, where I learned to think systematically about complex problems. When I transitioned to operations management at CVS and later at a law firm, I discovered how technology could transform business efficiency—but only when built by someone who truly understands operational needs.
+              The law firm is where I found it again. Keeping records straight for more than a thousand clients meant a lot of careful work by hand, and I kept thinking that code could do it better. So I picked Python and JavaScript back up and started building. I haven&apos;t stopped since.
             </p>
             <p>
-              Keeping 5,000+ records consistent for a 1,000+ client law firm taught me that good code isn't just functional; it's maintainable, scalable, and user-friendly. Leading teams showed me that the best solutions come from understanding both technical constraints and human needs.
+              The years in between turned out to be useful. I know what it&apos;s like to be the person who depends on a system all day, so that&apos;s who I build for. I want the software to be easy to use, easy to keep running, and right about its records.
             </p>
             <p>
               Today I build the internal systems a business runs on: job queues that survive a worker being killed mid-batch, integrations that move invoices and job data between platforms without anyone re-keying them, and the sites three local businesses use to win customers. On my own time I write developer tooling and publish it on GitHub.
@@ -243,10 +243,10 @@ export default function AboutPage() {
                 What Drives Me
               </h3>
               <ul className="space-y-3 text-secondary/80">
-                <li>• <strong className="text-secondary">Problem-Solving:</strong> Every bug is a puzzle, every feature request an opportunity to innovate</li>
-                <li>• <strong className="text-secondary">Continuous Learning:</strong> From cloud training to new frameworks, I'm always expanding my toolkit</li>
-                <li>• <strong className="text-secondary">Real Impact:</strong> Building solutions that deliver measurable business results</li>
-                <li>• <strong className="text-secondary">Community:</strong> Mentoring the next generation through Dover College Promise</li>
+                <li>• <strong className="text-secondary">Getting to the cause:</strong> I like finding out why something keeps going wrong and fixing it for good.</li>
+                <li>• <strong className="text-secondary">Learning:</strong> There&apos;s always a next thing to learn. Right now it&apos;s the CCNA.</li>
+                <li>• <strong className="text-secondary">Work that gets used:</strong> I care most about whether the people it was built for are still using it a year later.</li>
+                <li>• <strong className="text-secondary">Giving back:</strong> People invested in me when they didn&apos;t have to. I want to do the same for others.</li>
               </ul>
             </div>
             <div>
@@ -255,7 +255,7 @@ export default function AboutPage() {
                 Beyond The Code
               </h3>
               <p className="text-secondary/80 leading-relaxed">
-                When I'm not debugging code or optimizing databases, you'll find me mentoring students, exploring new ML algorithms, or contributing to open-source projects. I believe in giving back to the community that helped me transition into tech.
+                Outside of work I write developer tools and contribute to open-source projects. I mentored students through Dover College Promise for a while. My plate is too full for that right now, but I still believe in giving back to the people who invested in me.
               </p>
             </div>
           </div>
@@ -374,7 +374,7 @@ export default function AboutPage() {
                 "Cross-functional team leadership",
                 "Client relationship management",
                 "Technical documentation",
-                "Public speaking and mentorship",
+                "Public speaking",
               ].map((skill, i) => (
                 <span
                   key={i}
