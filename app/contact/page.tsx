@@ -310,6 +310,7 @@ export default function ContactPage() {
                       type="text"
                       id="name"
                       name="name"
+                      maxLength={100}
                       value={formData.name}
                       onChange={handleChange}
                       className={`w-full px-4 py-3 bg-bg-dark border rounded-lg text-secondary placeholder-secondary/40 focus:outline-none focus:border-primary transition-colors ${errors.name ? "border-red-500/50" : "border-primary/20"
@@ -329,6 +330,7 @@ export default function ContactPage() {
                       type="email"
                       id="email"
                       name="email"
+                      maxLength={254}
                       value={formData.email}
                       onChange={handleChange}
                       className={`w-full px-4 py-3 bg-bg-dark border rounded-lg text-secondary placeholder-secondary/40 focus:outline-none focus:border-primary transition-colors ${errors.email ? "border-red-500/50" : "border-primary/20"
@@ -349,6 +351,7 @@ export default function ContactPage() {
                     type="text"
                     id="company"
                     name="company"
+                    maxLength={100}
                     value={formData.company}
                     onChange={handleChange}
                     className={`w-full px-4 py-3 bg-bg-dark border rounded-lg text-secondary placeholder-secondary/40 focus:outline-none focus:border-primary transition-colors ${errors.company ? "border-red-500/50" : "border-primary/20"
@@ -388,6 +391,7 @@ export default function ContactPage() {
                     id="message"
                     name="message"
                     rows={6}
+                    maxLength={1000}
                     value={formData.message}
                     onChange={handleChange}
                     className={`w-full px-4 py-3 bg-bg-dark border rounded-lg text-secondary placeholder-secondary/40 focus:outline-none focus:border-primary transition-colors resize-none ${errors.message ? "border-red-500/50" : "border-primary/20"
