@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EvervaultBackground } from "@/components/ui/evervault-background";
 import {
   ArrowRight,
   Workflow,
@@ -111,19 +112,31 @@ const focusRing =
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-bg-dark pt-32 pb-20 px-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-bg-dark pb-20">
+      {/* Hero header with the spotlight background, as on the other inner pages */}
+      <div className="relative w-full min-h-[440px] pt-28 pb-12 flex items-center justify-center overflow-hidden mb-16">
+        <EvervaultBackground className="absolute inset-0" />
+        <div className="relative z-10 max-w-4xl mx-auto px-6 w-full">
+          <Reveal className="text-center bg-bg-elevated/50 backdrop-blur-md border border-primary/20 rounded-2xl p-8 md:p-12 shadow-2xl">
+            <p className="text-sm font-mono uppercase tracking-widest text-primary mb-4">
+              Services
+            </p>
+            <h1 className="text-4xl md:text-6xl font-serif text-secondary mb-6 text-balance">
+              Work I take on
+            </h1>
+            <p className="text-xl md:text-2xl text-secondary/80 leading-relaxed text-balance">
+              I build automations and the systems behind a business, and I keep
+              what I build secure.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6">
         <Reveal className="text-center mb-20">
-          <p className="text-sm font-mono uppercase tracking-widest text-primary mb-4">
-            Services
-          </p>
-          <h1 className="text-4xl md:text-6xl font-serif text-secondary mb-6 text-balance">
-            Work I take on
-          </h1>
           <p className="text-lg md:text-xl text-secondary/70 max-w-2xl mx-auto leading-relaxed">
-            I build automations and the systems behind a business, and I keep
-            what I build secure. Below is what I can help with. Every job
-            starts with a conversation and a written scope.
+            Below is what I can help with. Every job starts with a
+            conversation and a written scope.
           </p>
         </Reveal>
 
@@ -151,23 +164,28 @@ export default function ServicesPage() {
                   <li key={service.title} className="flex">
                     <Reveal delay={index * 0.08} className="w-full">
                       <div
-                        className="h-full rounded-2xl p-6 sm:p-8 border transition-all duration-300
+                        className="relative group h-full rounded-2xl p-6 sm:p-8 border transition-all duration-300 overflow-hidden
                           backdrop-blur-xl bg-bg-elevated/60
                           border-primary/30 hover:border-primary/60
-                          shadow-lg shadow-primary/10 hover:shadow-primary/20
-                          bg-gradient-to-br from-white/[0.03] to-transparent"
+                          hover:bg-bg-elevated/40
+                          shadow-lg shadow-primary/10 hover:shadow-primary/20"
                       >
-                        <div className="flex items-center gap-3 mb-4">
-                          <span className="flex items-center justify-center shrink-0 w-12 h-12 rounded-xl bg-primary/15 border border-primary/30">
-                            <Icon className="w-6 h-6 text-primary" aria-hidden />
-                          </span>
-                          <h3 className="text-xl min-w-0 font-serif text-secondary font-bold">
-                            {service.title}
-                          </h3>
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.03] to-transparent pointer-events-none" />
+                        <EvervaultBackground className="rounded-2xl" radius={220} buffer={0} desktopOnly tone="soft" />
+
+                        <div className="spotlight-text relative z-10">
+                          <div className="flex items-center gap-3 mb-4">
+                            <span className="flex items-center justify-center shrink-0 w-12 h-12 rounded-xl bg-primary/15 border border-primary/30">
+                              <Icon className="w-6 h-6 text-primary" aria-hidden />
+                            </span>
+                            <h3 className="text-xl min-w-0 font-serif text-secondary font-bold">
+                              {service.title}
+                            </h3>
+                          </div>
+                          <p className="text-secondary/80 leading-relaxed">
+                            {service.description}
+                          </p>
                         </div>
-                        <p className="text-secondary/80 leading-relaxed">
-                          {service.description}
-                        </p>
                       </div>
                     </Reveal>
                   </li>
@@ -207,8 +225,9 @@ export default function ServicesPage() {
           </ol>
         </section>
 
-        <section>
-          <Reveal className="text-center rounded-2xl p-8 sm:p-12 border backdrop-blur-xl bg-bg-elevated/60 border-primary/30 shadow-lg shadow-primary/10">
+        <section className="relative overflow-hidden rounded-3xl py-12 sm:py-16 px-4 sm:px-8">
+          <EvervaultBackground className="rounded-3xl spotlight-fade" radius={450} />
+          <Reveal className="spotlight-text relative z-10 max-w-3xl mx-auto text-center rounded-2xl p-8 sm:p-12 border backdrop-blur-xl bg-bg-elevated/50 border-primary/20 shadow-lg shadow-primary/10">
             <h2 className="text-3xl md:text-4xl font-serif text-secondary mb-4 text-balance">
               Something getting typed twice?
             </h2>
