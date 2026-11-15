@@ -46,12 +46,6 @@ const nextConfig = {
   },
   images: {
     qualities: [75, 90],
-    remotePatterns: [
-      {
-        protocol: 'http',
-        hostname: 'localhost',
-      },
-    ],
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
