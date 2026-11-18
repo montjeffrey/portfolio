@@ -17,12 +17,12 @@ Use these repo-specific notes to be productive immediately. Keep changes idiomat
 - Performance gating: use `hooks/use-performance-tier.ts` to pick heavy vs light visuals. Hero uses `MobileBeam` for lower tiers and post-processing beam for high tier.
 
 ## Content & Copy
-- Site copy lives in `.cursor/rules/context.md`. Reference/update that file when adjusting content sections (Home, Projects, About, Contact, Resume).
+- Site copy lives in the page and component files themselves (Home, Projects, About, Services, Contact, Resume).
 - Components should consume copy from props or inline literals; there’s no CMS wired yet.
 
 ## Key Files & Patterns
 - `components/Hero.tsx`: Three.js beam background + typing effect; switches renderer based on `usePerformanceTier()`.
-- `app/contact/page.tsx`: Framer Motion transitions; form submission is currently simulated (no backend). If wiring Supabase, read envs `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and place client setup in `lib/supabase.ts` (create it if missing).
+- `app/contact/page.tsx`: Framer Motion transitions; the form posts to Netlify Forms with `fetch("/__forms.html")`. The form is declared in `public/__forms.html` (Netlify detects forms only in static HTML), and the field names there must match the ones the page sends. If the POST fails, the page offers a pre-filled `mailto:` instead. The site has no database.
 - `components/ErrorBoundary.tsx`: reusable boundary with a themed fallback; supports optional `fallback` prop.
 - `components/ui/*`: small, focused UI primitives (resume modal, indicators, backgrounds). Prefer adding reusable bits here.
 - `lib/utils.ts`: general helpers. Co-locate small utilities here unless a new domain module is justified.
@@ -36,7 +36,7 @@ Use these repo-specific notes to be productive immediately. Keep changes idiomat
 - Dev: `npm run dev` (Next.js)
 - Lint: `npm run lint` (Next.js ESLint config)
 - Build: `npm run build` → `npm start` (production)
-- Deployment: Vercel is supported; ensure images build with `sharp` (optional deps provided).
+- Deployment: Netlify. `main` deploys to production and pull requests get deploy previews; `sharp` is a regular dependency for `next/image`.
 
 ## Adding Features
 - Pages: create `app/<route>/page.tsx` and optional `layout.tsx`. Export a default React component; add `"use client"` when using state/effects.
@@ -45,9 +45,8 @@ Use these repo-specific notes to be productive immediately. Keep changes idiomat
 - 3D/Canvas: keep Three.js isolated to components; do not leak globals. Dispose resources in `useEffect` cleanup.
 
 ## Integration Notes
-- Contact form currently stubs submission (simulated delay, success banner). Any backend integration (Supabase, server actions) should:
-  - Validate inputs client-side; submit to an API route or action; show success/error banners.
-  - Isolate secrets to server code; envs loaded from `.env.local` per README.
+- The contact form submits to Netlify Forms (`public/__forms.html`), validates client-side, and shows success/error banners. There is no API route, server action or database, and no environment variables are needed. Client-side checks are not a security boundary, so keep the honeypot (`bot-field`) and input length limits in step with the declared form.
+  - If a backend or database is ever added, validate on the server, keep secrets in server code only, and never put a service key in a `NEXT_PUBLIC_*` variable. With Supabase, expose only the anon key to the browser and enable row level security with insert-only policies first.
 
 ## Examples
 - Error boundary usage:
