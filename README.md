@@ -8,6 +8,7 @@ Source for [montjeffrey.dev](https://montjeffrey.dev), the portfolio of Jeffrey 
 - **Styling and motion:** Tailwind CSS, Framer Motion, three.js for the background effects
 - **Hosting:** Netlify. The `main` branch deploys to production; pull requests get a deploy preview.
 - **Contact:** the form posts to [Netlify Forms](https://docs.netlify.com/manage/forms/setup/). Netlify detects forms only in static HTML, so the form is declared in `public/__forms.html` and the Contact page submits to it with `fetch`. If a submission fails, the page offers a pre-filled email instead. There is no other backend and no database.
+- **Redirects:** `netlify.toml` sends the default `montjeffrey.netlify.app` address to `montjeffrey.dev`, so the site is reachable at one address only.
 
 ## Layout
 

@@ -1,0 +1,8 @@
+# Build settings stay in the Netlify UI. This file only holds redirects.
+
+# One public address: send the default Netlify subdomain to the custom domain.
+[[redirects]]
+  from = "https://montjeffrey.netlify.app/*"
+  to = "https://montjeffrey.dev/:splat"
+  status = 301
+  force = true
